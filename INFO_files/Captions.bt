@@ -1,15 +1,15 @@
 //------------------------------------------------
 //--- 010 Editor v9.0.2 Binary Template
 //
-//      File: Caption binary files
+//      File: Captions.bt
 //   Authors: Raytwo
-//   Version: 100
+//   Version: 1.0
 //   Purpose: Parsing caption files for cutscenes
-//  Category: 
-// File Mask: 
-//  ID Bytes: 
-//   History
-//   100    2019-08-05  Raytwo: Made the original file
+//  Category: Captions
+// File Mask: *.bin
+//  ID Bytes: 62 29
+//   History:
+//   1.0    2019-08-05  Raytwo: Made the original file
 //------------------------------------------------
 
 LittleEndian();
@@ -30,14 +30,11 @@ for(i = 0;i < Header.ptr_count;i++)
         struct TIMING {
             float start_time<name="Starting time", comment="The moment the instruction is executed", fgcolor=cAqua>;
             float duration<name="Duration", comment="For how long the instruction is executed", fgcolor=cLtBlue>;
-        } Timing;
+        } Timing<name="Timing">;
 
         char instruct[ReadStringLength(FTell())]<name="Command", fgcolor=cLtRed>;
-        //Strcpy(instruct, StringToUTF8(instruct));
     } Instruction<name="Instruction", read=GetInstructionName>;
 }
-
-
 
 string GetInstructionName(INSTRUCTION &i)
 {
