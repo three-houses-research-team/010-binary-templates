@@ -12,7 +12,7 @@
 //---------------------------------------------
 // Includes
 //---------------------------------------------
-#include "3H_Enums.bt"
+#include "Enums.bt"
 
 LittleEndian();
 struct File{
