@@ -1,26 +1,24 @@
 //------------------------------------------------
 //--- 010 Editor v9.0.2 Binary Template
 //
-//      File: INFO0.bin
-//   Authors: Raytwo, DeathChaos, TildeHat, SciresM
+//      File: DATA0.bin
+//   Authors: Raytwo, DeathChaos, SciresM
 //   Version: 100
-//   Purpose: Contains entries for a LayeredFS-like patching of DATA archives for Fire Emblem Three Houses
-//   Category:  
-//   File Mask: 
-//   ID Bytes: 
+//   Purpose: Parsing the DATA0.bin entries
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
 //   History
-//   100    2019-08-04  Raytwo: Made the original file
+//   100    2019-08-05  Raytwo: Made the original file
 //------------------------------------------------
 
 LittleEndian();
 
-//One entry is 0x120 bytes
-local int entryCount = FileSize()/0x120;
+local int entryCount = FileSize()/0x20;
 
 struct ENTRY {
-    uint64 entryID<name="Entry ID", comment="Refer to the entry being replaced from DATA0.bin", format=hex, fgcolor=cYellow>;
+    uint64 offset<name="Offset", comment="The offset of the entry in DATA1.bin", format=hex, fgcolor=cYellow>;
     uint64 decompressed_size<name="Decompressed size", comment="Decompressed size of the entry", format=hex, fgcolor=cLtBlue>;
     uint64 compressed_size<name="Compressed size", comment="Compressed size of the entry", format=hex, fgcolor=cLtPurple>;
     uint64 is_compressed<name="Is Compressed?", comment="Boolean, should be 1 if a compressed size is available", fgcolor=cLtGreen>; //Actually a boolean but that way the parsing is easier
-    char filename[0x100]<name="Filename", fgcolor=cLtRed>;
 } Entry[entryCount];
