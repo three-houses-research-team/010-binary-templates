@@ -1,0 +1,24 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: DATA0.bt
+//   Authors: Raytwo, DeathChaos, SciresM
+//   Version: 1.0
+//   Purpose: Parsing the DATA0.bin entries
+//  Category: Archives
+// File Mask: *.bin
+//  ID Bytes: /
+//   History:
+//   1.0    2019-08-05  Raytwo: Made the original file
+//------------------------------------------------
+
+LittleEndian();
+
+local int entryCount = FileSize()/0x20;
+
+struct ENTRY {
+    uint64 offset<name="Offset", comment="The offset of the entry in DATA1.bin", format=hex, fgcolor=cYellow>;
+    uint64 decompressed_size<name="Decompressed size", comment="Decompressed size of the entry", format=hex, fgcolor=cLtBlue>;
+    uint64 compressed_size<name="Compressed size", comment="Compressed size of the entry", format=hex, fgcolor=cLtPurple>;
+    uint64 is_compressed<name="Is Compressed?", comment="Boolean, should be 1 if a compressed size is available", fgcolor=cLtGreen>; //Actually a boolean but that way the parsing is easier
+} Entries[entryCount];
