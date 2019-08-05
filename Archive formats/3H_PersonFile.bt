@@ -1,0 +1,151 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: Person.bin / 0000010ea800.bin
+//   Authors: DeathChaos
+//   Version: 1.00
+//   Purpose: Three Houses character file mapping
+//   History
+//   1.00    2019-08-05  DeathChaos - started this
+//------------------------------------------------
+
+//---------------------------------------------
+// Includes
+//---------------------------------------------
+#include "3H_Enums.bt"
+
+LittleEndian();
+struct File{
+    struct HEADER{
+        uint32 Header;
+        uint32 PointerToCharBlocks<bgcolor=cRed>;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+		uint32 UnkPointer;
+    }header<bgcolor=cYellow>;
+	uint32 PersonID;
+	uint32 numPerson;
+	uint32 SizeOfPersonBlock;
+	struct PersonHeader{
+		uint32 Padding;
+		uint32 Padding;
+		uint32 Padding;
+		uint32 Padding;
+		uint32 Padding;
+		uint32 Padding;
+		uint32 Padding;
+		uint32 Padding;
+		uint32 Padding;
+		uint32 Padding;
+		uint32 Padding;
+		uint32 Padding;
+		uint32 Padding;
+	}personheader;
+	struct Person{
+		struct UnkBytes
+		{
+			uint32 unknown;
+			uint32 unknown;
+			uint32 unknown;
+			uint32 unknown;
+			uint16 unknown;
+		}unkbytes<name="Unknown Bytes">;
+		Names NameID<name="Name ID">;
+		uint32 unknown<name="Unknown Value">;
+		uint16 AssetsID<name="Asset ID">;
+		byte unknown<name="Unknown Value">;
+		byte Age<name="Age">;
+		ClassName Class<name="Class">;
+		byte Birthday<name="Birth Day">;
+		byte BirthMonth<name="Birth Month">;
+		byte unknown<name="Unknown Value">;
+		byte unknown<name="Unknown Value">;
+		byte BodyType<name="Body Type">;
+		byte HPCap<name="Max HP">;
+		byte unknown<name="Unknown Value">;
+		AllegianceID Allegiance<name="Allegiance">;
+		byte HPGrowth<name="HP Growth">;
+		GenderFlag Gender<name="Gender">;
+		byte BaseHP<name="Base HP">;
+		byte unknown<name="Unknown Value">;
+		Crests Crest<name="Primary Crest">;
+		Crests Crest<name="Secondary Crest">;
+		byte unknown<name="Unknown Value">;
+		ubyte PreTimeSkipHeight<name="Pre-Time Skip Height (cm)">;
+		ubyte PostTimeSkipHeight<name="Post-Time Skip Height (cm)">;
+		uint16 unknown<name="Unknown Value">;
+		struct CharacterStats{
+			struct BaseStats{
+				byte BaseStr<name="Base Str">;
+				byte BaseMag<name="Base Mag">;
+				byte BaseDex<name="Base Dex">;
+				byte BaseSpd<name="Base Spd">;
+				byte BaseLck<name="Base Lck">;
+				byte BaseDef<name="Base Def">;
+				byte BaseRes<name="Base Res">;
+				byte BaseMov<name="Base Mov">;
+				byte BaseCharm<name="Base Cha">;
+			}basestats<bgcolor=cBlue,name="Base Stats">;
+			struct BaseGrowths{
+				byte StrGrowth<name="Str Growth">;
+				byte MagGrowth<name="Mag Growth">;
+				byte DexGrowth<name="Dex  Growth">;
+				byte SpdGrowth<name="Spd Growth">;
+				byte LckGrowth<name="Lck Growth">;
+				byte DefGrowth<name="Def Growth">;
+				byte ResGrowth<name="Res Growth">;
+				byte MovGrowth<name="Mov Growth">;
+				byte CharmGrowth<name="Cha Growth">;
+			}basegrowths<bgcolor=cGreen,name="Growths">;
+			struct MaxStats{
+				byte MaxStr<name="Max Str">;
+				byte MaxMag<name="Max Mag">;
+				byte MaxDex<name="Max Dex">;
+				byte MaxSpd<name="Max Spd">;
+				byte MaxLck<name="Max Lck">;
+				byte MaxDef<name="Max Def">;
+				byte MaxRes<name="Max Res">;
+				byte MaxMov<name="Max Mov">;
+				byte MaxCharm<name="Max Cha">;
+			}maxstats<bgcolor=cYellow,name="Stat Caps">;
+			byte padding<name="Padding">;
+		}characterstats<name="Stats and Growths">;
+	}person[numPerson]<read=ReadNameID, bgcolor=cRed, name="Character Block">;
+}file;
+
+string ReadNameID(Person &p)
+{
+return EnumToString(p.NameID);
+}
