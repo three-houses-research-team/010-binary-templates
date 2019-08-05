@@ -15,10 +15,10 @@
 LittleEndian();
 
 struct HEADER {
-    uint magic<name="Magic", comment="File format signature">; //always 0x2962
+    uint magic<name="Magic", comment="File format signature", format=hex, fgcolor=cWhite, bgcolor=cBlack>; //always 0x2962
     uint ptr_count<name="Offset count", comment="The quantity of offsets in the header", fgcolor=cLtGreen>;
-    uint ptr_table[ptr_count]<name="Offset table", comment="Contains all the relative offset to instructions starting from the beginning of the file. Always 4 bytes aligned.", fgcolor=cYellow>;
-} Header;
+    uint ptr_table[ptr_count]<name="Offset table", comment="Contains all the relative offset to instructions starting from the beginning of the file. Always 4 bytes aligned.", format=hex, fgcolor=cYellow>;
+} Header<name="Header">;
 
 local int i = 0;
 
