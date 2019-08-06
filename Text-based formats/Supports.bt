@@ -1,0 +1,46 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: Support_text.bt
+//   Authors: Raytwo
+//   Version: 1.0
+//   Purpose: Parsing text-based support binaries
+//  Category: Text binaries
+// File Mask: *.bin
+//  ID Bytes: /
+//   History: 
+//  1.0 2019-08-06  Raytwo: Made the initial template
+//------------------------------------------------
+
+LittleEndian();
+
+struct HEADER {
+    uint unk1; //Always seem to be 1
+    uint unk2; //Always seem to be 1
+    uint ptr_section_offset<name="Offset section position", format=hex>;
+    uint ptr_section_size<name="Offset section size", format=hex>;
+    uint ptr_count<name="Offset count">; //Ignoring the first entry, as it is always 0x0
+} Header<name="Header", bgcolor=cDkGray>;
+
+FSeek(Header.ptr_section_offset);
+
+struct PTRTable {
+    uint offset<format=hex>;
+} Ptrtable[Header.ptr_count + 1]<name="Relative offset", bgcolor=cDkRed>; //Add 1 to the count to account for the first offset
+
+local int i = 0;
+local int table_start = Header.ptr_section_offset + Header.ptr_section_size;
+
+for(i = 0;i < Header.ptr_count;i++)
+{
+    FSeek(table_start + Ptrtable[i].offset); //Add the relative offset to the table address
+
+    struct LINE {
+        char line[ReadStringLength(FTell())]<fgcolor=cYellow>;
+    } Line<name="Lines", read=DisplayLineAsValue>;
+}
+
+string DisplayLineAsValue(LINE &l)
+{
+    return StringToWString(l.line, CHARSET_UTF8);
+}
