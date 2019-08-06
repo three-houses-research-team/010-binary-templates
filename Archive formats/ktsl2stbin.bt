@@ -1,0 +1,49 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: BGM.ktsl2stbin
+//   Authors: DeathChaos
+//   Version: 100
+//   Purpose: Koei Tecmo container for BGM
+//   Category:  
+//   File Mask: 
+//   ID Bytes: KTSR
+//   History
+//   100    2019-08-05  DeathChaos - started this
+//------------------------------------------------
+
+LittleEndian();
+
+local TFindResults r = FindAll( "KTSS" );
+local int KTSSNum = r.count;
+
+struct File{
+    struct HEADER{
+        char magic[4]; //"KTSR"
+        uint32 Unknown1;
+        uint64 Unknown2;
+        uint64 Unknown3;
+		struct FileSizeValue{
+			uint32 FileSize<name="Total Filesize">;
+			uint32 FileSize<name="Total Filesize">;
+        }filesizevalue<name="Filesize">;;
+	}header<bgcolor=cYellow,name="KTSR Header">;
+	struct BGMHeader{
+		byte padding[FTell() % 64]<name="EoF padding">;
+		uint32 UnkPointer<bgcolor=cRed,name="Unknown Pointer/Checksum">; 
+		uint32 TotalSoundSize<bgcolor=cRed,name="Total Size of this Sound">; // size until next pointer, KTSS is 0x3C after this
+		uint32 pointer<bgcolor=cRed,name="Unknown Pointer/Checksum">;
+		uint32 pointer<bgcolor=cRed,name="Always 0x40">;
+		uint32 SizeAfterPaddingOfThisStruct<bgcolor=cRed,name="Size without padding?">;
+		struct PADDING2{
+			uint32 pointer<bgcolor=cRed>;
+			uint32 pointer<bgcolor=cRed>;
+			uint32 pointer<bgcolor=cRed>;
+			uint64 padding;
+			uint64 padding;
+			uint64 padding;
+			uint64 padding;
+		}padding2<name="Padding">;
+		byte section[TotalSoundSize-64]<name="Sound File",bgcolor=cPurple>; // filesize is included in the header which is 0x60
+    }bgmheader[KTSSNum]<bgcolor=cBlue,optimize=false,name="Sound Archive">;
+}file<name="KTSR File">;
