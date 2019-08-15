@@ -1,0 +1,78 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: Starts at 84.bin/ SC00_00.bsi
+//   Authors: TildeHat
+//   Version: 1.00
+//   Purpose: Mapping of script files/bsi files.
+//   History
+//   1.00    2019-08-05  TildeHat - Start
+//------------------------------------------------
+
+LittleEndian();
+
+
+
+struct File{
+    struct HEADER{
+        uint32 MagicNumber;
+        uint32 Unk;
+        uint32 NumOfEvents;
+        uint32 Unk;
+        uint32 Unk;
+        uint32 Unk;
+        uint32 Unk;
+        uint32 Unk;
+        uint32 StartOfEvents;
+        uint32 LengthOfFile;
+        uint32 LengthOfFile;
+        uint32 LengthOfFile;
+        uint32 LengthOfFile;
+        uint32 LengthOfFile;
+    }header<bgcolor=cGreen>;
+
+    struct PTRTable{
+        uint32 offset<format=hex>;
+    }Ptrtable[header.NumOfEvents]<bgcolor=cDkRed>;
+    
+local int i = 0;
+    for(i = 0; i <header.NumOfEvents; i++){
+        FSeek(Ptrtable[i].offset);
+        struct EventBlock{
+            
+            struct EVENTHEADER{
+                uint32 eventNum<bgcolor=cPurple>;
+                uint32 Unk;
+                uint32 EventType;
+                uint32 Unk;
+                uint32 Unk;
+                uint32 Unk;
+                uint32 Pointer1;
+                uint32 Pointer2;
+                uint32 P3Entries<bgcolor=cRed>;
+                uint32 Pointer3;
+                uint32 Unk;
+                uint32 EndOfBlock;
+            }eventhead<bgcolor=cDkBlue>;
+            FSeek(eventhead.Pointer1);
+            struct Block1{
+                uint32 EventType;
+                uint32 Unk;
+                uint32 Unk;
+                uint32 UnkNum;
+                local int j = 0;
+                for(j = 0; j <UnkNum; j++){
+                    uint32 Unk;
+                }
+            }block1<bgcolor=cDkGreen>;
+        
+            FSeek(eventhead.Pointer2);
+            struct Block2{
+                uint32 EventType;
+                uint32 Unk;
+                uint32 Unk;
+                uint32 Unk;
+            }block1<bgcolor=cDkYellow>;
+        }eventBlock;
+    }
+}file;
