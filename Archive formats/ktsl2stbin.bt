@@ -34,9 +34,9 @@ struct File{
 		byte padding[FTell() % 64]<name="Header EoF padding">; // align 0x40
 	}header<bgcolor=cYellow,name="KTSR Header">;
 	struct BGMHeader{
-		uint32 UnkPointer<bgcolor=cRed,name="Unknown Pointer/Checksum">;  // Always 0x15F4D409 for every game if used for the KTSS section.
+		uint32 UnkPointer<bgcolor=cRed,name="Unknown Pointer/Checksum">;  // Always 0x15F4D409 for every game if the section is KTSS.
 		uint32 TotalSoundSize<bgcolor=cRed,name="Total Size of this Sound">; // size until next pointer, KTSS should be 0x3C after this
-		uint32 pointer<bgcolor=cRed,name="Unknown Pointer/Checksum">; // Always a value that links up to a smaller KTSR file, which might be found inside DATA1.bin.
+		uint32 pointer<bgcolor=cRed,name="Unknown Pointer/Checksum">; // Always a value that links up to a smaller KTSR file, which can be found inside DATA1.bin and does not contain KTSS sections. The EN ktsl2stbin files also use the same value.
 		uint32 pointer<bgcolor=cRed,name="Always 0x40">; // Section type/Flags? Always 40 00 00 00 for ktsl2stbin with KTSS sections, 02 00 01 00 for smaller KTSR files found inside WO4. 00 00 01 00 for smaller KTSR files inside FETH.
 		uint32 SizeAfterPaddingOfThisStruct<bgcolor=cRed,name="Size without padding?">; // Value always matches up to the value after KTSS magic.
 		struct PADDING2{
