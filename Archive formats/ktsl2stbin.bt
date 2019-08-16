@@ -19,23 +19,26 @@ local TFindResults r = FindAll( "KTSS" );
 local int KTSSNum = r.count;
 
 struct File{
-    struct HEADER{
-        char magic[4]; //"KTSR"
-        uint32 Unknown1;
-        uint64 Unknown2;
-        uint64 Unknown3;
+	struct HEADER{
+		char magic[4]; // "KTSR"
+		uint32 Unknown1; // Always 0xFCDD9402 for every game if the file contains KTSS sections, different if not.
+		ubyte Unknown2; // Flags/Endianness?
+		ushort Unknown3;
+		ubyte Version; // "4" for FETH.
+		uint32 Unknown4; // 0xB75674CE for FETH, the same for every ktsl2stbin file, but different for other games. Game specific value.
+		uint64 Padding1;
 		struct FileSizeValue{
 			uint32 FileSize<name="Total Filesize">;
 			uint32 FileSize<name="Total Filesize">;
-        }filesizevalue<name="Filesize">;
+		}filesizevalue<name="Filesize">;
 		byte padding[FTell() % 64]<name="Header EoF padding">; // align 0x40
 	}header<bgcolor=cYellow,name="KTSR Header">;
 	struct BGMHeader{
-		uint32 UnkPointer<bgcolor=cRed,name="Unknown Pointer/Checksum">; 
+		uint32 UnkPointer<bgcolor=cRed,name="Unknown Pointer/Checksum">;  // Always 0x15F4D409 for every game if used for the KTSS section.
 		uint32 TotalSoundSize<bgcolor=cRed,name="Total Size of this Sound">; // size until next pointer, KTSS should be 0x3C after this
-		uint32 pointer<bgcolor=cRed,name="Unknown Pointer/Checksum">;
-		uint32 pointer<bgcolor=cRed,name="Always 0x40">;
-		uint32 SizeAfterPaddingOfThisStruct<bgcolor=cRed,name="Size without padding?">;
+		uint32 pointer<bgcolor=cRed,name="Unknown Pointer/Checksum">; // Always a value that links up to a smaller KTSR file, which might be found inside DATA1.bin.
+		uint32 pointer<bgcolor=cRed,name="Always 0x40">; // Section type/Flags? Always 40 00 00 00 for ktsl2stbin with KTSS sections, 02 00 01 00 for smaller KTSR files found inside WO4. 00 00 01 00 for smaller KTSR files inside FETH.
+		uint32 SizeAfterPaddingOfThisStruct<bgcolor=cRed,name="Size without padding?">; // Value always matches up to the value after KTSS magic.
 		struct PADDING2{
 			uint32 pointer<bgcolor=cRed>;
 			uint32 pointer<bgcolor=cRed>;
@@ -47,5 +50,5 @@ struct File{
 		}padding2<name="Padding">;
 		byte section[TotalSoundSize-64]<name="Sound File",bgcolor=cPurple>; // filesize is included in the header which is 0x40 size
 		//byte padding[FTell() % 64]<name="EoF padding">; // align 0x40
-    }bgmheader[KTSSNum]<bgcolor=cBlue,optimize=false,name="Sound Archive">;
+	}bgmheader[KTSSNum]<bgcolor=cBlue,optimize=false,name="Sound Archive">;
 }file<name="KTSR File">;
