@@ -1,0 +1,45 @@
+LittleEndian();
+
+struct {
+	char magic[0x4];
+	uint32 unknown_1; // 01 00 00 04. Matches KTSR header values at 0x8.
+	uint32 ktsr_count;
+	uint32 ktsr_link_id_list_offset;
+	uint32 ktsr_offset_list_offset;
+	uint32 file_size;
+	uint32 ktsc_end_offset;
+	uint32 padding_1;
+	uint32 ktsr_link_ids[ktsr_count];
+	uint32 ktsr_offsets[ktsr_count];
+	uint32 file_end_offset;
+	ubyte padding_2[(0x40 - FTell() % 0x40)];
+} ktsc <bgcolor=cYellow>;
+
+struct SECTION {
+	uint32 type_id;
+	uint32 total_size;
+	uint32 link_id;
+	ushort unknown_1; // First section header is always 0, second is always 3. Section flags?
+	ushort unknown_2; // Always 1 for both sections in KTSC, 0 if the section is for a KTSS file. Section type?
+	uint32 index; // kns_size for KTSS type sections, but seems to be an index for the sections used in KTSC.
+	ubyte unknown_4[0x2C]; // Can have data if type ID is not KTSS.
+};
+
+struct {
+	struct {
+		char magic[0x4];
+		uint32 type_id;
+		uint32 unknown_1; // 01 00 00 04.
+		uint32 game_id;
+		uint64 padding_1;
+		uint32 file_size_1;
+		uint32 file_size_2;
+		ubyte padding_2[0x20];
+	} header;
+	SECTION section_header_1 <bgcolor=cRed>;
+	ubyte section_data_1[section_header_1.total_size - 0x40];
+	if (section_header_1.type_id == 0x368C88BD) { // A second section seems to always follow if this is the type of the first section, however might always be there.
+		SECTION section_header_2 <bgcolor=cRed>;
+		ubyte section_data_2[section_header_2.total_size - 0x40];
+	};
+} ktsr[ktsc.ktsr_count] <optimize=false, bgcolor=cBlue>;
