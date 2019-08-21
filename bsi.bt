@@ -44,7 +44,7 @@ local int i = 0;
             struct EVENTHEADER{
                 uint32 eventNum<bgcolor=cPurple>;
                 uint32 Unk;
-                uint32 TriggerCondition;
+                uint32 TriggerCondition<comment="10000 for OnMissionStart, 15000 for OnUnitSelected, ...">;
                 uint32 Unk;
                 uint32 Unk;
                 uint32 Unk;
@@ -60,12 +60,12 @@ local int i = 0;
                 uint32 Magic;
                 uint32 Unk;
                 uint32 CommandCount;
-                uint32 CommandBlockSize;
+                uint32 CommandBlockIntCount<comment="Number of Int32s in the block right after">;
                 local int j = 0;
-                for(j = 0; j <UnkNum; j++){
-                    uint32 Unk;
+                for(j = 0; j < CommandBlockIntCount; j++){
+                    uint32 CommandsAndArgs;
                 }
-            }block1<bgcolor=cDkGreen>;
+            }block1<bgcolor=cDkGreen, name="Commands block", comment="Contains the commands to execute">;
             FSeek(eventhead.Pointer2);
             struct Block2{
                 uint32 EventType;
