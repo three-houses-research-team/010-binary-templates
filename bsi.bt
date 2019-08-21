@@ -59,7 +59,7 @@ local int i = 0;
             struct Block1{
                 uint32 Magic;
                 uint32 Unk;
-                uint32 CommandCount;
+                uint32 CommandArgCountInBlock3;
                 uint32 CommandBlockIntCount<comment="Number of Int32s in the block right after">;
                 local int j = 0;
                 for(j = 0; j < CommandBlockIntCount; j++){
