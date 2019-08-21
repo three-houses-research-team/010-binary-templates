@@ -7,6 +7,7 @@
 //   Purpose: Mapping of script files/bsi files.
 //   History
 //   1.00    2019-08-05  TildeHat - Start
+//   1.01    2019-05-22  Raytwo   - Rename some fields
 //------------------------------------------------
 
 LittleEndian();
@@ -43,29 +44,28 @@ local int i = 0;
             struct EVENTHEADER{
                 uint32 eventNum<bgcolor=cPurple>;
                 uint32 Unk;
-                uint32 EventType;
+                uint32 TriggerCondition;
                 uint32 Unk;
                 uint32 Unk;
                 uint32 Unk;
                 uint32 Pointer1;
                 uint32 Pointer2;
-                uint32 P3Entries<bgcolor=cRed>;
+                uint32 P3EntryCount<bgcolor=cRed>;
                 uint32 Pointer3;
                 uint32 Unk;
                 uint32 EndOfBlock;
             }eventhead<bgcolor=cDkBlue>;
             FSeek(eventhead.Pointer1);
             struct Block1{
-                uint32 EventType;
+                uint32 Magic;
                 uint32 Unk;
-                uint32 Unk;
-                uint32 UnkNum;
+                uint32 CommandCount;
+                uint32 CommandBlockSize;
                 local int j = 0;
                 for(j = 0; j <UnkNum; j++){
                     uint32 Unk;
                 }
             }block1<bgcolor=cDkGreen>;
-        
             FSeek(eventhead.Pointer2);
             struct Block2{
                 uint32 EventType;
