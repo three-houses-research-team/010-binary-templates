@@ -10,6 +10,7 @@
 //  ID Bytes: /
 //   History:
 //   1.0    2019-08-22  Raytwo: Made the original file
+//   1.1    2019-08-23  Raytwo: Added the normal map flag table
 //------------------------------------------------
 
 LittleEndian();
@@ -27,10 +28,11 @@ struct FILE {
         uint32 filesize<name="Filesize", fgcolor=cLtYellow, format=hex>;
         uint32 tableOffset<name="Offset table address", fgcolor=cLtRed,format=hex>;
         uint32 entryCount<name="Number of textures", fgcolor=cLtGreen, format=decimal>;
+        uint32 unk;
+        uint32 unk;
     }Header<name="Header">;
     
-    FSeek(Header.tableOffset);
-
+    uint32 NormalMapTable[Header.entryCount]<name="Normal map flag?", comment="Entries with 3 are normal maps", fgcolor=cAqua>;
     uint32 OffsetTable[Header.entryCount]<name="Offset table", comment="Contains pointers to all the textures relative to the beginning of the table", fgcolor=cLtRed>;
 
     local int i = 0;
