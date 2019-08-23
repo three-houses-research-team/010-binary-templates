@@ -1,0 +1,86 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: Koei Tecmo Texture Container
+//   Authors: Raytwo
+//   Version: 1.0
+//   Purpose: Parsing G1T texture containers
+//  Category: File Format
+// File Mask: *.g1t
+//  ID Bytes: /
+//   History:
+//   1.0    2019-08-22  Raytwo: Made the original file
+//   1.1    2019-08-23  Raytwo: Added the normal map flag table
+//------------------------------------------------
+
+LittleEndian();
+
+enum<byte> DXT_TYPE
+{
+    DXT1 = 0x59,
+    DXT5 = 0x5B
+};
+
+struct FILE {
+    struct HEADER {
+        char magic[4]<name="Magic", fgcolor=cLtBlue>;
+        char version[4]<name="Version", fgcolor=cLtBlue>;
+        uint32 filesize<name="Filesize", fgcolor=cLtYellow, format=hex>;
+        uint32 tableOffset<name="Offset table address", fgcolor=cLtRed,format=hex>;
+        uint32 entryCount<name="Number of textures", fgcolor=cLtGreen, format=decimal>;
+        uint32 unk;
+        uint32 unk;
+    }Header<name="Header">;
+    
+    uint32 NormalMapTable[Header.entryCount]<name="Normal map flag?", comment="Entries with 3 are normal maps", fgcolor=cAqua>;
+    uint32 OffsetTable[Header.entryCount]<name="Offset table", comment="Contains pointers to all the textures relative to the beginning of the table", fgcolor=cLtRed>;
+
+    local int i = 0;
+
+    for(i = 0;i < Header.entryCount;i++)
+    {
+        FSeek(Header.tableOffset + OffsetTable[i]);
+
+        struct TEXHEADER {
+            ubyte mipmapCount<name="Mipmap count", comment="Divide by 0x10 or Right-shift by 4 to obtain the actual count", format=hex>;
+            DXT_TYPE type<name="DXT Type", format=hex>;
+            short dimensions<name="Texture dimensions", comment="Width = Pow(2, (value & 0xF)), Height = Pow(2, (value >> 4))", format=decimal>;
+            
+            uint32 flags<name="Flags", comment="If the last byte is 0x10, the extra header is used", format=hex, fgcolor=cLtYellow>;
+            
+            if((flags >> 24) == 0x10)
+            {
+                struct EXTRATEXHEADER {
+                    uint32 size<name="Extra Texture Header size", format=hex>;
+                    uint32 unk;
+                    uint32 unk;
+                }ExtraTexHeader<name="Extra Texture Header", comment="No idea what this does for now", bgcolor=cDkGray>;
+            }
+            
+            local uint32 Width = Pow(2, (dimensions & 0xF));
+            local uint32 Height = Pow(2, (dimensions >> 4));
+            local uint64 Size = 0;
+
+            if(type == 0x59) //DXT1
+            {
+                Size = (Width * Height) / 2;
+            }
+            if(type == 0x5B) //DXT5
+            {
+                Size = Width * Height;
+            }
+            
+            // Read mipmaps
+            local int j = 0;
+            local int originalSize = Size;
+
+            for(j = 1;j < (mipmapCount >> 4); j++) //Skip the first entry which is the full-sized texture
+            {
+                originalSize = originalSize/4;
+                Size += originalSize;
+            }
+
+            ubyte Textures[Size]<name="Textures data", comment="Textures are stored with their mipmaps in this array", format=hex, open=suppress, bgcolor=cDkBlue, fgcolor=cLtAqua>;
+        }TexHeader<name="Texture", fgcolor=cLtGreen>;
+    }
+}File<name="G1T file", open=true>;
