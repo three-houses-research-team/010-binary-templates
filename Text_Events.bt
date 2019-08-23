@@ -1,0 +1,38 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: TALK_EVXX_XXX.bin starts at 6341 which is byleth creation text
+//   Authors: TildeHat
+//   Version: 1.00
+//   Purpose: Mapping of text script files.
+//   History
+//   1.00    2019-08-05  TildeHat - Start
+//------------------------------------------------
+
+struct File{
+    struct HEADER{
+        uint32 NumberOfEntries;
+        uint32 Unk;
+        uint32 Unk;
+        uint32 Unk;
+    }header<bgcolor=cGreen>;
+
+   
+local int i = 0;
+    for(i = 0; i <header.NumberOfEntries; i++){
+        struct EventBlock{
+            uint32 eventType<comment="3 for dialog",bgcolor=cPurple>;
+            uint32 Parameter1<comment="Portrait ID for Text">;
+            uint32 Parameter2<comment="Line ID for Text">;
+            uint32 Parameter3<comment="Animation for Text">;
+            uint32 Parameter4<comment="Portrait Emotion for Text">;
+            uint32 Parameter5<comment="Voice Line ID for Text">;
+            uint32 Parameter6;
+            uint32 Parameter7;
+            uint32 Parameter8;
+            uint32 Parameter9;
+            uint32 Parameter10;
+            uint32 Parameter11;
+        }eventBlock<bgcolor=cDkBlue>;
+    }
+}file;
