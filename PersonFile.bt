@@ -18,7 +18,7 @@
 //---------------------------------------------
 // Includes
 //---------------------------------------------
-#include "Enums.bt"
+#include "3H_Enums.bt"
 
 LittleEndian();
 struct File{
@@ -188,24 +188,24 @@ struct File{
 		struct WpnRank{
 			uint16 unk;
 			ubyte color<name="Outfit Color value">;
-			ubyte uniqueclass1<name="PreTimeSkip Class">;
-			ubyte certclass<name="Certified Class">;
-			ubyte certclass<name="Certified Class">;
-			ubyte certclass<name="Certified Class">;
-			ubyte certclass<name="Certified Class">;
+			ClassName uniqueclass1<name="PreTimeSkip Class">;
+			ClassName certclass<name="Certified Class">;
+			ClassName certclass<name="Certified Class">;
+			ClassName certclass<name="Certified Class">;
+			ClassName certclass<name="Certified Class">;
 			ubyte unk;
 			struct StartingRanks{
-				ubyte rank0<name="Starting Sword Rank">;
-				ubyte rank1<name="Starting Lances Rank">;
-				ubyte rank2<name="Starting Axes Rank">;
-				ubyte rank3<name="Starting Bows Rank">;
-				ubyte rank4<name="Starting Brawling Rank">;
-				ubyte rank5<name="Starting Reason Rank">;
-				ubyte rank6<name="Starting Faith Rank">;
-				ubyte rank7<name="Starting Authority Rank">;
-				ubyte rank8<name="Starting Armor Rank">;
-				ubyte rank9<name="Starting Riding Rank">;
-				ubyte rank10<name="Starting Flying Rank">;
+				MinRanks rank0<name="Starting Sword Rank">;
+				MinRanks rank1<name="Starting Lances Rank">;
+				MinRanks rank2<name="Starting Axes Rank">;
+				MinRanks rank3<name="Starting Bows Rank">;
+				MinRanks rank4<name="Starting Brawling Rank">;
+				MinRanks rank5<name="Starting Reason Rank">;
+				MinRanks rank6<name="Starting Faith Rank">;
+				MinRanks rank7<name="Starting Authority Rank">;
+				MinRanks rank8<name="Starting Armor Rank">;
+				MinRanks rank9<name="Starting Riding Rank">;
+				MinRanks rank10<name="Starting Flying Rank">;
 			}startingranks<name="Starting Weapon Ranks">;
 			struct WpnProficiency{
 				ubyte rank0<name="Sword Proficiency">;
@@ -220,9 +220,9 @@ struct File{
 				ubyte rank9<name="Riding Proficiency">;
 				ubyte rank10<name="Flying Proficiency">;
 			}wpnproficiency<name="Proficiencies">;
-			ubyte class<name="Post TimeSkip Class">;
-			ubyte class<name="Post TimeSkip Class">;
-			ubyte class<name="Post TimeSkip Class">;
+			ClassName class<name="Post TimeSkip Class">;
+			ClassName class<name="Post TimeSkip Class">;
+			ClassName class<name="Post TimeSkip Class">;
 		}wpnrank[numWpnRank];
 	}wpnrankstructure<bgcolor=cDkYellow, name="Starting Weapon Ranks">;
 	

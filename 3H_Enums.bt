@@ -885,3 +885,9 @@ enum<byte> GenderFlag
 	Male = 0,
 	Female = 1,
 };
+
+enum<byte> TrueFalse
+{
+	True,
+	False,
+};
