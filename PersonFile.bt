@@ -141,7 +141,7 @@ struct File{
 				byte padding<name="Padding">;
 			}characterstats<name="Stats and Growths">;
 		}person[numPerson]<read=ReadNameID, name="Character Block">;
-	}personstructure<bgcolor=cRed, name="Person Blocks">;
+	}personstructure<bgcolor=cRed, name="Character Blocks">;
 	
 	FSeek(sectionpointers.PointerToAssetID);
 	struct AssetIDStructure{
@@ -162,6 +162,7 @@ struct File{
 			uint16 BodyModelPreTimeSkip;
 		}assetid[numAID]<bgcolor=cGreen>;
 	}assetidstructure<bgcolor=cBlue, name="Asset IDs">;
+	
 	FSeek(sectionpointers.PointerToVoiceID);
 	struct VoiceIDStructure{
 		uint32 Voice_Magic;
@@ -177,6 +178,7 @@ struct File{
 			uint16 voice;
 		}voiceid[numVoice];
 	}voicestructure<bgcolor=cPurple, name="Voice IDs">;
+	
 	FSeek(sectionpointers.PointerToWpnRanks);
 	struct WpnRankStructure{
 		uint32 WpnRank_Magic;
@@ -224,7 +226,7 @@ struct File{
 			ClassName class<name="Post TimeSkip Class">;
 			ClassName class<name="Post TimeSkip Class">;
 		}wpnrank[numWpnRank];
-	}wpnrankstructure<bgcolor=cDkYellow, name="Starting Weapon Ranks">;
+	}wpnrankstructure<bgcolor=cDkYellow, name="Starting Weapon Ranks/Combat Assets">;
 	
 	FSeek(sectionpointers.PointerToStartingWeapons);
 	struct StartingWeaponsStructure{
@@ -244,6 +246,7 @@ struct File{
 			uint16 Weapon<name="Weapon">;
 		}startwepid[numStartWep];
 	}startingweaponsstructure<bgcolor=cDkBlue, name="Starting Weapons">;
+	
 	FSeek(sectionpointers.PointerToFacultyTraining);
 	struct FacultyTraining{
 		uint32 FacultyMagic;
@@ -275,6 +278,7 @@ struct File{
 			TrueFalse IsTeacher<name="IsTeacher">;
 		}facultyid[numFaculty]<name="Faculty Training Stuff">;
 	}facultytraining<bgcolor=cBlack,name="Faculty ID">;
+	
 	FSeek(sectionpointers.PointerToSeminar);
 	struct SeminarTraining{
 		uint32 SeminarMagic;
@@ -306,6 +310,7 @@ struct File{
 			TrueFalse IsTeacher<name="IsTeacher">;
 		}seminarid[numSeminar]<name="Seminar Stuff">;
 	}seminartraining<bgcolor=cGreen,name="Seminar ID">;
+	
 	FSeek(sectionpointers.Size3Pointer);
 	struct CharacterGoals{
 		uint32 CharacterGoalsMagic;
@@ -320,6 +325,7 @@ struct File{
 			ubyte unk3;
 		}charactergoalsid[numCharacterGoals];
 	}charactergoals<bgcolor=cDkRed,name="Character Goals">;
+	
 	FSeek(sectionpointers.PortraitsPointer);
 	struct Portraits{
 		uint32 PortraitsMagic;
@@ -343,6 +349,7 @@ struct File{
 			uint16 TimeSkip<name="Unknown Flag">;
 		}portraitsid[numPortraits]<name="Face ID">;
 	}portraits<bgcolor=cDkPurple,name="Portrait IDs">;
+	
 	FSeek(sectionpointers.SizeFourPointer);
 	struct SizeFour{
 		uint32 SizeFourMagic;
