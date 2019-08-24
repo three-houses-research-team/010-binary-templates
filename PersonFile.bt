@@ -3,10 +3,16 @@
 //
 //      File: Person.bin / 0000010ea800.bin
 //   Authors: DeathChaos
-//   Version: 1.00
+//   Version: 1.06
 //   Purpose: Three Houses character file mapping
 //   History
 //   1.00    2019-08-05  DeathChaos - started this
+//   1.01    ----------  DeathChaos - Added AID
+//   1.02    ----------  DeathChaos - Added Voice ID
+//   1.03    ----------  DeathChaos - Added Facculty Related stuff
+//   1.04    ----------  DeathChaos - Added Portrait IDs
+//   1.05    ----------  DeathChaos - Added Character Goals
+//   1.06    ----------  DeathChaos - Added Starting Weapon Ranks and Proficiencies
 //------------------------------------------------
 
 //---------------------------------------------
@@ -183,8 +189,10 @@ struct File{
 			uint16 unk;
 			ubyte color<name="Outfit Color value">;
 			ubyte uniqueclass1<name="PreTimeSkip Class">;
-			uint16 unk;
-			uint16 unk;
+			ubyte certclass<name="Certified Class">;
+			ubyte certclass<name="Certified Class">;
+			ubyte certclass<name="Certified Class">;
+			ubyte certclass<name="Certified Class">;
 			ubyte unk;
 			struct StartingRanks{
 				ubyte rank0<name="Starting Sword Rank">;
