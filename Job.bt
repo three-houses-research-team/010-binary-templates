@@ -1,0 +1,83 @@
+//-------------------------------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: Job.bin / 11.bin
+//   Authors: DeathChaos
+//   Version: 1.01
+//   Purpose: Three Houses character file mapping
+//   History
+//   1.00    2019-08-28  DeathChaos - started this
+//   1.01    2019-08-28  DeathChaos - added class names to struct indices
+//-------------------------------------------------------------------------
+
+//---------------------------------------------
+// Includes
+//---------------------------------------------
+#include "3H_Enums.bt"
+
+LittleEndian();
+struct File{
+	struct SectionPointers{
+		uint32 NumberOfSectionPointers;
+		uint32 UnkPointer<bgcolor=cRed>;
+		uint32 UnkSize<bgcolor=cRed>;
+		uint32 PointerToGenderLock<bgcolor=cPurple>;
+		uint32 GenderLockSize<bgcolor=cPurple>;
+		uint32 UnkPointer<bgcolor=cBlue>;
+		uint32 UnkSize<bgcolor=cBlue>;
+		uint32 UnkPointer<bgcolor=cDkYellow>;
+		uint32 UnkSize<bgcolor=cDkYellow>;
+		uint32 UnkPointer<bgcolor=cDkBlue>;
+		uint32 UnkSize<bgcolor=cDkBlue>;
+		uint32 UnkPointer<bgcolor=cBlack>;
+		uint32 UnkSize<bgcolor=cBlack>;
+		uint32 UnkPointer<bgcolor=cGreen>;
+		uint32 UnkSize<bgcolor=cGreen>;
+		uint32 UnkPointer<bgcolor=cDkRed>;
+		uint32 UnkSize<bgcolor=cDkRed>;
+		uint32 UnkPointer<bgcolor=cDkPurple>;
+		uint32 UnkSize<bgcolor=cDkPurple>;
+		uint32 UnkPointer<bgcolor=cDkGreen>;
+		uint32 UnkSize<bgcolor=cDkGreen>;
+		
+	}sectionpointers<name="Section Pointers">;
+	
+	FSeek(sectionpointers.PointerToGenderLock);
+	struct GenderLock
+	{
+		uint32 GenderLockMagic;
+		uint32 numGenderLock;
+		uint32 SizeOfGenderLock;
+		struct GenderLockHeaderPadding{
+			byte Padding[0x34];
+		}genderlockheaderpadding<name="Padding">;
+		local int i;
+		struct Requirements{
+			for( i = 0; i < numGenderLock; i++ )
+				struct GenderLockID{
+					local ClassName Class<hidden=true>;
+					Class = i; // keeping a localvar so we can add classname to the struct indice
+					ubyte MinLv<name="Min Lv Requirement (?)">;
+					ubyte unk2;
+					ubyte MaleFlag<name="Male Flag">;
+					ubyte FemaleFlag<name="Female Flag">;
+					MinRanks rank0<name="Minimum Sword Requirement">;
+					MinRanks rank1<name="Minimum Lances Requirement">;
+					MinRanks rank2<name="Minimum Axes Requirement">;
+					MinRanks rank3<name="Minimum Bows Requirement">;
+					MinRanks rank4<name="Minimum Brawling Requirement">;
+					MinRanks rank5<name="Minimum Reason Requirement">;
+					MinRanks rank6<name="Minimum Faith Requirement">;
+					MinRanks rank7<name="Minimum Authority Requirement">;
+					MinRanks rank8<name="Minimum Armor Requirement">;
+					MinRanks rank9<name="Minimum Riding Requirement">;
+					MinRanks rank10<name="Minimum Flying Requirement">;
+				}genderlockid<name="Class Requirements",read=MyStructToString>;
+		}requirements<name="Class Requirements">;
+	}genderlock<bgcolor=cDkGreen,name="Certification Requirements">;
+}file;
+
+string MyStructToString(GenderLockID& value)
+{
+    return EnumToString(value.Class);
+}
