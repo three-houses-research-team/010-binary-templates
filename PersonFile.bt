@@ -23,7 +23,7 @@
 LittleEndian();
 struct File{
 	struct SectionPointers{
-		uint32 Header;
+		uint32 NumberOfSectionPointers;
 		uint32 PointerToCharBlocks<bgcolor=cRed>;
 		uint32 CharBlockStructSize<bgcolor=cRed>;
 		uint32 PointerToAssetID<bgcolor=cBlue>;
@@ -73,15 +73,15 @@ struct File{
 		}personheaderpadding<name="Padding">;
 		struct Person{
 			struct ModelScale{
-				float Scale01;
-				float Scale02;
-				float Scale03;
-				float Scale04;
-				uint16 UnknownValue;
+				float Scale01<name="Model Size Scale">;
+				float Scale02<name="Female Chest Size modifier (pre time skip)">;
+				float Scale03<name="Female Chest Size modifier (post time skip)">;
+				float Scale04<name="Chest Band/Width modifier">;
 			}modelscale<name="Model Scale Values">;
+			uint16 UnknownValue;
 			Names NameID<name="Name ID">;
 			uint16 unknown<name="Unknown Value">;
-			uint16 CharID<name="Voice ID">;
+			uint16 CharacterID<name="Voice ID">;
 			uint16 AssetsID<name="Asset ID">;
 			byte unknown<name="Unknown Value">;
 			byte Age<name="Age">;
@@ -189,7 +189,7 @@ struct File{
 		}wpnrankpadding<name="Padding">;
 		struct WpnRank{
 			uint16 unk;
-			ubyte color<name="Outfit Color value">;
+			ubyte CharColor<name="Character Color">;
 			ClassName uniqueclass1<name="PreTimeSkip Class">;
 			ClassName certclass<name="Certified Class">;
 			ClassName certclass<name="Certified Class">;
@@ -237,7 +237,7 @@ struct File{
 			byte Padding[0x34];
 		}startweaponheaderpadding<name="Padding">;
 		struct StartWepID{
-			uint16 CharID<name="Character ID">;
+			uint16 CharacterID<name="Character ID">;
 			uint16 Weapon<name="Weapon">;
 			uint16 Weapon<name="Weapon">;
 			uint16 Weapon<name="Weapon">;
@@ -274,7 +274,7 @@ struct File{
 				ubyte bit14 : 1<name="Reserve">;
 				ubyte bit15 : 1<name="Reserve">;
 			}statbits<name="Teachable Stats">;
-			byte charID<name="Character ID">;
+			byte CharacterID<name="Character ID">;
 			TrueFalse IsTeacher<name="IsTeacher">;
 		}facultyid[numFaculty]<name="Faculty Training Stuff">;
 	}facultytraining<bgcolor=cBlack,name="Faculty ID">;
@@ -306,7 +306,7 @@ struct File{
 				ubyte bit14 : 1<name="Reserve">;
 				ubyte bit15 : 1<name="Reserve">;
 			}statbitsseminar<name="Stats Interested">;
-			byte charID<name="Character ID">;
+			byte CharacterID<name="Character ID">;
 			TrueFalse IsTeacher<name="IsTeacher">;
 		}seminarid[numSeminar]<name="Seminar Stuff">;
 	}seminartraining<bgcolor=cGreen,name="Seminar ID">;
