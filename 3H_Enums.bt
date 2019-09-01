@@ -987,3 +987,28 @@ enum<ubyte> Level
 {
 	NoLevel=255,
 };
+
+enum<ubyte> TeaNames
+{
+	Sweet_Apple_Blend = 193,
+	Almyran_Pine_Needles = 194,
+	Albinean_Berry_Blend = 195,
+	Southern_Fruit_Blend = 196,
+	Rose_Petal_Blend = 197,
+	Mint_Leaves = 198,
+	Crescent_Moon_Tea = 199,
+	Dagda_Fruit_Blend = 200,
+	Almond_Blend = 201,
+	Honeyed_Fruit_Blend = 202,
+	Cinnamon_Blend = 203,
+	Seiros_Tea = 204,
+	Four_Spice_Blend = 205,
+	Ginger_Tea = 206,
+	Angelica_Tea = 207,
+	Lavender_Blend = 208,
+	Chamomile = 209,
+	Hresvelg_Blend = 210,
+	Leicester_Cortania = 211,
+	Tea_of_the_Saints = 212,
+	NoTea = 255,
+};

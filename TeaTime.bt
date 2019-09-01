@@ -6,7 +6,7 @@
 //   Version: 1.00
 //   Purpose: Three Houses character file mapping
 //   History
-//   1.00    2019-08-05  DeathChaos - started thisProficiencies
+//   1.00    2019-08-31  DeathChaos - started thisProficiencies
 //------------------------------------------------
 
 //---------------------------------------------
@@ -249,6 +249,162 @@ struct File{
 		}unk7[numunk7]<name="Recruit Conditions 2",read=GetName2>;
 	}unknownsection7<name="Recruit Conditions 2",bgcolor=cDkRed>;
 	
+	FSeek(sectionpointers.PointerToUnk8);
+	struct Unk8{
+		uint32 Unk8Magic;
+		uint32 numunk8;
+		uint32 SizeOfUnk8;
+		struct Unk8Padding{
+			byte Padding[0x34];
+		}unk8padding<name="Padding">;
+		struct UnknownSection8{
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+		}unknownsection8[numunk8]<name="Unknown Section8">;
+	}unk8<name="Unknown Section 8",bgcolor=cDkPurple>;
+		
+	FSeek(sectionpointers.PointerToUnk9);
+	struct Unk9{
+		uint32 Unk9Magic;
+		uint32 numunk9;
+		uint32 SizeOfUnk9;
+		struct Unk9Padding{
+			byte Padding[0x34];
+		}unk9padding<name="Padding">;
+		struct UnknownSection9{
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+			uint16 unk;
+		}unknownsection9[numunk9]<name="Unknown Section9">;
+	}unk9<name="Unknown Section 9",bgcolor=cDkGreen>;
+	
+	FSeek(sectionpointers.PointerToFavTeaLeaves);
+	struct FavoriteTeaLeaves{
+		uint32 TeaMagic;
+		uint32 numFavoriteTea;
+		uint32 SizeOfFavoriteTea;
+		struct TeaPadding{
+			byte Padding[0x34];
+		}teapadding<name="Padding">;
+		struct FavoriteTea{
+			ubyte unk;
+			CharID CharacterID;
+			ubyte unk;
+			ubyte unk;
+			ubyte unk;
+			TeaNames tea<name="Favorite Tea">;
+			TeaNames tea<name="Favorite Tea">;
+			TeaNames tea<name="Favorite Tea">;
+			TeaNames tea<name="Favorite Tea">;
+		}favoritetea[numFavoriteTea]<name="Favorite Tea Leaves",read=GetName3>;
+	}favoritelealeaves<name="Favorite Tea Leaves",bgcolor=cLtGreen>;
+	
+	FSeek(sectionpointers.PointerToFinalComment);
+	struct FinalComment{
+		uint32 TeaMagic;
+		uint32 numFinalComment;
+		uint32 SizeOfFinalComment;
+		struct CommentPadding{
+			byte Padding[0x34];
+		}commentpadding<name="Padding">;
+		struct FinalTeaComment{
+			CharID CharacterID;
+			ubyte unk;
+			ubyte CommentID;
+			TrueFalse Nod;
+			TrueFalse Laugh;
+			TrueFalse Commend;
+			TrueFalse Disagree;
+			TrueFalse Admonish;
+			TrueFalse Sigh;
+			TrueFalse Chat;
+			TrueFalse SipTea;
+			TrueFalse Blush;
+			TrueFalse Praise;
+			ubyte pad;
+		}finalteacomment[numFinalComment]<name="Final Comment",read=GetName4>;
+	}finalcomment<name="Final Comment",bgcolor=cLtRed>;
+
+	
 }file;
 
 string GetName(RecruitRank& value)
@@ -257,6 +413,16 @@ string GetName(RecruitRank& value)
 }
 
 string GetName2(Unk7& value)
+{
+    return EnumToString(value.CharacterID);
+}
+
+string GetName4(FinalTeaComment& value)
+{
+    return EnumToString(value.CharacterID);
+}
+
+string GetName3(FavoriteTea& value)
 {
     return EnumToString(value.CharacterID);
 }
