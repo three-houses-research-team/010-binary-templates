@@ -13,6 +13,7 @@
 //   1.04    ----------  DeathChaos - Added Portrait IDs
 //   1.05    ----------  DeathChaos - Added Character Goals
 //   1.06    ----------  DeathChaos - Added Starting Weapon Ranks and Proficiencies
+//   1.07    ----------  Moonling - Added Spell List and Skills
 //------------------------------------------------
 
 //---------------------------------------------
@@ -365,6 +366,39 @@ struct File{
 			ubyte unk4;
 		}sizefourid[numSizeFour];
 	}sizefour<bgcolor=cDkGreen>;
+
+    FSeek(sectionpointers.PointerToSpellLearnset);
+    struct SpellListStructure {
+        uint SpellListMagic<bgcolor=cRed>;
+        uint numSpellList<bgcolor=cRed>;
+        uint SizeOfSpellList<bgcolor=cRed>;
+        struct SpellListHeaderPadding {
+            byte Padding[0x34];
+        }spelllistheaderpadding<name="Padding", bgcolor=cBlue>;
+        struct SPELLLIST{
+            MinRanks FaithLearnLevel[5]<name="Faith Learnt Level", comment="0 = null">;
+            SpellID ReasonList[5]<name="Reason Spells">;
+            SpellID FaithList[5]<name="Faith Spells">;
+            MinRanks ReasonLearnLevel[5]<name="Reason Learnt Level", comment="0 = null">;
+        }SpellList[numSpellList]<name="Spell List Data">;
+    }spellliststructure<name="Spell List", bgcolor=cYellow>;
+
+    FSeek(sectionpointers.PointerToSkillLearnset);
+    struct SkillListStructure {
+        uint SkillListMagic<bgcolor=cRed>;
+        uint numSkillList<bgcolor=cRed>;
+        uint SizeOfSpellList<bgcolor=cRed>;
+        struct SkillListHeaderPadding {
+            byte Padding[0x34];
+        }skilllistheaderpadding<name="Padding", bgcolor=cBlue>;
+        struct SKILLLIST {
+            RankStats SkillLearn[20]<name="Special Skill Learn List">;
+            AbilityID PreTSPersonalSkill<name="Pre Time Skip Personal Skill">;
+            AbilityID PostTSPersonalSkill<name="Post Time Skip Personal Skill">;
+            AbilityID AbilitiesLearnt[20]<name="Abilities Learnt">;
+            MinRanks RankLearnt[20]<name="Rank Learnt at">;
+        }SkillList[numSkillList]<name="Skill List Data">;
+    }skillliststructure<name="Skill List", bgcolor=cLtYellow>;
 }file;
 
 string ReadNameID(Person &p)
