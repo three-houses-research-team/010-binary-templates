@@ -1,0 +1,38 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: Map_text.bt / 1e78 - 1eb3
+//   Authors: kolakcc
+//   Version: 1.0
+//   Purpose: Parsing map-based text binaries
+//  Category: Text binaries
+// File Mask: *.bin
+//  ID Bytes: /
+//   History: 
+//  1.0 2019-08-30  kolakcc: Made the initial template
+//------------------------------------------------
+
+LittleEndian();
+
+uint lines;
+local int i = 0;
+
+struct OFFSETPAIR {
+    uint start<name="Start">;
+    uint len<name="Length">;
+} OffsetPair[lines]<name="Offsets">;
+
+
+for(i = 0;i < lines;i++)
+{
+    FSeek(OffsetPair[i].start); 
+
+    struct LINE {
+        char line[ReadStringLength(FTell(),OffsetPair[i].len)]<fgcolor=cYellow>;
+    } Line<name="Lines", read=DisplayLineAsValue>;
+}
+
+string DisplayLineAsValue(LINE &l)
+{
+    return StringToWString(l.line, CHARSET_UTF8);
+}
