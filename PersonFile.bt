@@ -3,7 +3,7 @@
 //
 //      File: Person.bin / 0000010ea800.bin
 //   Authors: DeathChaos
-//   Version: 1.06
+//   Version: 1.08
 //   Purpose: Three Houses character file mapping
 //   History
 //   1.00    2019-08-05  DeathChaos - started this
@@ -14,6 +14,7 @@
 //   1.05    ----------  DeathChaos - Added Character Goals
 //   1.06    ----------  DeathChaos - Added Starting Weapon Ranks and Proficiencies
 //   1.07    ----------  Moonling - Added Spell List and Skills
+//   1.08    2019-09-04  DeathChaos - Added Enemy Personal Skills
 //------------------------------------------------
 
 //---------------------------------------------
@@ -350,22 +351,6 @@ struct File{
 			uint16 TimeSkip<name="Unknown Flag">;
 		}portraitsid[numPortraits]<name="Face ID">;
 	}portraits<bgcolor=cDkPurple,name="Portrait IDs">;
-	
-	FSeek(sectionpointers.SizeFourPointer);
-	struct SizeFour{
-		uint32 SizeFourMagic;
-		uint32 numSizeFour;
-		uint32 SizeOfSizeFour;
-		struct SizeFourHeaderPadding{
-			byte Padding[0x34];
-		}sizefourheaderpadding<name="Padding">;
-		struct SizeFourID{
-			ubyte unk1;
-			ubyte unk2;
-			ubyte unk3;
-			ubyte unk4;
-		}sizefourid[numSizeFour];
-	}sizefour<bgcolor=cDkGreen>;
 
     FSeek(sectionpointers.PointerToSpellLearnset);
     struct SpellListStructure {
@@ -399,9 +384,30 @@ struct File{
             MinRanks RankLearnt[20]<name="Rank Learnt at">;
         }SkillList[numSkillList]<name="Skill List Data">;
     }skillliststructure<name="Skill List", bgcolor=cLtYellow>;
+	
+	FSeek(sectionpointers.SizeFourPointer);
+	struct SizeFour{
+		uint32 SizeFourMagic;
+		uint32 numSizeFour;
+		uint32 SizeOfSizeFour;
+		struct SizeFourHeaderPadding{
+			byte Padding[0x34];
+		}sizefourheaderpadding<name="Padding">;
+		struct SizeFourID{
+			uint16 charID<name="Character">;
+			AbilityID skillid<name="Skill ID">;
+			byte pad<hidden=true>;
+		}sizefourid[numSizeFour]<name="Enemy Personal Skills",read=GetName>;
+	}sizefour<name="Enemy Personal Skills", bgcolor=cDkGreen>;
+	
 }file;
 
 string ReadNameID(Person &p)
 {
 return EnumToString(p.NameID);
+}
+
+string GetName(SizeFourID& value)
+{
+    return EnumToString(value.charID);
 }
