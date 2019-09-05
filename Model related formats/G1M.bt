@@ -1,0 +1,53 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: G1M.bt
+//   Authors: Raytwo
+//   Version: 1.0
+//   Purpose: Parsing G1M models
+//  Category: File Format
+// File Mask: *.g1m
+//  ID Bytes: 5F 4D 31 47
+//   History:
+//   1.0    2019-08-26  Raytwo: Made the original file
+//------------------------------------------------
+
+typedef struct
+{
+} TG1MS<name="G1MS">;
+
+LittleEndian();
+
+struct FILE {
+    struct G1MHEADER {
+        char magic[4]<name="Magic", fgcolor=cLtBlue>;
+        char version[4]<name="Version", fgcolor=cLtBlue>;
+        uint32 filesize<name="File size", fgcolor=cLtYellow, format=hex>;
+        uint32 headersize<name="Header size", fgcolor=cLtRed, format=hex>;
+        uint32 unk1<name="Unknown", comment="Always 0", format=hex>;
+        uint32 sectioncount<name="Section count", fgcolor=cLtGreen, format=hex>;
+    }G1MHeader<name="G1M Header">;
+
+    local int i = 0;
+
+    for(i = 0; i < G1MHeader.sectioncount;i++)
+    {
+        struct SECTION {
+            char magic[4]<name="Magic", fgcolor=cLtBlue>;
+            char version[4]<name="Version", fgcolor=cLtBlue>;
+            uint32 sectionsize<name="Section size", fgcolor=cLtYellow, format=hex>;
+            switch(magic)
+            {
+                default:
+                    byte unks[sectionsize-0xC]<name="Section content", bgcolor=cDkBlue, fgcolor=cLtAqua, format=hex>;
+                    break;
+            }
+            
+        }Section<name="Section", read=GetSectionName>;
+    }
+}File<name="G1M", open=true>;
+
+string GetSectionName(SECTION &s)
+{
+    return s.magic;
+}
