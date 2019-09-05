@@ -1,0 +1,51 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: Starts at 267.bin/ SC00_00.bai
+//   Authors: TildeHat
+//   Version: 1.00
+//   Purpose: Mapping of dispos files/bai files for the monastery.
+//   History
+//   1.00    2019-09-02  DeathChaos - Start
+//------------------------------------------------
+
+LittleEndian();
+
+//One entry is 0x18 bytes
+//All IDs in this file are +1 from regular list. 0 Seems to be default.
+
+struct File{
+    struct HEADER{
+        uint32 Header;
+        uint32 UnkPointer;
+        uint32 UnkPointer;
+        //uint32 BERelativePointer<bgcolor=cRed>;//always at 0x18
+        //uint32 BLRelativePointer<bgcolor=cBlue>;//This + 0x18
+        //uint32 GDRelativePointer<bgcolor=cYellow>;//This + 0x18
+    }header<bgcolor=cGreen>;
+    struct PTRTable{
+        uint32 offset<format=hex>;
+    }Ptrtable[3]<name="Relative offset", bgcolor=cDkRed>;
+
+    local int i<hidden=true>;
+    local int j<hidden=true>;
+	local int k = (FileSize()-0x18)/0x18;
+    
+    for(i = 0; i <3; i++){
+    FSeek(Ptrtable[i].offset + 24);
+        struct RouteBlock{
+        for(j = 0; j<(k/3);j++) { 
+            struct CharacterBlocks{
+                uint16 characterID<name="Character ID", comment="+1 From Regular List", bgcolor=cPurple>;
+				uint16 padding;
+				float coord1;
+				float coord2;
+				uint16 RoomID<name="RoomID Maybe?">;
+                byte unk[0xA];
+            
+            }characterBlock;
+
+        }
+        }routeBlock;
+    }
+}file;
