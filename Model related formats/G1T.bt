@@ -17,6 +17,7 @@ LittleEndian();
 
 enum<byte> DXT_TYPE
 {
+	RGBA8 = 0x1,
     DXT1 = 0x59,
     DXT5 = 0x5B
 };
@@ -61,6 +62,10 @@ struct FILE {
             local uint32 Height = Pow(2, (dimensions >> 4));
             local uint64 Size = 0;
 
+            if(type == 0x1) //RGBA8
+            {
+            	Size = (Width * Height) * 4;
+            }
             if(type == 0x59) //DXT1
             {
                 Size = (Width * Height) / 2;
