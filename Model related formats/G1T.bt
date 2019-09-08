@@ -11,13 +11,15 @@
 //   History:
 //   1.0    2019-08-22  Raytwo: Made the original file
 //   1.1    2019-08-23  Raytwo: Added the normal map flag table
+//   1.1    2019-09-08  Raytwo: Added support for RGBA8 internal format
 //------------------------------------------------
 
 LittleEndian();
 
 enum<byte> DXT_TYPE
 {
-	RGBA8 = 0x1,
+    BGRA8 = 0x1,
+    RGBA8 = 0x2,
     DXT1 = 0x59,
     DXT5 = 0x5B
 };
@@ -62,9 +64,9 @@ struct FILE {
             local uint32 Height = Pow(2, (dimensions >> 4));
             local uint64 Size = 0;
 
-            if(type == 0x1) //RGBA8
+            if(type == 0x1 || type == 0x2) //RGBA8 and BGRA8
             {
-            	Size = (Width * Height) * 4;
+                Size = (Width * Height) * 4;
             }
             if(type == 0x59) //DXT1
             {
