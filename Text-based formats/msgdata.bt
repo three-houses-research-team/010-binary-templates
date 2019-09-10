@@ -1,0 +1,117 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: msgdata.bin / 0.bin
+//   Authors: Moonling
+//   Version: 1.0
+//   Purpose: 3H Text Editing
+//   History: 
+//------------------------------------------------
+LittleEndian();
+
+struct FILE {
+    struct SECTIONPOINTERS {
+        uint header<name="Header">;
+        uint PointerToJapanese;
+        uint SizeOfJapanese;
+        uint PointerToEnglishUS;
+        uint SizeofEnglishUS;
+        uint PointerToEnglishUK;
+        uint SizeofEnglishUK;
+        uint PointerToGerman;
+        uint SizeofGerman;
+        uint PointerToFrench1;
+        uint SizeofFrench1;
+        uint PointerToFrench2;
+        uint SizeofFrench2;
+        uint PointerToSpanish1;
+        uint SizeofSpanish1;
+        uint PointerToSpanish2;
+        uint SizeofSpanish2;
+        uint PointerToItalian;
+        uint SizeofItalian;
+        uint PointerToKorean;
+        uint SizeofKorean;
+        uint PointerToChineseTraditional;
+        uint SizeofChineseTraditional;
+        uint PointerToChineseSimple;
+        uint SizeofChineseSimple;
+    }SectionPointer<name="Language Table Pointers", bgcolor=cRed>;
+
+    FSeek(SectionPointer.PointerToEnglishUS);
+    local int EngUSStartAddress = FTell();
+
+    struct ENGUS {
+        struct ENGUSHEADER{
+            uint Header;
+            uint PointerToTable01;
+            uint SizeOfTable01;
+            uint PointerToTable02;
+            uint SizeOfTable02;
+            uint PointerToTable03;
+            uint SizeOfTable03;
+            uint PointerToTable04;
+            uint SizeOfTable04;
+        }EngUSHeader<name="Language Header", bgcolor=cLtPurple>;
+
+        struct ENGUSTABLE01 {
+            struct ENGUSTABLE01HEADER {
+                uint Header;
+                ushort TableSize;
+                ushort Unk;
+                ushort Numofpointers;
+                ushort pointersize;
+                uint Tablestart;
+                uint Unk;
+            }EngUSTable01Header<name="Table 01 Header", fgcolor=cLtBlue>;
+            uint TextPointers[EngUSTable01Header.Numofpointers]<bgcolor=cLtRed>;
+            ubyte table01data[EngUSHeader.SizeOfTable01 - (EngUSTable01Header.Numofpointers * 4) - 0x14]<bgcolor=cYellow>;
+        }EngUSTable01<name="Table 01">;
+
+        FSeek(EngUSStartAddress + EngUSHeader.PointerToTable02);
+        struct ENGUSTABLE02 {
+            struct ENGUSTABLE02HEADER {
+                uint Header;
+                ushort TableSize;
+                ushort Unk;
+                ushort Numofpointers;
+                ushort pointersize;
+                uint Tablestart;
+                uint Unk;
+            }EngUSTable02Header<name="Table 02 Header", fgcolor=cLtBlue>;
+            uint TextPointers[EngUSTable02Header.Numofpointers]<bgcolor=cLtRed>;
+            ubyte table02data[EngUSHeader.SizeOfTable02 - (EngUSTable02Header.Numofpointers * 4) - 0x14]<bgcolor=cYellow>;
+        }EngUSTable02<name="Table 02">;      
+
+        FSeek(EngUSStartAddress + EngUSHeader.PointerToTable03);
+        struct ENGUSTABLE03 {
+            struct ENGUSTABLE03HEADER {
+                uint Header;
+                ushort TableSize;
+                ushort Unk;
+                ushort Numofpointers;
+                ushort pointersize;
+                uint Tablestart;
+                uint Unk;
+            }EngUSTable03Header<name="Table 03 Header", fgcolor=cLtBlue>;
+            uint TextPointers[EngUSTable03Header.Numofpointers]<bgcolor=cLtRed>;
+            ubyte table03data[EngUSHeader.SizeOfTable03 - (EngUSTable03Header.Numofpointers * 4) - 0x14]<bgcolor=cYellow>;
+        }EngUSTable03<name="Table 03">;      
+
+        FSeek(EngUSStartAddress + EngUSHeader.PointerToTable04);
+        struct ENGUSTABLE04 {
+            struct ENGUSTABLE04HEADER {
+                uint Header;
+                ushort TableSize;
+                ushort Unk;
+                ushort Numofpointers;
+                ushort pointersize;
+                uint Tablestart;
+                uint Unk;
+            }EngUSTable04Header<name="Table 04 Header", fgcolor=cLtBlue>;
+            uint TextPointers[EngUSTable04Header.Numofpointers]<bgcolor=cLtRed>;
+            ubyte table04data[EngUSHeader.SizeOfTable04 - (EngUSTable04Header.Numofpointers * 4) - 0x14]<bgcolor=cYellow>;
+        }EngUSTable04<name="Table 04">;      
+
+    }EngUS<name="English US Table">;
+}File<name="MsgData File">;
