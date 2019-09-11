@@ -32,8 +32,6 @@ struct FILE {
         struct BONES {
             local int i = 0;
             uint16 usedBoneCount<name="Bone entry count", fgcolor=cLtRed>;
-            uint16 unk;
-            uint16 unk;
             for(i = 0; i < boneTableCount; i++)
             {
                 if(boneindices[i] != -1)
@@ -46,7 +44,7 @@ struct FILE {
                             float Y;
                             float Z;
                         } Scale<name="Scale">;
-                        int32 parentIndex<name="Parent bone index">;
+                        int32 parentIndex<name="Parent bone index", format=decimal>;
                         struct QUATERNION {
                             float W<name="Rotation component">;
                             float X;

@@ -1,0 +1,25 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: INFO1.bt
+//   Authors: Raytwo
+//   Version: 1.0
+//   Purpose: Parse entries for a LayeredFS-like file that patches DATA0.bin files.
+//  Category: Archives
+// File Mask: *.bin
+//  ID Bytes: /
+//   History:
+//   1.0    2019-09-11  Raytwo: Made the original file
+//------------------------------------------------
+
+LittleEndian();
+
+//One entry is 0x118 bytes
+local int entryCount = FileSize()/0x118;
+
+struct ENTRY {
+    uint64 entryID<name="Entry ID", comment="Refer to the entry being added to DATA0.bin", format=decimal, fgcolor=cYellow>;
+    uint64 decompressed_size<name="Decompressed/Decompressed size", comment="Compressed/Decompressed size of the entry", format=hex, fgcolor=cLtBlue>;
+    uint64 is_compressed<name="Is Compressed?", comment="Boolean, should be 1 if a compressed size is available", fgcolor=cLtGreen>; //Actually a boolean but that way the parsing is easier
+    char filename[0x100]<name="Filename", fgcolor=cLtRed>;
+} Entries[entryCount];
