@@ -1,0 +1,24 @@
+RunTemplate("KTSR.bt");
+
+local int i = 0;
+local uint original_file = GetFileNum();
+local uint new_file;
+local string original_file_name = FileNameGetBase(GetFileName(), false);
+local string new_file_name;
+local string directory = FileNameGetPath(GetFileName()) + original_file_name + "\\";
+local string s;
+
+MakeDir(directory);
+for (i = 0; i < kns.count; i++) {
+	new_file = FileNew("Hex");
+	new_file_name = directory + SPrintf(s, "%d", i) + ".kns";
+	FileSelect(original_file);
+	SetSelection(kns.start[i], ktss[i].ktss_section.kns_size);
+	CopyToClipboard();
+	FileSelect(new_file);
+	PasteFromClipboard();
+	FileSave(new_file_name);
+	FileClose();
+	FileSelect(original_file);
+	Printf("Successfully saved entry %d to %s\n", i, new_file_name);
+};
