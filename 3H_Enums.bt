@@ -1299,3 +1299,13 @@ enum<ubyte> AbilityID
 	Blade_Breaker = 237,
     No_Ability = 255,
 };
+
+enum<ubyte> ItemID
+{
+    Intermediate_Seal = 3,
+    Advanced_Seal = 4,
+    Combined_Seal = 5,
+    Master_Seal = 6,
+    Dark_Seal = 157,
+    Beginner_Seal = 158,
+};

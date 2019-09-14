@@ -177,7 +177,7 @@ struct File{
 					local ClassName Class<hidden=true>;
 					Class = i; // keeping a localvar so we can add classname to the struct indice
 					ubyte MinLv<name="Min Lv Requirement (?)">;
-					ubyte unk2;
+					ItemID RequiredItem<name="Required Item for Reclassing">;
 					ubyte MaleFlag<name="Male Flag">;
 					ubyte FemaleFlag<name="Female Flag">;
 					MinRanks rank0<name="Minimum Sword Requirement">;
