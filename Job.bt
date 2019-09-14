@@ -3,12 +3,13 @@
 //
 //      File: Job.bin / 11.bin / classdata.bin
 //   Authors: DeathChaos
-//   Version: 1.02
+//   Version: 1.03
 //   Purpose: Three Houses character file mapping
 //   History
 //   1.00    2019-08-28  DeathChaos - started this
 //   1.01    2019-08-28  DeathChaos - added class names to struct indices
 //   1.02    2019-09-11  TildeHat - added mapping to class data and abilities
+//   1.03    2019-09-13  Moonling - added reclassing item
 //-------------------------------------------------------------------------
 
 //---------------------------------------------
