@@ -19,7 +19,8 @@ LittleEndian();
 struct {
 	char magic[0x4];
 	uint32 type_id;
-	uint32 unknown_1;
+	ushort unknown_1;
+	ushort unknown_2;
 	uint32 game_id;
 	uint64 padding_1;
 	uint32 file_size_1;
@@ -31,7 +32,7 @@ struct SECTION {
 	uint32 type_id;
 	uint32 total_size;
 	uint32 link_id;
-	if (type_id == 0x70CBCCC5 && total_size == 0x60) { // info_section (linked to ktsl2stbin)
+	if (type_id == 0x70CBCCC5 && total_size == 0x60) { // info_section (inside ktsl2asbin, linked to ktsl2stbin)
 		ubyte unknown_1[0x2C];
 		uint32 sample_rate;
 		uint32 ktss_0x30;
@@ -41,7 +42,7 @@ struct SECTION {
 		uint32 sound_offset;
 		uint32 sound_size;
 		uint32 unknown_4;
-	} else if (type_id == 0x15F4D409) { // ktss_section (ktsl2stbin)
+	} else if (type_id == 0x15F4D409) { // ktss_section (inside ktsl2stbin)
 		uint32 unknown_1;
 		uint32 kns_size;
 		ubyte padding_1[0x2C];
@@ -52,14 +53,14 @@ struct SECTION {
 	};
 };
 
-if (ktsr.type_id == 0xFCDD9402) {
+if (ktsr.type_id == 0xFCDD9402) { // ktsl2stbin
 	local TFindResults kns = FindAll("KTSS");
 	struct {
 		SECTION ktss_section <bgcolor=cRed>;
 		ubyte kns_file[ktss_section.kns_size] <bgcolor=cBlue>;
 		ubyte padding_1[(ktss_section.total_size - 0x40) - ktss_section.kns_size] <bgcolor=cGreen>;
 	} ktss[kns.count] <optimize=false>;
-} else if (ktsr.type_id == 0x1A487B77) {
+} else if (ktsr.type_id == 0x1A487B77) { // ktsl2asbin
 	local TFindResults unknown = FindAll(0x368C88BD);
 	local TFindResults padding = FindAll(0xA8DB7261);
 	local TFindResults info = FindAll(0x70CBCCC5);
