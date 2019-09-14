@@ -19,20 +19,20 @@ LittleEndian();
 struct {
 	char magic[0x4];
 	uint32 type_id;
-	ushort unknown_1;
-	ushort unknown_2;
+	ushort flags; // bit0 = Has Files?
+	ushort console_type;
 	uint32 game_id;
 	uint64 padding_1;
-	uint32 file_size_1;
-	uint32 file_size_2;
+	uint32 decompressed_size;
+	uint32 compressed_size;
 	ubyte padding_2[0x20];
 } ktsr <bgcolor=cYellow>;
 
 struct SECTION {
 	uint32 type_id;
 	uint32 total_size;
-	uint32 link_id;
 	if (type_id == 0x70CBCCC5 && total_size == 0x60) { // info_section (inside ktsl2asbin, linked to ktsl2stbin)
+		uint32 link_id;
 		ubyte unknown_1[0x2C];
 		uint32 sample_rate;
 		uint32 ktss_0x30;
@@ -42,14 +42,15 @@ struct SECTION {
 		uint32 sound_offset;
 		uint32 sound_size;
 		uint32 unknown_4;
-	} else if (type_id == 0x15F4D409) { // ktss_section (inside ktsl2stbin)
+	} else if (type_id == 0x15F4D409) { // // ktss_section (inside ktsl2stbin)
+		uint32 link_id;
 		uint32 unknown_1;
 		uint32 kns_size;
-		ubyte padding_1[0x2C];
+		ubyte padding_1[total_size - 0x14];
 	} else if (type_id == 0xA8DB7261) { // padding_section
-		ubyte padding_1[total_size - 0xC];
+		ubyte padding_1[total_size - 0x8];
 	} else { // unknown
-		ubyte unknown_1[total_size - 0xC];
+		ubyte unknown_1[total_size - 0x8];
 	};
 };
 
@@ -67,4 +68,18 @@ if (ktsr.type_id == 0xFCDD9402) { // ktsl2stbin
 	SECTION unknown_section[unknown.count] <optimize=false, bgcolor=cRed>;
 	SECTION padding_section[padding.count] <optimize=false, bgcolor=cBlue>;
 	SECTION info_section[info.count] <optimize=false, bgcolor=cGreen>;
+} else if (ktsr.type_id == 0x9EE638C6) { // ktsl2gcbin - only tested on GlobalConfig.ktsl2gcbin, there may be more sections
+	local TFindResults unknown1 = FindAll(0xE0736214);
+	local TFindResults unknown2 = FindAll(0x009E4D89);
+	local TFindResults unknown3 = FindAll(0x3CC43F64);
+	local TFindResults unknown4 = FindAll(0xFDBC6FE2);
+	local TFindResults unknown5 = FindAll(0x6D8C8F46);
+	local TFindResults unknown6 = FindAll(0xBFC43B5D);
+	SECTION unknown1_section[unknown1.count] <optimize=false, bgcolor=cRed>;
+	SECTION unknown2_section[unknown2.count] <optimize=false, bgcolor=cBlue>;
+	SECTION unknown3_section[unknown3.count] <optimize=false, bgcolor=cGreen>;
+	SECTION unknown4_section[unknown4.count] <optimize=false, bgcolor=cPurple>;
+	SECTION unknown5_section[unknown5.count] <optimize=false, bgcolor=cLtRed>;
+	SECTION unknown6_section[unknown6.count] <optimize=false, bgcolor=cLtBlue>;
+	ubyte padding_1[0x10 - FTell() % 0x10] <bgcolor=cLtGreen>;
 };
