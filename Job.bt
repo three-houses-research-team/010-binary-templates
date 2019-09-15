@@ -10,12 +10,14 @@
 //   1.01    2019-08-28  DeathChaos - added class names to struct indices
 //   1.02    2019-09-11  TildeHat - added mapping to class data and abilities
 //   1.03    2019-09-13  Moonling - added reclassing item
+//   1.04    2019-09-14  Puddles - added mapping to class arts
 //-------------------------------------------------------------------------
 
 //---------------------------------------------
 // Includes
 //---------------------------------------------
 #include "3H_Enums.bt"
+#include "3H_ArtsEnums.bt"
 
 LittleEndian();
 struct File{
@@ -124,11 +126,18 @@ struct File{
                     byte RidingExp<name="Riding Exp">;
                     byte FlyingExp<name="Flying Exp">;
                 }rankbonus<name="Rank Bonus">;
-                uint16 UnknownValue;
-                byte UnknownValue;
+                byte ShieldID;
+				byte UnknownValue;
+                byte MountMapScale<name="Mount Map Scale">;
                 byte ClassTier;
-                uint32 UnknownValue;
-                uint32 UnknownValue;
+                byte UnknownValue;
+				byte UnitMapScale<name="Unit Map Scale">;
+                byte UnknownValue;
+                byte UnknownValue;
+                byte UnknownValue;
+                byte BanMovement<name="Movement Ban FF is banned">;
+                byte UnknownValue;
+                byte UnknownValue;
                 byte UnknownValue;
                 byte ClassType;
                 byte ClassProperty;
@@ -229,7 +238,7 @@ struct File{
                 local ClassName Class<hidden=true>;
 				Class = i; // keeping a localvar so we can add classname to the struct indice
 		        AbilityID MasteredAbility;
-                byte UnknownValue;
+                ArtID MasterArt;
                 AbilityID ClassAbility1;
                 AbilityID ClassAbility2;
                 AbilityID ClassAbility3;
