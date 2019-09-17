@@ -8,6 +8,7 @@
 //   History
 //   1.00    2019-08-05  TildeHat - Start
 //   1.01    2019-08-12  TildeHat - Added blocks for other routes
+//   1.02    2019-09-15  DeathChaos - Minor revision to name mapping
 //------------------------------------------------
 
 LittleEndian();
@@ -46,25 +47,25 @@ struct File{
                 uint16 itemID<name="Item ID 5",comment="Slot 5", bgcolor=cRed>;
                 uint16 itemID<name="Item ID 6",comment="Slot 6", bgcolor=cRed>;
                 uint16 itemFlags<name="Item flags?",comment="Setting to 2 makes item drop", bgcolor=cGray>;
-                byte abilityID<name="Ability ID 1",comment="Slot 1", bgcolor=cBlue>;
-                byte abilityID<name="Ability ID 2",comment="Slot 2", bgcolor=cBlue>;
-                byte abilityID<name="Ability ID 3",comment="Slot 3", bgcolor=cBlue>;
-                byte abilityID<name="Ability ID 4",comment="Slot 4", bgcolor=cBlue>;
-                byte abilityID<name="Ability ID 5",comment="Slot 5", bgcolor=cBlue>;
-                byte xCoor<name="X coordinet ", bgcolor=cGreen>;
-                byte yCoor<name="Y coordinet ", bgcolor=cGreen>;
-                byte spawnGroup<name="Spawn Group ",comment="Not 100% sure", bgcolor=cBlue>;
+                ubyte abilityID<name="Ability ID 1",comment="Slot 1", bgcolor=cBlue>;
+                ubyte abilityID<name="Ability ID 2",comment="Slot 2", bgcolor=cBlue>;
+                ubyte abilityID<name="Ability ID 3",comment="Slot 3", bgcolor=cBlue>;
+                ubyte abilityID<name="Ability ID 4",comment="Slot 4", bgcolor=cBlue>;
+                ubyte abilityID<name="Ability ID 5",comment="Slot 5", bgcolor=cBlue>;
+                ubyte xCoor<name="X coordinate ", bgcolor=cGreen>;
+                ubyte yCoor<name="Y coordinate ", bgcolor=cGreen>;
+                ubyte spawnGroup<name="Unit Rotation",comment="Direction Unit is facing (6 = down)", bgcolor=cBlue>;
                 byte fixedLevel<name="Fixed Level ",comment="Enemy/NPC only", bgcolor=cLtPurple>;
                 byte allegiance<name="Allegiance byte",comment="0 = Player, 1 = Enemy, 2 = NPC", bgcolor=cLtYellow>;
-                byte unknown<name="ScriptSpawn?",comment="0 = Spawns auto, 1 = Only Spawns from script.", bgcolor=cBlack>;
-                byte characterFlags<name="Flags",comment="3 - No movement, 2 - Movement", bgcolor=cGray>;
-                byte Spell<name="Spell 1", bgcolor=cAqua>;
-                byte Spell<name="Spell 2", bgcolor=cAqua>;
-                byte Spell<name="Spell 3", bgcolor=cAqua>;
-                byte SpellRemove<name="Remove Spell", bgcolor=cLtBlue>;
-                byte SpellRemove<name="Remove Spell", bgcolor=cLtBlue>;
-                byte SpellRemove<name="Remove Spell", bgcolor=cLtBlue>;
-                byte unknown1[0x2]<name="Unknown", fgcolor=cBlack>;
+                ubyte unknown<name="ScriptSpawn?",comment="0 = Spawns auto, 1 = Only Spawns from script.", bgcolor=cBlack>;
+                ubyte characterFlags<name="Flags",comment="3 - No movement, 2 - Movement", bgcolor=cGray>;
+                ubyte Spell<name="Spell 1", bgcolor=cAqua>;
+                ubyte Spell<name="Spell 2", bgcolor=cAqua>;
+                ubyte Spell<name="Spell 3", bgcolor=cAqua>;
+                ubyte SpellRemove<name="Remove Spell", bgcolor=cLtBlue>;
+                ubyte SpellRemove<name="Remove Spell", bgcolor=cLtBlue>;
+                ubyte SpellRemove<name="Remove Spell", bgcolor=cLtBlue>;
+                ubyte unknown1[0x2]<name="Unknown", fgcolor=cBlack>;
                 uint32 AI<name="AI byte?", bgcolor=cLtGreen>;
             
             }characterBlock;
