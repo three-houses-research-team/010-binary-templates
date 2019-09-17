@@ -10,6 +10,7 @@
 //  ID Bytes: /
 //   History:
 //   1.0    2019-09-11  Raytwo: Made the original file
+//   1.1    2019-09-17  Raytwo: Fixed some misconceptions + Value display
 //------------------------------------------------
 
 LittleEndian();
@@ -18,8 +19,13 @@ LittleEndian();
 local int entryCount = FileSize()/0x118;
 
 struct ENTRY {
-    uint64 entryID<name="Entry ID", comment="Refer to the entry being added to DATA0.bin", format=decimal, fgcolor=cYellow>;
-    uint64 decompressed_size<name="Decompressed/Decompressed size", comment="Compressed/Decompressed size of the entry", format=hex, fgcolor=cLtBlue>;
+    uint64 uncompressed_size<name="Uncompressed size", comment="Uncompressed size of the entry", format=decimal, fgcolor=cYellow>;
+    uint64 compressed_size<name="Compressed size", comment="Compressed size of the entry", format=hex, fgcolor=cLtBlue>;
     uint64 is_compressed<name="Is Compressed?", comment="Boolean, should be 1 if a compressed size is available", fgcolor=cLtGreen>; //Actually a boolean but that way the parsing is easier
     char filename[0x100]<name="Filename", fgcolor=cLtRed>;
-} Entries[entryCount];
+} Entries[entryCount]<read=GetEntryId>;
+
+string GetEntryId(ENTRY &e)
+{
+	return e.filename;
+}
