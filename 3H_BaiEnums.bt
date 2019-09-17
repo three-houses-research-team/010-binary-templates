@@ -132,7 +132,6 @@ enum<uint16> CharID
 	Marianne_Replacement = 279,
 	Hilda_Replacement = 280,
 	Leonie_Replacement = 281,
-	Hilda_Replacement = 282,
 	
 	Deploy_Tile = 300,
 	};
@@ -493,4 +492,11 @@ enum<uint16> Class
 	Demonicbeast4 = 88,
 	Demonicbeast5 = 89,
 	Demonicbeast6 = 90,
+};
+
+enum<ubyte> Gender
+{
+	UnitDefault = 0,
+	Forced_Male = 1,
+	Forced_Female = 2,
 };

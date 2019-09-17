@@ -3,13 +3,14 @@
 //
 //      File: Starts at 83.bin/ SC00_00.bai
 //   Authors: TildeHat/DeathChaos
-//   Version: 1.03
+//   Version: 1.04
 //   Purpose: Mapping of dispos files/bai files.
 //   History
 //   1.00    2019-08-05  TildeHat - Start
 //   1.01    2019-08-12  TildeHat - Added blocks for other routes
 //   1.02    2019-09-15  DeathChaos - Minor revision to name mapping
 //   1.03    2019-09-17  DeathChaos - Minor template overhaul
+//   1.04    2019-09-17  DeathChaos - Minor Mapping update
 //------------------------------------------------
 
 LittleEndian();
@@ -79,7 +80,7 @@ struct File{
 					SpellIDBai Spell<name="Extra Spell 1", bgcolor=cLtBlue>;
 					SpellIDBai Spell<name="Extra Spell 2", bgcolor=cLtBlue>;
 					ArtID CombatArt<name="Combat Arts", fgcolor=cBlack>;
-					ArtID CombatArt<name="Combat Arts", fgcolor=cBlack>;
+					Gender UnitGender<name="Unit Gender", fgcolor=cBlack>;
 					uint32 Padding<name="Padding", bgcolor=cLtGreen>;
 				}characterblocks<name="Unit Block",read=GetName>;
 			}
