@@ -46,7 +46,7 @@ struct File{
 				{
 					CharID CharacterID<name="Character ID", comment="+1 From Regular List", bgcolor=cPurple>;
 					uint16 unknown<name="unknown", fgcolor=cBlack>;
-					uint16 Class<name="Class",comment="Only usable for enemy and NPC + 1 From regular List",bgcolor=cYellow>;
+					Class ClassID<name="Class",comment="Only usable for enemy and NPC + 1 From regular List",bgcolor=cYellow>;
 					struct Weapons
 					{
 						uint16 itemID<name="Item ID 1",comment="Slot 1", bgcolor=cRed>;
