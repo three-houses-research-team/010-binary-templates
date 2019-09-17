@@ -1,0 +1,413 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: Person.bin / 0000010ea800.bin
+//   Authors: DeathChaos
+//   Version: 1.08
+//   Purpose: Three Houses character file mapping
+//   History
+//   1.00    2019-08-05  DeathChaos - started this
+//   1.01    ----------  DeathChaos - Added AID
+//   1.02    ----------  DeathChaos - Added Voice ID
+//   1.03    ----------  DeathChaos - Added Facculty Related stuff
+//   1.04    ----------  DeathChaos - Added Portrait IDs
+//   1.05    ----------  DeathChaos - Added Character Goals
+//   1.06    ----------  DeathChaos - Added Starting Weapon Ranks and Proficiencies
+//   1.07    ----------  Moonling - Added Spell List and Skills
+//   1.08    2019-09-04  DeathChaos - Added Enemy Personal Skills
+//------------------------------------------------
+
+//---------------------------------------------
+// Includes
+//---------------------------------------------
+#include "3H_Enums.bt"
+
+LittleEndian();
+struct File{
+	struct SectionPointers{
+		uint32 NumberOfSectionPointers;
+		uint32 PointerToCharBlocks<bgcolor=cRed>;
+		uint32 CharBlockStructSize<bgcolor=cRed>;
+		uint32 PointerToAssetID<bgcolor=cBlue>;
+		uint32 AssetIDStructSize<bgcolor=cBlue>;
+		uint32 PointerToVoiceID<bgcolor=cPurple>;
+		uint32 VoiceIDStructSize<bgcolor=cPurple>;
+		uint32 PointerToWpnRanks<bgcolor=cDkYellow>;
+		uint32 WpnRanksStructSize<bgcolor=cDkYellow>;
+		uint32 PointerToSpellLearnset<bgcolor=cYellow>;
+		uint32 SpellLearnsetStructSize<bgcolor=cYellow>;
+		uint32 PointerToSkillLearnset<bgcolor=cYellow>;
+		uint32 SkillLearnsetStructSize<bgcolor=cYellow>;
+		uint32 PointerToStartingWeapons<bgcolor=cDkBlue>;
+		uint32 StartingWeaponsStructSize<bgcolor=cDkBlue>;
+		uint32 PointerToArtLearnset<bgcolor=cYellow>;
+		uint32 ArtLearnsetStructSize<bgcolor=cYellow>;
+		uint32 UnkPointer01<bgcolor=cYellow>;
+		uint32 UnkTotalSize01<bgcolor=cYellow>;
+		uint32 UnkPointer01<bgcolor=cYellow>;
+		uint32 UnkTotalSize01<bgcolor=cYellow>;
+		uint32 UnkPointer01<bgcolor=cYellow>;
+		uint32 UnkTotalSize01<bgcolor=cYellow>;
+		uint32 UnkPointer01<bgcolor=cYellow>;
+		uint32 UnkTotalSize01<bgcolor=cYellow>;
+		uint32 UnkPointer01<bgcolor=cYellow>;
+		uint32 UnkTotalSize01<bgcolor=cYellow>;
+		uint32 PointerToFacultyTraining<bgcolor=cBlack>;
+		uint32 FacultyTrainingStructSize<bgcolor=cBlack>;
+		uint32 PointerToSeminar<bgcolor=cGreen>;
+		uint32 SeminarTotalSize<bgcolor=cGreen>;
+		uint32 Size3Pointer<bgcolor=cDkRed>;
+		uint32 Size3TotalSize<bgcolor=cDkRed>;
+		uint32 PortraitsPointer<bgcolor=cDkPurple>;
+		uint32 PortraitsTotalSize<bgcolor=cDkPurple>;
+		uint32 SizeFourPointer<bgcolor=cDkGreen>;
+		uint32 SizeFourTotalSize<bgcolor=cDkGreen>;
+		
+	}sectionpointers<name="Section Pointers">;
+	
+	FSeek(sectionpointers.PointerToCharBlocks);
+	struct PersonStructure{
+		uint32 Person_Magic;
+		uint32 numPerson;
+		uint32 SizeOfPersonBlock;
+		struct PersonHeaderPadding{
+			byte Padding[0x34];
+		}personheaderpadding<name="Padding">;
+		struct Person{
+			struct ModelScale{
+				float Scale01<name="Model Size Scale">;
+				float Scale02<name="Female Chest Size modifier (pre time skip)">;
+				float Scale03<name="Female Chest Size modifier (post time skip)">;
+				float Scale04<name="Chest Band/Width modifier">;
+			}modelscale<name="Model Scale Values">;
+			uint16 UnknownValue;
+			Names NameID<name="Name ID">;
+			uint16 unknown<name="Unknown Value">;
+			uint16 CharacterID<name="Voice ID">;
+			uint16 AssetsID<name="Asset ID">;
+			byte unknown<name="Unknown Value">;
+			byte Age<name="Age">;
+			ClassName Class<name="Class">;
+			byte Birthday<name="Birth Day">;
+			byte BirthMonth<name="Birth Month">;
+			byte unknown<name="Unknown Value">;
+			byte unknown<name="Unknown Value">;
+			byte BodyType<name="Body Type">;
+			byte HPCap<name="Max HP">;
+			byte unknown<name="School Related">;
+			AllegianceID Allegiance<name="Allegiance">;
+			byte HPGrowth<name="HP Growth">;
+			GenderFlag Gender<name="Gender">;
+			byte BaseHP<name="Base HP">;
+			byte AnimSet<name="Non Combat Animation Set">;
+			Crests Crest<name="Primary Crest">;
+			Crests Crest<name="Secondary Crest">;
+			byte unknown<name="Unknown Value">;
+			ubyte PreTimeSkipHeight<name="Pre-Time Skip Height (cm)">;
+			ubyte PostTimeSkipHeight<name="Post-Time Skip Height (cm)">;
+			uint16 unknown<name="Unknown Value">;
+			struct CharacterStats{
+				struct BaseStats{
+					byte BaseStr<name="Base Str">;
+					byte BaseMag<name="Base Mag">;
+					byte BaseDex<name="Base Dex">;
+					byte BaseSpd<name="Base Spd">;
+					byte BaseLck<name="Base Lck">;
+					byte BaseDef<name="Base Def">;
+					byte BaseRes<name="Base Res">;
+					byte BaseMov<name="Base Mov">;
+					byte BaseCharm<name="Base Cha">;
+				}basestats<bgcolor=cBlue,name="Base Stats">;
+				struct BaseGrowths{
+					byte StrGrowth<name="Str Growth">;
+					byte MagGrowth<name="Mag Growth">;
+					byte DexGrowth<name="Dex  Growth">;
+					byte SpdGrowth<name="Spd Growth">;
+					byte LckGrowth<name="Lck Growth">;
+					byte DefGrowth<name="Def Growth">;
+					byte ResGrowth<name="Res Growth">;
+					byte MovGrowth<name="Mov Growth">;
+					byte CharmGrowth<name="Cha Growth">;
+				}basegrowths<bgcolor=cGreen,name="Growths">;
+				struct MaxStats{
+					byte MaxStr<name="Max Str">;
+					byte MaxMag<name="Max Mag">;
+					byte MaxDex<name="Max Dex">;
+					byte MaxSpd<name="Max Spd">;
+					byte MaxLck<name="Max Lck">;
+					byte MaxDef<name="Max Def">;
+					byte MaxRes<name="Max Res">;
+					byte MaxMov<name="Max Mov">;
+					byte MaxCharm<name="Max Cha">;
+				}maxstats<bgcolor=cYellow,name="Stat Caps">;
+				byte padding<name="Padding">;
+			}characterstats<name="Stats and Growths">;
+		}person[numPerson]<read=ReadNameID, name="Character Block">;
+	}personstructure<bgcolor=cRed, name="Character Blocks">;
+	
+	FSeek(sectionpointers.PointerToAssetID);
+	struct AssetIDStructure{
+		uint32 AID_Magic;
+		uint32 numAID;
+		uint32 SizeOfAIDBlock;
+		struct AIDHeaderPadding{
+			byte Padding[0x34];
+		}aidheaderpadding<name="Padding">;
+		struct AssetID{
+			uint16 PreTimeSkipPortrait;
+			uint16 TimeSkipHeadModel;
+			uint16 NGPlusHair;
+			uint16 PreTimeSkipHead;
+			uint16 DLCOutfit;
+			uint16 BodyModelTimeSkip;
+			uint16 TimeSkipPortrait;
+			uint16 BodyModelPreTimeSkip;
+		}assetid[numAID]<bgcolor=cGreen>;
+	}assetidstructure<bgcolor=cBlue, name="Asset IDs">;
+	
+	FSeek(sectionpointers.PointerToVoiceID);
+	struct VoiceIDStructure{
+		uint32 Voice_Magic;
+		uint32 numVoice;
+		uint32 SizeOfVoiceBlock;
+		struct VoiceHeaderPadding{
+			byte Padding[0x34];
+		}voiceheaderpadding<name="Padding">;
+		struct VoiceID{
+			uint16 voice;
+			uint16 voice;
+			uint16 voice;
+			uint16 voice;
+		}voiceid[numVoice];
+	}voicestructure<bgcolor=cPurple, name="Voice IDs">;
+	
+	FSeek(sectionpointers.PointerToWpnRanks);
+	struct WpnRankStructure{
+		uint32 WpnRank_Magic;
+		uint32 numWpnRank;
+		uint32 SizeOfWpnRankBlock;
+		struct WpnRankPadding{
+			byte Padding[0x34];
+		}wpnrankpadding<name="Padding">;
+		struct WpnRank{
+			uint16 unk;
+			ubyte CharColor<name="Character Color">;
+			ClassName uniqueclass1<name="PreTimeSkip Class">;
+			ClassName certclass<name="Certified Class">;
+			ClassName certclass<name="Certified Class">;
+			ClassName certclass<name="Certified Class">;
+			ClassName certclass<name="Certified Class">;
+			ubyte unk;
+			struct StartingRanks{
+				MinRanks rank0<name="Starting Sword Rank">;
+				MinRanks rank1<name="Starting Lances Rank">;
+				MinRanks rank2<name="Starting Axes Rank">;
+				MinRanks rank3<name="Starting Bows Rank">;
+				MinRanks rank4<name="Starting Brawling Rank">;
+				MinRanks rank5<name="Starting Reason Rank">;
+				MinRanks rank6<name="Starting Faith Rank">;
+				MinRanks rank7<name="Starting Authority Rank">;
+				MinRanks rank8<name="Starting Armor Rank">;
+				MinRanks rank9<name="Starting Riding Rank">;
+				MinRanks rank10<name="Starting Flying Rank">;
+			}startingranks<name="Starting Weapon Ranks">;
+			struct WpnProficiency{
+				ubyte rank0<name="Sword Proficiency">;
+				ubyte rank1<name="Lances Proficiency">;
+				ubyte rank2<name="Axes Proficiency">;
+				ubyte rank3<name="Bows Proficiency">;
+				ubyte rank4<name="Brawling Proficiency">;
+				ubyte rank5<name="Reason Proficiency">;
+				ubyte rank6<name="Faith Proficiency">;
+				ubyte rank7<name="Authority Proficiency">;
+				ubyte rank8<name="Armor Proficiency">;
+				ubyte rank9<name="Riding Proficiency">;
+				ubyte rank10<name="Flying Proficiency">;
+			}wpnproficiency<name="Proficiencies">;
+			ClassName class<name="Post TimeSkip Class">;
+			ClassName class<name="Post TimeSkip Class">;
+			ClassName class<name="Post TimeSkip Class">;
+		}wpnrank[numWpnRank];
+	}wpnrankstructure<bgcolor=cDkYellow, name="Starting Weapon Ranks/Combat Assets">;
+	
+	FSeek(sectionpointers.PointerToStartingWeapons);
+	struct StartingWeaponsStructure{
+		uint32 Weapons_Magic;
+		uint32 numStartWep;
+		uint32 SizeOfStartWep;
+		struct StartWeaponHeaderPadding{
+			byte Padding[0x34];
+		}startweaponheaderpadding<name="Padding">;
+		struct StartWepID{
+			uint16 CharacterID<name="Character ID">;
+			uint16 Weapon<name="Weapon">;
+			uint16 Weapon<name="Weapon">;
+			uint16 Weapon<name="Weapon">;
+			uint16 Weapon<name="Weapon">;
+			uint16 Weapon<name="Weapon">;
+			uint16 Weapon<name="Weapon">;
+		}startwepid[numStartWep];
+	}startingweaponsstructure<bgcolor=cDkBlue, name="Starting Weapons">;
+	
+	FSeek(sectionpointers.PointerToFacultyTraining);
+	struct FacultyTraining{
+		uint32 FacultyMagic;
+		uint32 numFaculty;
+		uint32 SizeOfFaculty;
+		struct FacultyHeaderPadding{
+			byte Padding[0x34];
+		}facultyheaderpadding<name="Padding">;
+		struct FacultyID{
+			struct StatBits{
+				ubyte bit0 : 1<name="Sword">;
+				ubyte bit1 : 1<name="Lances">;
+				ubyte bit2 : 1<name="Axes">;
+				ubyte bit3 : 1<name="Bows">;
+				ubyte bit4 : 1<name="Brawling">;
+				ubyte bit5 : 1<name="Reason">;
+				ubyte bit6 : 1<name="Faith">;
+				ubyte bit7 : 1<name="Authority">;
+				ubyte bit8 : 1<name="Armor">;
+				ubyte bit9 : 1<name="Riding">;
+				ubyte bit10 : 1<name="Flying">;
+				ubyte bit11 : 1<name="Reserve">;
+				ubyte bit12 : 1<name="Reserve">;
+				ubyte bit13 : 1<name="Reserve">;
+				ubyte bit14 : 1<name="Reserve">;
+				ubyte bit15 : 1<name="Reserve">;
+			}statbits<name="Teachable Stats">;
+			byte CharacterID<name="Character ID">;
+			TrueFalse IsTeacher<name="IsTeacher">;
+		}facultyid[numFaculty]<name="Faculty Training Stuff">;
+	}facultytraining<bgcolor=cBlack,name="Faculty ID">;
+	
+	FSeek(sectionpointers.PointerToSeminar);
+	struct SeminarTraining{
+		uint32 SeminarMagic;
+		uint32 numSeminar;
+		uint32 SizeOfSeminar;
+		struct SeminarHeaderPadding{
+			byte Padding[0x34];
+		}seminarheaderpadding<name="Padding">;
+		struct SeminarID{
+			struct StatBitsSeminar{
+				ubyte bit0 : 1<name="Sword">;
+				ubyte bit1 : 1<name="Lances">;
+				ubyte bit2 : 1<name="Axes">;
+				ubyte bit3 : 1<name="Bows">;
+				ubyte bit4 : 1<name="Brawling">;
+				ubyte bit5 : 1<name="Reason">;
+				ubyte bit6 : 1<name="Faith">;
+				ubyte bit7 : 1<name="Authority">;
+				ubyte bit8 : 1<name="Armor">;
+				ubyte bit9 : 1<name="Riding">;
+				ubyte bit10 : 1<name="Flying">;
+				ubyte bit11 : 1<name="Reserve">;
+				ubyte bit12 : 1<name="Reserve">;
+				ubyte bit13 : 1<name="Reserve">;
+				ubyte bit14 : 1<name="Reserve">;
+				ubyte bit15 : 1<name="Reserve">;
+			}statbitsseminar<name="Stats Interested">;
+			byte CharacterID<name="Character ID">;
+			TrueFalse IsTeacher<name="IsTeacher">;
+		}seminarid[numSeminar]<name="Seminar Stuff">;
+	}seminartraining<bgcolor=cGreen,name="Seminar ID">;
+	
+	FSeek(sectionpointers.Size3Pointer);
+	struct CharacterGoals{
+		uint32 CharacterGoalsMagic;
+		uint32 numCharacterGoals;
+		uint32 SizeOfCharacterGoals;
+		struct CharacterGoalsHeaderPadding{
+			byte Padding[0x34];
+		}charactergoalspadding<name="Padding">;
+		struct CharacterGoalsID{
+			ubyte Goal<name="Goal ID">;
+			ubyte unk2;
+			ubyte unk3;
+		}charactergoalsid[numCharacterGoals];
+	}charactergoals<bgcolor=cDkRed,name="Character Goals">;
+	
+	FSeek(sectionpointers.PortraitsPointer);
+	struct Portraits{
+		uint32 PortraitsMagic;
+		uint32 numPortraits;
+		uint32 SizeOfPortraits;
+		struct PortraitsHeaderPadding{
+			byte Padding[0x34];
+		}portraitsheaderpadding<name="Padding">;
+		struct PortraitsID{
+			uint16 unk<name="Expression ">;
+			uint16 unk<name="Expression ">;
+			uint16 unk<name="Expression ">;
+			uint16 unk<name="Expression ">;
+			uint16 unk<name="Expression ">;
+			uint16 unk<name="Expression ">;
+			uint16 unk<name="Expression ">;
+			uint16 unk<name="Expression ">;
+			uint16 unk<name="Expression ">;
+			uint16 unk<name="Expression ">;
+			uint16 unk<name="Expression ">;
+			uint16 TimeSkip<name="Unknown Flag">;
+		}portraitsid[numPortraits]<name="Face ID">;
+	}portraits<bgcolor=cDkPurple,name="Portrait IDs">;
+
+    FSeek(sectionpointers.PointerToSpellLearnset);
+    struct SpellListStructure {
+        uint SpellListMagic<bgcolor=cRed>;
+        uint numSpellList<bgcolor=cRed>;
+        uint SizeOfSpellList<bgcolor=cRed>;
+        struct SpellListHeaderPadding {
+            byte Padding[0x34];
+        }spelllistheaderpadding<name="Padding", bgcolor=cBlue>;
+        struct SPELLLIST{
+            MinRanks FaithLearnLevel[5]<name="Faith Learnt Level", comment="0 = null">;
+            SpellID ReasonList[5]<name="Reason Spells">;
+            SpellID FaithList[5]<name="Faith Spells">;
+            MinRanks ReasonLearnLevel[5]<name="Reason Learnt Level", comment="0 = null">;
+        }SpellList[numSpellList]<name="Spell List Data">;
+    }spellliststructure<name="Spell List", bgcolor=cYellow>;
+
+    FSeek(sectionpointers.PointerToSkillLearnset);
+    struct SkillListStructure {
+        uint SkillListMagic<bgcolor=cRed>;
+        uint numSkillList<bgcolor=cRed>;
+        uint SizeOfSpellList<bgcolor=cRed>;
+        struct SkillListHeaderPadding {
+            byte Padding[0x34];
+        }skilllistheaderpadding<name="Padding", bgcolor=cBlue>;
+        struct SKILLLIST {
+            RankStats SkillLearn[20]<name="Special Skill Learn List">;
+            AbilityID PreTSPersonalSkill<name="Pre Time Skip Personal Skill">;
+            AbilityID PostTSPersonalSkill<name="Post Time Skip Personal Skill">;
+            AbilityID AbilitiesLearnt[20]<name="Abilities Learnt">;
+            MinRanks RankLearnt[20]<name="Rank Learnt at">;
+        }SkillList[numSkillList]<name="Skill List Data">;
+    }skillliststructure<name="Skill List", bgcolor=cLtYellow>;
+	
+	FSeek(sectionpointers.SizeFourPointer);
+	struct SizeFour{
+		uint32 SizeFourMagic;
+		uint32 numSizeFour;
+		uint32 SizeOfSizeFour;
+		struct SizeFourHeaderPadding{
+			byte Padding[0x34];
+		}sizefourheaderpadding<name="Padding">;
+		struct SizeFourID{
+			uint16 charID<name="Character">;
+			AbilityID skillid<name="Skill ID">;
+			byte pad<hidden=true>;
+		}sizefourid[numSizeFour]<name="Enemy Personal Skills",read=GetName>;
+	}sizefour<name="Enemy Personal Skills", bgcolor=cDkGreen>;
+	
+}file;
+
+string ReadNameID(Person &p)
+{
+return EnumToString(p.NameID);
+}
+
+string GetName(SizeFourID& value)
+{
+    return EnumToString(value.charID);
+}
