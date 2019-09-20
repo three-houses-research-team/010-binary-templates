@@ -1547,10 +1547,10 @@ enum<ushort> EquipID
     White_Dragon_Scarf,
 };
 
-enum<ushort> MiscItem
+enum<ubyte> MiscItem
 {
     Smithing_Stone = 64,
-    Black_Sand_Steal = 65,
+    Black_Sand_Steel = 65,
     Wootz_Steel = 66,
     Arcane_Crystal = 67,
     Mythril = 68,
@@ -1619,4 +1619,19 @@ enum<ubyte> ItemID
     Fruit_of_Life,
     Dark_Seal = 157,
     Beginner_Seal = 158,
+};
+
+enum<byte> AnnasItemIDsbecausefuckyou
+{
+    Anna_Elixir = -22,
+    Anna_Master_Seal = -18,
+    Anna_Seraph_Robe = -8,
+    Anna_Energy_Drop = -7,
+    Anna_Spirit_Dust = -6,
+    Anna_Secret_Book = -5,
+    Anna_Speed_Wing = -4,
+    Anna_Goddess_Icon = -3,
+    Anna_Giant_Shell = -2,
+    Anna_Talisman = -1,
+    Anna_Black_Peal = 0,
 };

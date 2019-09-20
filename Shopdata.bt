@@ -39,17 +39,21 @@ struct FILE {
             uint Header;
             uint NumofWeap;
             uint SizeofWeap;
-            byte Padding[0x40]<bgcolor=cBlue>;
+            byte Padding[0x34]<bgcolor=cBlue>;
         }WeapTableHeader<name="Header", bgcolor=cRed>;
         struct WEAPTABLE{
-            ubyte Unknown;
-            MinRanks ProfLevel<name="Professor Level Requirment">;
-            ubyte Unk[6];
             int BuyPrice<name="Buying Price">;
             int SellPrice<name="Selling Price">;
             WeapID WepID<name="Weapon">;
             ShopAvailablity Availablity<name="Availablity">;
-            ubyte Padding;
+            ubyte Unk;
+            MiscItem RepairMat<name="Repair Material">;
+            ubyte RepairCost<name="Repair Cost">;
+            ubyte Unk2;
+            byte StoreLV1<name="Store LV1 Stock">;
+            byte StoreLV2<name="Store LV2 Stock">;
+            byte StoreLV3<name="Store LV3 Stock">;
+            ubyte Padding[2];
         }WeapTable[WeapTableHeader.NumofWeap]<name="Weapon Shop Data", bgcolor=cYellow, read=GetWeaponName>;
     }WeapTableStructure<name="Weapon Shop Table">;
 
@@ -98,8 +102,8 @@ struct FILE {
         byte Padding[0x34]<name="Padding", bgcolor=cBlue>;
         struct TABLE04{
             ubyte Table04Size[SizeOfTable04];
-        }Table04[NumofTable04]<name="Table04 Data">;            
-    }itemstructure04<name="Table04 Block", bgcolor=cLtBlue>;
+        }Table04[NumofTable04]<name="Battalion Data">;            
+    }itemstructure04<name="Battalion Block", bgcolor=cLtBlue>;
 
     FSeek(SectionPointer.PointertoTable05);
     struct Table05Structure {
@@ -111,6 +115,7 @@ struct FILE {
             int Price<name="Price">;
             WeapID BaseWeap<name="Base Weapon">;
             MiscItem Material<name="Forge Material">;
+            ubyte Itembytepadding;
             WeapID WeapToMake<name="Forged Weapon">;
             MinRanks ProfLevel<name="Required Professor Level">;
             ubyte MaterialAmount<name="Required Material Amount">;
@@ -148,7 +153,10 @@ struct FILE {
         byte Padding[0x34]<name="Padding", bgcolor=cBlue>;
         struct TABLE08{
             int Price;
-            uint Unk;
+            AnnasItemIDsbecausefuckyou AnnaItemID;
+            ubyte ItemTableSet;
+            ubyte Stock;
+            ShopAvailablity Availablity;
         }Table08[NumofTable08]<name="Anna Shop Data">;            
     }itemstructure08<name="Anna Shop Block", bgcolor=cLtRed>;
 
