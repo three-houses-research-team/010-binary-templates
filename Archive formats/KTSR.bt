@@ -46,7 +46,7 @@ struct SECTION {
 		uint32 link_id;
 		uint32 unknown_1;
 		uint32 kns_size;
-		ubyte padding_1[total_size - 0x14];
+		ubyte padding_1[0x2C];
 	} else if (type_id == 0xA8DB7261) { // padding_section
 		ubyte padding_1[total_size - 0x8];
 	} else { // unknown
