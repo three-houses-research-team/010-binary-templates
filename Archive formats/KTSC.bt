@@ -1,12 +1,13 @@
 LittleEndian();
+DisplayFormatHex();
 
 struct {
 	char magic[0x4];
-	ushort unknown_1;
-	ushort unknown_2;
+	ushort flags;
+	ushort console_type;
 	uint32 ktsr_count;
-	uint32 ktsr_link_id_list_offset;
-	uint32 ktsr_offset_list_offset;
+	uint32 ktsr_link_id_table_offset;
+	uint32 ktsr_offset_table_offset;
 	uint32 file_size;
 	uint32 ktsc_end_offset;
 	uint32 padding_1;
