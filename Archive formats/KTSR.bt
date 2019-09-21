@@ -15,6 +15,7 @@
 //------------------------------------------------
 
 LittleEndian();
+DisplayFormatHex();
 
 struct {
 	char magic[0x4];
