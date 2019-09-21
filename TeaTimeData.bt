@@ -371,10 +371,10 @@ struct File{
 			ubyte unk;
 			ubyte unk;
 			ubyte unk;
-			TeaNames tea<name="Favorite Tea">;
-			TeaNames tea<name="Favorite Tea">;
-			TeaNames tea<name="Favorite Tea">;
-			TeaNames tea<name="Favorite Tea">;
+			MiscItem tea<name="Favorite Tea">;
+			MiscItem tea<name="Favorite Tea">;
+			MiscItem tea<name="Favorite Tea">;
+			MiscItem tea<name="Favorite Tea">;
 		}favoritetea[numFavoriteTea]<name="Favorite Tea Leaves",read=GetName3>;
 	}favoritelealeaves<name="Favorite Tea Leaves",bgcolor=cLtGreen>;
 	
