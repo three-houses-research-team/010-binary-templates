@@ -28,12 +28,12 @@ struct {
 	struct {
 		char magic[0x4];
 		uint32 type_id;
-		ushort unknown_1;
-		ushort unknown_2;
+		ushort flags;
+		ushort console_type;
 		uint32 game_id;
 		uint64 padding_1;
-		uint32 file_size_1;
-		uint32 file_size_2;
+		uint32 decompressed_size;
+		uint32 compressed_size;
 		ubyte padding_2[0x20];
 	} header;
 	SECTION section_header_1 <optimize=false, bgcolor=cRed>;
