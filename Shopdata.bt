@@ -10,6 +10,15 @@
 //
 //------------------------------------------------
 #include "3H_Enums.bt"
+#include "Stupid_Item_IDs.bt"
+
+enum<ubyte> MerchantType
+{
+    Southern_Merchant = 0x0,
+    Eastern_Merchant = 0x1,
+    Dark_Merchant = 0x2,
+    No_Merchant = 0xFF,
+};
 
 LittleEndian();
 struct FILE {
@@ -140,10 +149,13 @@ struct FILE {
         uint SizeOfTable07<bgcolor=cRed>;
         byte Padding[0x34]<name="Padding", bgcolor=cBlue>;
         struct TABLE07{
-            int Price;
-            ushort Unk;
-        }Table07[NumofTable07]<name="Dweastern Merchant Data">;            
-    }itemstructure07<name="Dweastern Merchant Block", bgcolor=cLtBlue>;
+            GeneralMerchantItems Itemforsale;
+            MerchantType Merchant;
+            ubyte Unk;
+            ShopAvailablity Availablity;
+            ubyte Stock;
+        }Table07[NumofTable07]<name="General Merchants Data", read=GetGeneralItem>;            
+    }itemstructure07<name="General Merchants Block", bgcolor=cLtBlue>;
 
     FSeek(SectionPointer.PointertoTable08);
     struct Table08Structure {
@@ -153,11 +165,10 @@ struct FILE {
         byte Padding[0x34]<name="Padding", bgcolor=cBlue>;
         struct TABLE08{
             int Price;
-            AnnasItemIDsbecausefuckyou AnnaItemID;
-            ubyte ItemTableSet;
+            GeneralMerchantItems AnnaItemID;
             ubyte Stock;
             ShopAvailablity Availablity;
-        }Table08[NumofTable08]<name="Anna Shop Data">;            
+        }Table08[NumofTable08]<name="Anna Shop Data", read=GetAnnaItem>;            
     }itemstructure08<name="Anna Shop Block", bgcolor=cLtRed>;
 
 
@@ -178,4 +189,12 @@ string GetEquipmentName(EQUIPMENTTABLE &i)
 string GetItemName(ITEMTABLE &i)
 {
     return EnumToString(i.Item);
+}
+string GetGeneralItem(TABLE07 &i)
+{
+    return EnumToString(i.Itemforsale);
+}
+string GetAnnaItem(TABLE08 &i)
+{
+    return EnumToString(i.AnnaItemID);
 }
