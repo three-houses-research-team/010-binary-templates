@@ -8,7 +8,8 @@
 //  Category: Unknown file
 // File Mask: 
 //  ID Bytes: 
-//   History: 12/09/2019 - added unknown file type
+//   History: 12/09/2019 - Kolakcc - added unknown file type
+//            04/10/2019 - Moonling - calculates table entires
 //------------------------------------------------
 LittleEndian();
 
@@ -23,9 +24,14 @@ struct File {
     for(i = 0; i < count; i++){
         FSeek(pointertable[i].start);
         struct Entry {
-            int magic; // should be 00 19 12 16
+            int magic<bgcolor=cLtGreen>; // should be 00 19 12 16
             if (magic != 0x16121900) Exit(-1);
-            int unk[(pointertable[i].length/4)-1]<bgcolor=cBlue>;
+            int EntryCount<bgcolor=cLtGreen>;
+            int Size<bgcolor=cLtGreen>;
+            int Padding[13]<bgcolor=cYellow>;
+            struct Entires {
+                byte unk[entry.Size]<bgcolor=cBlue>;
+            }entires[EntryCount];
         } entry;
     }
 } file;
