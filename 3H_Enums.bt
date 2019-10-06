@@ -968,6 +968,7 @@ enum<ubyte> RankStats
 	Riding,
 	Flying,
 	NullRequirement,
+    No_Stat = 255,
 };
 
 enum<ubyte> CharStat
@@ -2143,7 +2144,7 @@ enum<ubyte> Battalion
     Golden_Deer_Wyvern_Co,
     Golden_Deer_Archers,
     Golden_Deer_Cavalry,
-    	Supreme_Armored_Co,
+    Supreme_Armored_Co,
 	King_of_Lions_Corps,
 	Immortal_Corps,
 	Vestra_Sorcery_Engineers,

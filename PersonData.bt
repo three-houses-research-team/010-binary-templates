@@ -21,8 +21,11 @@
 // Includes
 //---------------------------------------------
 #include "3H_Enums.bt"
+#include "3H_ArtsEnums.bt"
 
 LittleEndian();
+local int i<hidden=true>;
+
 struct File{
 	struct SectionPointers{
 		uint32 NumberOfSectionPointers;
@@ -361,29 +364,41 @@ struct File{
             byte Padding[0x34];
         }spelllistheaderpadding<name="Padding", bgcolor=cBlue>;
         struct SPELLLIST{
-            MinRanks FaithLearnLevel[5]<name="Faith Learnt Level", comment="0 = null">;
-            SpellID ReasonList[5]<name="Reason Spells">;
-            SpellID FaithList[5]<name="Faith Spells">;
-            MinRanks ReasonLearnLevel[5]<name="Reason Learnt Level", comment="0 = null">;
-        }SpellList[numSpellList]<name="Spell List Data">;
-    }spellliststructure<name="Spell List", bgcolor=cYellow>;
+            for( i = 0; i < numSpellList; i++ )
+            {
+                struct SpellListData {
+                    local CharID NameOfChar<hidden=true>;
+                    NameOfChar = i; 
+                    MinRanks FaithLearnLevel[5]<name="Faith Learnt Level", comment="0 = null">;
+                    SpellID ReasonList[5]<name="Reason Spells">;
+                    SpellID FaithList[5]<name="Faith Spells">;
+                    MinRanks ReasonLearnLevel[5]<name="Reason Learnt Level", comment="0 = null">;
+                }spelllistdata<name="Spell List Data", read=GetCharNames3>;
+            }
+        }SpellList<name="Spell List">;
+    }spellliststructure<name="Spell List Table", bgcolor=cYellow>;
 
     FSeek(sectionpointers.PointerToSkillLearnset);
     struct SkillListStructure {
         uint SkillListMagic<bgcolor=cRed>;
         uint numSkillList<bgcolor=cRed>;
         uint SizeOfSpellList<bgcolor=cRed>;
-        struct SkillListHeaderPadding {
-            byte Padding[0x34];
-        }skilllistheaderpadding<name="Padding", bgcolor=cBlue>;
+        byte Padding[0x34];
         struct SKILLLIST {
-            RankStats SkillLearn[20]<name="Special Skill Learn List">;
-            AbilityID PreTSPersonalSkill<name="Pre Time Skip Personal Skill">;
-            AbilityID PostTSPersonalSkill<name="Post Time Skip Personal Skill">;
-            AbilityID AbilitiesLearnt[20]<name="Abilities Learnt">;
-            MinRanks RankLearnt[20]<name="Rank Learnt at">;
-        }SkillList[numSkillList]<name="Skill List Data">;
-    }skillliststructure<name="Skill List", bgcolor=cLtYellow>;
+            for( i = 0; i < numSkillList; i++)
+            {
+                struct SkillListData {
+                    local CharID NameOfChar<hidden=true>;
+                    NameOfChar = i;
+                    RankStats SkillLearn[20]<name="Special Skill Learn List">;
+                    AbilityID PreTSPersonalSkill<name="Pre Time Skip Personal Skill">;
+                    AbilityID PostTSPersonalSkill<name="Post Time Skip Personal Skill">;
+                    AbilityID AbilitiesLearnt[20]<name="Abilities Learnt">;
+                    MinRanks RankLearnt[20]<name="Rank Learnt at">;
+                }skilllistdata<name="Skill List Data", read=GetCharNames2>;
+            }
+        }SkillList<name="Skill List">;
+    }skillliststructure<name="Skill List Table", bgcolor=cLtYellow>;
 	
 	FSeek(sectionpointers.SizeFourPointer);
 	struct SizeFour{
@@ -399,6 +414,26 @@ struct File{
 			byte pad<hidden=true>;
 		}sizefourid[numSizeFour]<name="Enemy Personal Skills",read=GetName>;
 	}sizefour<name="Enemy Personal Skills", bgcolor=cDkGreen>;
+
+    FSeek(sectionpointers.PointerToArtLearnset);
+    struct ArtLearnsetStruct{
+        uint Magic<bgcolor=cRed>;
+        uint numArtLearnset<bgcolor=cRed>;
+        uint SizeOfArtLearnset<bgcolor=cRed>;
+        ubyte Padding[0x34]<bgcolor=cBlue>;
+        struct ArtLearnset {
+            for( i = 0; i < numArtLearnset; i++)
+            {
+                struct ArtLearnsetData {
+                    local CharID NameOfChar<hidden=true>;
+                    NameOfChar = i;
+                    ArtID ArtLearned[10];
+                    RankStats RequiredStat[10];
+                    MinRanks RequiredRank[10];
+                }artlearnsetdata<name="Combat Art Learnset Data", read=GetCharNames>;
+            }
+        }artlearnset<name="Combat Art Learnset", bgcolor=cYellow>;
+    }artlearnsetstruct<name="Combat Art Learnset Table">;
 	
 }file;
 
@@ -410,4 +445,16 @@ return EnumToString(p.NameID);
 string GetName(SizeFourID& value)
 {
     return EnumToString(value.charID);
+}
+string GetCharNames(ArtLearnsetData &i)
+{
+    return EnumToString(i.NameOfChar);
+}
+string GetCharNames2(SkillListData &i)
+{
+    return EnumToString(i.NameOfChar);
+}
+string GetCharNames3(SpellListData &i)
+{
+    return EnumToString(i.NameOfChar);
 }
