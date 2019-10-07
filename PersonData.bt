@@ -186,51 +186,56 @@ struct File{
 	
 	FSeek(sectionpointers.PointerToWpnRanks);
 	struct WpnRankStructure{
-		uint32 WpnRank_Magic;
-		uint32 numWpnRank;
-		uint32 SizeOfWpnRankBlock;
-		struct WpnRankPadding{
-			byte Padding[0x34];
-		}wpnrankpadding<name="Padding">;
+		uint32 WpnRank_Magic<bgcolor=cRed>;
+		uint32 numWpnRank<bgcolor=cRed>;
+		uint32 SizeOfWpnRankBlock<bgcolor=cRed>;
+	    byte Padding[0x34]<bgcolor=cBlue>;
 		struct WpnRank{
-			uint16 unk;
-			ubyte CharColor<name="Character Color">;
-			ClassName uniqueclass1<name="PreTimeSkip Class">;
-			ClassName certclass<name="Certified Class">;
-			ClassName certclass<name="Certified Class">;
-			ClassName certclass<name="Certified Class">;
-			ClassName certclass<name="Certified Class">;
-			ubyte unk;
-			struct StartingRanks{
-				MinRanks rank0<name="Starting Sword Rank">;
-				MinRanks rank1<name="Starting Lances Rank">;
-				MinRanks rank2<name="Starting Axes Rank">;
-				MinRanks rank3<name="Starting Bows Rank">;
-				MinRanks rank4<name="Starting Brawling Rank">;
-				MinRanks rank5<name="Starting Reason Rank">;
-				MinRanks rank6<name="Starting Faith Rank">;
-				MinRanks rank7<name="Starting Authority Rank">;
-				MinRanks rank8<name="Starting Armor Rank">;
-				MinRanks rank9<name="Starting Riding Rank">;
-				MinRanks rank10<name="Starting Flying Rank">;
-			}startingranks<name="Starting Weapon Ranks">;
-			struct WpnProficiency{
-				ubyte rank0<name="Sword Proficiency">;
-				ubyte rank1<name="Lances Proficiency">;
-				ubyte rank2<name="Axes Proficiency">;
-				ubyte rank3<name="Bows Proficiency">;
-				ubyte rank4<name="Brawling Proficiency">;
-				ubyte rank5<name="Reason Proficiency">;
-				ubyte rank6<name="Faith Proficiency">;
-				ubyte rank7<name="Authority Proficiency">;
-				ubyte rank8<name="Armor Proficiency">;
-				ubyte rank9<name="Riding Proficiency">;
-				ubyte rank10<name="Flying Proficiency">;
-			}wpnproficiency<name="Proficiencies">;
-			ClassName class<name="Post TimeSkip Class">;
-			ClassName class<name="Post TimeSkip Class">;
-			ClassName class<name="Post TimeSkip Class">;
-		}wpnrank[numWpnRank];
+            for( i = 0; i < numWpnRank; i++ )
+            {
+                struct WpnRankData {
+                    local CharID NameOfChar<hidden=true>;
+                    NameOfChar = i; 
+			        uint16 unk;
+			        PaletteID CharColor<name="Character Color">;
+			        ClassName uniqueclass1<name="PreTimeSkip Class">;
+			        ClassName certclass<name="Certified Class">;
+			        ClassName certclass<name="Certified Class">;
+			        ClassName certclass<name="Certified Class">;
+			        ClassName certclass<name="Certified Class">;
+			        ubyte unk;
+			        struct StartingRanks{
+				        MinRanks rank0<name="Starting Sword Rank">;
+				        MinRanks rank1<name="Starting Lances Rank">;
+				        MinRanks rank2<name="Starting Axes Rank">;
+				        MinRanks rank3<name="Starting Bows Rank">;
+				        MinRanks rank4<name="Starting Brawling Rank">;
+				        MinRanks rank5<name="Starting Reason Rank">;
+				        MinRanks rank6<name="Starting Faith Rank">;
+				        MinRanks rank7<name="Starting Authority Rank">;
+				        MinRanks rank8<name="Starting Armor Rank">;
+				        MinRanks rank9<name="Starting Riding Rank">;
+				        MinRanks rank10<name="Starting Flying Rank">;
+			        }startingranks<name="Starting Weapon Ranks">;
+			        struct WpnProficiency{
+				        ubyte rank0<name="Sword Proficiency">;
+				        ubyte rank1<name="Lances Proficiency">;
+				        ubyte rank2<name="Axes Proficiency">;
+				        ubyte rank3<name="Bows Proficiency">;
+				        ubyte rank4<name="Brawling Proficiency">;
+				        ubyte rank5<name="Reason Proficiency">;
+				        ubyte rank6<name="Faith Proficiency">;
+				        ubyte rank7<name="Authority Proficiency">;
+				        ubyte rank8<name="Armor Proficiency">;
+				        ubyte rank9<name="Riding Proficiency">;
+				        ubyte rank10<name="Flying Proficiency">;
+			        }wpnproficiency<name="Proficiencies">;
+			        ClassName class<name="Post TimeSkip Class">;
+			        ClassName class<name="Post TimeSkip Class">;
+			        ClassName class<name="Post TimeSkip Class">;
+                }wpnrankdata<name="Wpn Ranks/Assets Data", read=GetCharNames4>;
+            }
+		}wpnrank<name="Starting Weapon Ranks/Combat Assets">;
 	}wpnrankstructure<bgcolor=cDkYellow, name="Starting Weapon Ranks/Combat Assets">;
 	
 	FSeek(sectionpointers.PointerToStartingWeapons);
@@ -477,4 +482,8 @@ string GetCharNames3(SpellListData &i)
 string GetTalentNames(HiddenTalentData &i)
 {
     return EnumToString(i.character);
+}
+string GetCharNames4(WpnRankData &i)
+{
+    return EnumToString(i.NameOfChar);
 }

@@ -2265,3 +2265,16 @@ enum<ubyte> Battalion
 	West_Church_Archers,
 	Flame_Emperor_Co,
 };
+
+enum<ubyte> PaletteID
+{
+    White_and_Red = 0,
+    Red = 1,
+    Blue = 2,
+    Yellow = 3,
+    Black_and_Red = 4,
+    Green = 5,
+    Byleth = 7,
+    Brown_or_Pink = 9,
+    Gray_and_Blue_or_Purple = 17,
+};
