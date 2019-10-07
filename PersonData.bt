@@ -51,8 +51,8 @@ struct File{
 		uint32 UnkTotalSize01<bgcolor=cYellow>;
 		uint32 UnkPointer01<bgcolor=cYellow>;
 		uint32 UnkTotalSize01<bgcolor=cYellow>;
-		uint32 UnkPointer01<bgcolor=cYellow>;
-		uint32 UnkTotalSize01<bgcolor=cYellow>;
+		uint32 PointerToHiddenTalent<bgcolor=cYellow>;
+		uint32 HiddenTalentStructSize<bgcolor=cYellow>;
 		uint32 UnkPointer01<bgcolor=cYellow>;
 		uint32 UnkTotalSize01<bgcolor=cYellow>;
 		uint32 PointerToFacultyTraining<bgcolor=cBlack>;
@@ -427,13 +427,29 @@ struct File{
                 struct ArtLearnsetData {
                     local CharID NameOfChar<hidden=true>;
                     NameOfChar = i;
-                    ArtID ArtLearned[10];
-                    RankStats RequiredStat[10];
-                    MinRanks RequiredRank[10];
+                    ArtID ArtLearned[10]<name="Combat Art Learned">;
+                    RankStats RequiredStat[10]<name="Required Stat">;
+                    MinRanks RequiredRank[10]<name="Required Rank">;
                 }artlearnsetdata<name="Combat Art Learnset Data", read=GetCharNames>;
             }
         }artlearnset<name="Combat Art Learnset", bgcolor=cYellow>;
     }artlearnsetstruct<name="Combat Art Learnset Table">;
+
+    FSeek(sectionpointers.PointerToHiddenTalent);
+    struct HiddenTalentStruct {
+        uint Magic<bgcolor=cRed>;
+        uint numHdnTal<bgcolor=cRed>;
+        uint SizeOfHndTal<bgcolor=cRed>;
+        ubyte Padding[0x34]<bgcolor=cBlue>;
+            struct HiddenTalentData {
+                CharID character<name="Character ID">;
+                ubyte Unk;
+                ubyte level<name="Required Exp">;
+                RankStats Stat<name="Required Stat">;
+                ArtID Art<name="Combat Art Learnt">;
+                AbilityID Skill<name="Skill Learnt">;
+            }hiddentalentdata[numHdnTal]<name="Hidden Talent Data", read=GetTalentNames>;
+    }hiddentalentstruct<name="Hidden Talent Table", bgcolor=cYellow>;
 	
 }file;
 
@@ -457,4 +473,8 @@ string GetCharNames2(SkillListData &i)
 string GetCharNames3(SpellListData &i)
 {
     return EnumToString(i.NameOfChar);
+}
+string GetTalentNames(HiddenTalentData &i)
+{
+    return EnumToString(i.character);
 }
