@@ -15,7 +15,7 @@
 
 LittleEndian();
 
-#include "3H_ArtsEnums.bt"
+#include "3H_BaiArtsEnums.bt"
 #include "3H_BaiEnums.bt"
 
 //One entry is 0x2c bytes
@@ -50,13 +50,13 @@ struct File{
 					Class ClassID<name="Class",comment="Only usable for enemy and NPC + 1 From regular List",bgcolor=cYellow>;
 					struct Weapons
 					{
-						uint16 itemID<name="Item ID 1",comment="Slot 1", bgcolor=cRed>;
-						uint16 itemID<name="Item ID 2",comment="Slot 2", bgcolor=cRed>;
-						uint16 itemID<name="Item ID 3",comment="Slot 3", bgcolor=cRed>;
-						uint16 itemID<name="Item ID 4",comment="Slot 4", bgcolor=cRed>;
-						uint16 itemID<name="Item ID 5",comment="Slot 5", bgcolor=cRed>;
-						uint16 itemID<name="Item ID 6",comment="Slot 6", bgcolor=cRed>;
-						uint16 itemFlags<name="Item flags?",comment="Setting to 2 makes item drop", bgcolor=cGray>;
+						ItemsBai itemID<name="Item ID 1",comment="Slot 1", bgcolor=cRed>;
+						ItemsBai itemID<name="Item ID 2",comment="Slot 2", bgcolor=cRed>;
+						ItemsBai itemID<name="Item ID 3",comment="Slot 3", bgcolor=cRed>;
+						ItemsBai itemID<name="Item ID 4",comment="Slot 4", bgcolor=cRed>;
+						ItemsBai itemID<name="Item ID 5",comment="Slot 5", bgcolor=cRed>;
+						ItemsBai itemID<name="Item ID 6",comment="Slot 6", bgcolor=cRed>;
+						ItemsBai itemFlags<name="Item flags?",comment="Setting to 2 makes item drop", bgcolor=cGray>;
 					}weapons<name="Weapons">;
 					struct Skills
 					{
