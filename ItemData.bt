@@ -530,15 +530,27 @@ struct FILE {
 			byte unknown[6]<name="Unknown Value">;
             ushort BEndur<name="Endurance">;
             byte BMag<name="Magic">;
-			byte unknown<name="Unknown Value">;
+			byte BMagGrowth<name="Magic Growth">;
             byte BPhys<name="Physical">;
             ubyte BHit<name="Hit">;
             ubyte BCrit<name="Crit">;
             ubyte BAvo<name="Avoid">;
-			byte unknown<name="Unknown Value">;
+			byte BAvo2<name="Avoid 2">;
             ubyte BPrt<name="Protection">;
             ubyte BRsl<name="Resilience">;
-            byte Item12Size[11];
+            struct BattalionGrowth{
+				ubyte unknown<name="Unknown Value">;
+				ubyte unknown<name="Unknown Value">;
+				ubyte BPhysGrowth<name="Phys Growth">;
+                ubyte BHitGrowth<name="Hit Growth">;
+                ubyte BCritGrowth<name="Crit Growth">;
+                ubyte BAvoGrowth1<name="Avo Growth 1">;
+                ubyte BAvoGrowth2<name="Avo Growth 2", comment="Must be same as Avo 1">;
+                ubyte BProtGrowth<name="Prot Growth">;
+                ubyte BResGrowth<name="Res Growth">;
+			    ubyte unknown<name="Unknown Value">;
+                ubyte unknown<name="Unknown Value">;
+            }battalionboost<name="Battalion Stat Growths">;
             struct BattalionBoost{
                 ubyte BStrBoost<name="Str Boost">;
                 ubyte BMagBoost<name="Mag Boost">;
