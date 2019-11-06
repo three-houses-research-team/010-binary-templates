@@ -1,0 +1,43 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: G1MF.bt
+//   Authors: HealingBrew
+//   Version: 1.0
+//   Purpose: Outlines G1MF (???) format found in G1M files
+//  Category: Game File
+// File Mask: 
+//  ID Bytes: 46 4D 31 47
+//   History:
+//   1.0      2019-11-06  HealingBrew: Created the file
+//------------------------------------------------
+
+#ifndef G1M_F
+#define G1M_F
+
+#ifndef G1M_SHAREDSTRUCTURES
+#include "../G1SharedStructures.bt"
+#endif // G1M_SHAREDSTRUCTURES
+
+typedef struct G1MFINDICES {
+    uint32 indices[24];
+} G1MFIndices;
+
+typedef struct G1MFSET {
+    int32 set_count<name="Count">;
+    G1MFIndices indices[set_count]<name="Indice Sets">;
+} G1MFSet;
+
+#ifndef G1M_FILELESS
+#define G1M_FILELESS
+
+LittleEndian();
+
+struct FILE {
+    GResourceSectionHeader header<name="Header">;
+    G1MFSET data<name="FData">;
+} File<name="G1MS", open=true>;
+
+#endif // G1M_FILELESS
+
+#endif // G1M_F

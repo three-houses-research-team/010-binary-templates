@@ -1,0 +1,26 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: G1MG_VertexBuffer.bt
+//   Authors: HealingBrew
+//   Version: 1.0
+//   Purpose: Outlines VertexBuffer format found in G1MG sections
+//  Category: Game File
+// File Mask: 
+//  ID Bytes:
+//   History:
+//  1.0 2019-11-06  HealingBrew: Created the file
+//------------------------------------------------
+
+#ifndef G1M_GEOMETRY_VERTEXBUFFER
+#define G1M_GEOMETRY_VERTEXBUFFER
+
+typedef struct G1MGEOMETRYVERTEXBUFFER {
+    int unknown1<name="Unknown 1">;
+    int stride<name="Stride">;
+    int count<name="Count">;
+    int unknown2<name="Unknown 2">;
+    byte buffer[stride * count]<name="Buffer">;
+} G1MGeometryVertexBuffer;
+
+#endif // G1M_GEOMETRY_VERTEXBUFFER
