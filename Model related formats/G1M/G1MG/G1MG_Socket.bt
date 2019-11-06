@@ -1,0 +1,31 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: G1MG_Socket.bt
+//   Authors: HealingBrew
+//   Version: 1.0
+//   Purpose: Outlines Socket format found in G1MG sections
+//  Category: Game File
+// File Mask: 
+//  ID Bytes:
+//   History:
+//  1.0 2019-11-06  HealingBrew: Created the file
+//------------------------------------------------
+
+#ifndef G1M_GEOMETRY_SOCKET
+#define G1M_GEOMETRY_SOCKET
+
+typedef struct G1MGEOMETRYSOCKET {
+    short bone_id<name="Bone ID", comment="assumption">;
+    short reserved<name="Unknown", comment="always 0">;
+    float weight<name="Weight", comment="assumption">;
+    Vector3 scale<name="Scale">;
+    Vector3 pos<name="Position">;
+} G1MGeometrySocket;
+
+typedef struct G1MGEOMETRYSOCKETGROUP {
+    G1MGeometrySocket start<name="Start">;
+    G1MGeometrySocket end<name="End">;
+} G1MGeometrySocketGroup;
+
+#endif // G1M_GEOMETRY_SOCKET

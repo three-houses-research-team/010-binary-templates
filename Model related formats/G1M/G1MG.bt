@@ -1,0 +1,114 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: G1MG.bt
+//   Authors: Raytwo, HealingBrew
+//   Version: 1.1
+//   Purpose: Outlines G1MG (Geometry) format found in G1M files
+//  Category: Game File
+// File Mask: 
+//  ID Bytes: 47 4D 31 47
+//   History:
+//  1.1 2019-11-06  HealingBrew: Added remaining structures
+//	1.0	2019-08-28	Raytwo: Created the file
+//------------------------------------------------
+
+#ifndef G1M_GEOMETRY
+#define G1M_GEOMETRY
+
+#ifndef G1M_SHAREDSTRUCTURES
+#include "../G1SharedStructures.bt"
+#include "G1MG/G1MG_Socket.bt"
+#include "G1MG/G1MG_Material.bt"
+#include "G1MG/G1MG_ShaderParam.bt"
+#include "G1MG/G1MG_VertexBuffer.bt"
+#include "G1MG/G1MG_VertexAttribute.bt"
+#include "G1MG/G1MG_BoneBind.bt"
+#include "G1MG/G1MG_IndexBuffer.bt"
+#include "G1MG/G1MG_SubMesh.bt"
+#include "G1MG/G1MG_Mesh.bt"
+#endif
+
+typedef enum G1MGEOMETRYTYPE {
+    GeometryType_Socket = 1, // assumption
+    GeometryType_Material = 2,
+    GeometryType_ShaderParam = 3,
+    GeometryType_VertexBuffer = 4,
+    GeometryType_VertexAttribute = 5,
+    GeometryType_BoneBind = 6,
+    GeometryType_IndexBuffer = 7,
+    GeometryType_SubMesh = 8,
+    GeometryType_Mesh = 9
+} G1MGeometryType;
+
+
+typedef struct G1MGEOMETRYSECTION {
+    local int32 pos = FTell();
+    G1MArrayResourceSectionHeader header<name="Header">;
+    local G1MGeometryType type = header.magic;
+    switch(type)
+    {
+        case GeometryType_Socket:
+            G1MGeometrySocketGroup sockets[header.count]<name="Sockets", optimize=true>;
+            break;
+        case GeometryType_Material:
+            G1MGeometryMaterial materials[header.count]<name="Materials", optimize=false>;
+            break;
+        case GeometryType_ShaderParam:
+            G1MGeometryShaderParamSet param_sets[header.count]<name="Shader Param Sets", optimize=false>;
+            break;
+        case GeometryType_VertexBuffer:
+            G1MGeometryVertexBuffer vertex_buffers[header.count]<name="VBOs", optimize=false>;
+            break;
+        case GeometryType_VertexAttribute:
+            G1MGeometryVertexAttributeSet vertex_attributes[header.count]<name="VBAs", optimize=false>;
+            break;
+        case GeometryType_BoneBind:
+            G1MGeometryBoneBindSet bone_binds[header.count]<name="Bone Binds", optimize=false>;
+            break;
+        case GeometryType_IndexBuffer:
+            G1MGeometryIndexBuffer index_buffers[header.count]<name="IBOs", optimize=false>;
+            break;
+        case GeometryType_SubMesh:
+            G1MGeometrySubMesh submeshes[header.count]<name="Submeshes", optimize=true>;
+            break;
+        case GeometryType_Mesh:
+            G1MGeometryMeshGroup mesh_groups[header.count]<name="Mesh Groups", optimize=false>;
+            break;
+        default:
+            if(header.size > 0xC) {
+                Printf("*NOTE (%s) Offset 0x%X: Unhandled G1MG SubSection %s\n", GetFileName(), pos, EnumToString(type));
+            }
+            byte data[header.size - 0xC]<name="Blob">;
+            break;
+    }
+    FSeek(pos + header.size);
+} G1MGeometrySection;
+
+string GetGeometrySectionName(G1MGEOMETRYSECTION &section) {
+    local G1MGeometryType type = section.header.magic;
+    return EnumToString(type);
+}
+
+typedef struct G1MGEOMETRY {
+    string model_type<name="Model Type">;
+    uint32 reserved1<name="Unknown 1", hidden=true>;
+    Vector3 bbox_brc<name="BBox Bottom Right">;
+    Vector3 bbox_tlc<name="BBox Top Left">;
+    int subsection_count<name="Section Count">;
+    G1MGeometrySection subsections[subsection_count]<name="Sections", optimize=false, read=GetGeometrySectionName>;
+} G1MGeometry;
+
+#ifndef G1M_FILELESS
+#define G1M_FILELESS
+
+LittleEndian();
+
+struct FILE {
+    GResourceSectionHeader header<name="Header">;
+    G1MGeometry data<name="Geometry">;
+} File<name="G1MG", open=true>;
+
+#endif // G1M_FILELESS
+
+#endif // G1M_GEOMETRY

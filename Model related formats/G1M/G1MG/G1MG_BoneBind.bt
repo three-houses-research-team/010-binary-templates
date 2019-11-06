@@ -1,0 +1,30 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: G1MG_BoneBind.bt
+//   Authors: HealingBrew
+//   Version: 1.0
+//   Purpose: Outlines BoneBind format found in G1MG sections
+//  Category: Game File
+// File Mask: 
+//  ID Bytes:
+//   History:
+//  1.0 2019-11-06  HealingBrew: Created the file
+//------------------------------------------------
+
+#ifndef G1M_GEOMETRY_BONEBIND
+#define G1M_GEOMETRY_BONEBIND
+
+typedef struct G1MGEOMETRYBONEBIND {
+    int index<name="Index">;
+    int unknown1<name="Unknown 1">;
+    short bone_id<name="Bone ID">;
+    short unknown2<name="Unknown 2">;
+} G1MGeometryBoneBind;
+
+typedef struct G1MGEOMETRYBONEBINDSET {
+    int count<name="Count">;
+    G1MGeometryBoneBind binds[count]<name="Binds", optimize=true>;
+} G1MGeometryBoneBindSet;
+
+#endif // G1M_GEOMETRY_BONEBIND

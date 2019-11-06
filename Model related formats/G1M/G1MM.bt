@@ -1,0 +1,39 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: G1MM.bt
+//   Authors: HealingBrew
+//   Version: 1.0
+//   Purpose: Outlines G1MM (Matrices) format found in G1M files
+//  Category: Game File
+// File Mask: 
+//  ID Bytes: 4D 4D 31 47
+//   History:
+//   1.0      2019-11-01  HealingBrew: Created the file
+//------------------------------------------------
+
+#ifndef G1M_MATRIX
+#define G1M_MATRIX
+
+#ifndef G1M_SHAREDSTRUCTURES
+#include "../G1SharedStructures.bt"
+#endif // G1M_SHAREDSTRUCTURES
+
+typedef struct G1MMATRIXSET {
+    int32 matrix_count<name="Count">;
+    Matrix44 matrices[matrix_count]<name="Matrices">;
+} G1MMatrixSet;
+
+#ifndef G1M_FILELESS
+#define G1M_FILELESS
+
+LittleEndian();
+
+struct FILE {
+    GResourceSectionHeader header<name="Header">;
+    G1MMatrixSet data<name="Matrix">;
+} File<name="G1MS", open=true>;
+
+#endif // G1M_FILELESS
+
+#endif // G1M_MATRIX

@@ -1,0 +1,60 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: G1MG_ShaderParam.bt
+//   Authors: HealingBrew
+//   Version: 1.0
+//   Purpose: Outlines ShaderParam format found in G1MG sections
+//  Category: Game File
+// File Mask: 
+//  ID Bytes:
+//   History:
+//  1.0 2019-11-06  HealingBrew: Created the file
+//------------------------------------------------
+
+#ifndef G1M_GEOMETRY_SHADERPARAM
+#define G1M_GEOMETRY_SHADERPARAM
+
+typedef enum <ushort> G1MGEOMETRYSHADERPARAMBUFFERTYPE {
+    ShaderParamBufferType_Float32 = 1,
+    ShaderParamBufferType_Matrix4x4_2 = 0x20
+} G1MGeometryShaderParamBufferType;
+
+typedef struct G1MGEOMETRYSHADERPARAM {
+    local int pos = FTell();
+    int size<name="Size">;
+    int unknown1<name="Unknown 1">;
+    int unknown2<name="Unknown 2">;
+    short buffer_count<name="Buffer Count">;
+    G1MGeometryShaderParamBufferType buffer_type<name="Buffer Type">;
+    string param_name<name="Name">;
+    G1Helper_AlignBytes(4);
+    local int header_size = FTell() - pos;
+    switch(buffer_type)
+    {
+        case ShaderParamBufferType_Float32:
+            float data[buffer_count]<name="Data">;
+            break;
+        case ShaderParamBufferType_Matrix4x4_2:
+            Matrix44 data[buffer_count * 2]<name="Data">;
+            break;
+        default:
+            if(header.size > 0xC) {
+                Printf("*NOTE (%s) Offset 0x%X: Unhandled G1MGeometryShaderParam Type %s\n", GetFileName(), pos, EnumToString(buffer_type));
+            }
+            byte data[size - header_size]<name="Data">;
+            break;
+    }
+    FSeek(pos + size);
+} G1MGeometryShaderParam;
+
+string GetShaderParamName(G1MGeometryShaderParam &shaderParam) {
+    return shaderParam.param_name;
+}
+
+typedef struct G1MGEOMETRYSHADERPARAMSET {
+    int count<name="Count">;
+    G1MGeometryShaderParam params[count]<name="Shader Params", optimize=false, read=GetShaderParamName>;
+} G1MGeometryShaderParamSet;
+
+#endif // G1M_GEOMETRY_SHADERPARAM

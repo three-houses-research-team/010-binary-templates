@@ -1,0 +1,64 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: G1MM.bt
+//   Authors: HealingBrew
+//   Version: 1.0
+//   Purpose: Outlines G1MM (Matrices) format found in G1M files
+//  Category: Game File
+// File Mask: 
+//  ID Bytes: 4D 4D 31 47
+//   History:
+//   1.0      2019-11-01  HealingBrew: Created the file
+//------------------------------------------------
+
+#ifndef G1M_EXTRA
+#define G1M_EXTRA
+
+#ifndef G1M_SHAREDSTRUCTURES
+#include "../G1SharedStructures.bt"
+#endif // G1M_SHAREDSTRUCTURES
+
+typedef enum G1MEXTRATYPE {
+    ExtraType_Unknown = 1,
+} G1ExtraType;
+
+typedef struct G1MEXTRA {
+    local int32 pos = FTell();
+    G1MArrayResourceSectionHeader header<name="Header">;
+    local G1ExtraType type = header.magic;
+    switch(type)
+    {
+        default:
+            if(header.size > 0xC) {
+                Printf("*NOTE (%s) Offset 0x%X: Unhandled EXTR SubSection %s\n", GetFileName(), pos, EnumToString(type));
+            }
+            byte data[header.size - 0xC]<name="Blob">;
+            break;
+    }
+    FSeek(pos + header.size);
+} G1MExtra;
+
+string GetExtraSectionName(G1MExtra &section) {
+    local G1ExtraType type = section.header.magic;
+    return EnumToString(type);
+}
+
+typedef struct G1MEXTRASET {
+    int32 extra_count<name="Count">;
+    G1MExtra extraData[extra_count]<name="Extras", optimize=false, read=GetExtraSectionName>;
+} G1MExtraSet;
+
+#ifndef G1M_FILELESS
+#define G1M_FILELESS
+
+LittleEndian();
+
+struct FILE {
+    GResourceSectionHeader header<name="Header">;
+    G1MExtraSet data<name="Extra">;
+} File<name="EXTR", open=true>;
+
+#endif // G1M_FILELESS
+
+#endif // G1M_EXTRA
