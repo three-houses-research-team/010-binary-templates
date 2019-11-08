@@ -60,8 +60,10 @@ struct File{
 		    struct ClassBlock{
                 local ClassName Class<hidden=true>;
 				Class = i; // keeping a localvar so we can add classname to the struct indice
-		        uint32 UnknownValue;
-                uint32 UnknownValue;
+		        ushort UnknownValue;
+				ushort UnknownValue;
+				ushort UnknownValue;
+				ushort UnknownValue;
                 uint16 MaleAID;
                 uint16 FemaleAID;
 		        uint32 UnknownValue;
@@ -126,12 +128,12 @@ struct File{
                     byte RidingExp<name="Riding Exp">;
                     byte FlyingExp<name="Flying Exp">;
                 }rankbonus<name="Rank Bonus">;
-                byte ShieldID;
-				byte UnknownValue;
+                EquipID ShieldID;
+				byte ClassTier;
                 byte MountMapScale<name="Mount Map Scale">;
-                byte ClassTier;
-                byte UnknownValue;
 				byte UnitMapScale<name="Unit Map Scale">;
+				byte UnknownValue;
+				byte UnknownValue;
                 byte UnknownValue;
                 byte UnknownValue;
                 byte UnknownValue;
@@ -139,8 +141,17 @@ struct File{
                 byte UnknownValue;
                 byte UnknownValue;
                 byte UnknownValue;
-                byte ClassType;
-                byte ClassProperty;
+				byte ClassType;
+                struct ClassProperty{
+					ubyte bit0 : 1<name="Mounted">;
+                    ubyte bit1 : 1<name="Hand to Hand">;
+                    ubyte bit2 : 1<name="Reserve">;
+                    ubyte bit3 : 1<name="Magic Usage">;
+                    ubyte bit4 : 1<name="Reserve">;
+                    ubyte bit5 : 1<name="Reserve">;
+                    ubyte bit6 : 1<name="Reserve">;
+                    ubyte bit7 : 1<name="Reserve">;
+				}classproperty<name="Class Property">;
                 SpellID Spell1;
                 SpellID Spell2;
                 struct BaseStats{
@@ -154,6 +165,20 @@ struct File{
 				}basestats<name="Base Stats">;
                 uint32 UnknownValue;
                 uint16 UnknownValue;
+				struct UnknownEnemyAbility1{
+                    AbilityID Ability1;
+                    AbilityID Ability2;
+                    AbilityID Ability3;
+                    AbilityID Ability4;
+                    AbilityID Ability5;
+                }unknownenemyability1;
+				struct UnknownEnemyAbility2{
+                    AbilityID Ability1;
+                    AbilityID Ability2;
+                    AbilityID Ability3;
+                    AbilityID Ability4;
+                    AbilityID Ability5;
+                }unknownenemyability2;
                 struct HardEnemyAbility{
                     AbilityID Ability1;
                     AbilityID Ability2;
