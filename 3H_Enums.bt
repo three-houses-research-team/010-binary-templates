@@ -1478,7 +1478,7 @@ enum<ushort> WeapID
     Dark_Failnaught,
 };
 
-enum<ushort> EquipID
+enum<ubyte> EquipID
 {
     Leather_Shield,
     Iron_Shield,
@@ -2274,7 +2274,9 @@ enum<ubyte> PaletteID
     Yellow = 3,
     Black_and_Red = 4,
     Green = 5,
+	White_and_Red_2 = 6,
     Byleth = 7,
+	Red_2 = 8,
     Brown_or_Pink = 9,
     Gray_and_Blue_or_Purple = 17,
 };
