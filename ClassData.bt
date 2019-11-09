@@ -67,7 +67,7 @@ struct File{
                 uint16 MaleAID;
                 uint16 FemaleAID;
 		        uint32 UnknownValue;
-                byte HPBase;
+                byte HPBonus;
                 uint16 UnknownValue;
                 byte EnemyHPGrowth;
                 struct PlayerGrowths{  
@@ -135,7 +135,7 @@ struct File{
 				byte UnknownValue;
 				byte UnknownValue;
                 byte UnknownValue;
-                byte UnknownValue;
+                byte BaseHP;
                 byte UnknownValue;
                 byte BanMovement<name="Movement Ban FF is banned">;
                 byte UnknownValue;
@@ -145,7 +145,7 @@ struct File{
                 struct ClassProperty{
 					ubyte bit0 : 1<name="Mounted">;
                     ubyte bit1 : 1<name="Hand to Hand">;
-                    ubyte bit2 : 1<name="Reserve">;
+                    ubyte bit2 : 1<name="Flying">;
                     ubyte bit3 : 1<name="Magic Usage">;
                     ubyte bit4 : 1<name="Reserve">;
                     ubyte bit5 : 1<name="Reserve">;
