@@ -32,12 +32,26 @@ typedef struct VECTOR3 {
     float z<name="Z">;
 } Vector3;
 
+typedef struct HALFVECTOR3 {
+    hfloat x<name="X">;
+    hfloat y<name="Y">;
+    hfloat z<name="Z">;
+} HalfVector3;
+
 typedef struct QUATERNION {
     float x<name="X">;
     float y<name="Y">;
     float z<name="Z">;
     float W<name="Axis">;
 } Quaternion;
+
+
+typedef struct HALFQUATERNION {
+    hfloat x<name="X">;
+    hfloat y<name="Y">;
+    hfloat z<name="Z">;
+    hfloat W<name="Axis">;
+} HalfQuaternion;
 
 typedef struct MATRIX44 {
     float indices[16];
