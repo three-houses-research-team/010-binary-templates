@@ -54,15 +54,16 @@ struct FILE {
             int BuyPrice<name="Buying Price">;
             int SellPrice<name="Selling Price">;
             WeapID WepID<name="Weapon">;
-            ShopAvailablity Availablity<name="Availablity">;
             ubyte Unk;
+			ubyte Unk;
+			ShopAvailablity Availablity<name="Availablity">;
             MiscItem RepairMat<name="Repair Material">;
             ubyte RepairCost<name="Repair Cost">;
-            ubyte Unk2;
+            ubyte Unk;
             byte StoreLV1<name="Store LV1 Stock">;
             byte StoreLV2<name="Store LV2 Stock">;
             byte StoreLV3<name="Store LV3 Stock">;
-            ubyte Padding[2];
+            ubyte Padding;
         }WeapTable[WeapTableHeader.NumofWeap]<name="Weapon Shop Data", bgcolor=cYellow, read=GetWeaponName>;
     }WeapTableStructure<name="Weapon Shop Table">;
 
@@ -75,12 +76,16 @@ struct FILE {
             byte Padding[0x34]<bgcolor=cBlue>;
         }EquipmentTableHeader<name="Header", bgcolor=cRed>;
         struct EQUIPMENTTABLE{
+            uint BuyPrice;			
             uint SellPrice;
-            uint BuyPrice;
             EquipID Equipment;
-            ShopAvailablity Availablity<name="Availablity">;
-            ubyte Unk;
-            uint Unk2;
+			ubyte IDPadding;
+			ubyte Unk;
+			ubyte Unk;
+			ShopAvailablity Availablity<name="Availablity">;
+			ubyte Unk;
+			ubyte Unk;
+			ubyte Unk;
         }EquipmentTable[EquipmentTableHeader.NumofEquipment]<name="Equipment Table Data", bgcolor=cYellow, read=GetEquipmentName>;
     }EquipmentTableStructure<name="Equipment Table">;
 
@@ -97,9 +102,12 @@ struct FILE {
             uint BuyPrice;
             ItemID Item;
             ubyte ItemIDpadding;
-            ShopAvailablity Availablity<name="Availablity">;
             ubyte Unk;
-            uint Unk2;
+			ubyte Unk;
+			ShopAvailablity Availablity<name="Availablity">;
+			ubyte Unk;
+			ubyte Unk;
+			ubyte Unk;
         }ItemTable[ItemTableHeader.NumofItem]<name="Item Table Data", bgcolor=cYellow, read=GetItemName>;
     }ItemTable02Structure<name="Item Table">;
 
@@ -166,8 +174,8 @@ struct FILE {
         struct TABLE08{
             int Price;
             GeneralMerchantItems AnnaItemID;
-            ubyte Stock;
             ShopAvailablity Availablity;
+            ubyte Stock;
         }Table08[NumofTable08]<name="Anna Shop Data", read=GetAnnaItem>;            
     }itemstructure08<name="Anna Shop Block", bgcolor=cLtRed>;
 

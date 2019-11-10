@@ -1,0 +1,55 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: KTSS.bt
+//   Authors: Raytwo
+//   Version: 1.0
+//   Purpose: Parsing KTSS (music and voices) OPUS files
+//  Category: Game File
+// File Mask: *.ktss, *.kns
+//  ID Bytes: 4B 54 53 53
+//   History: 
+//   1.0    2019-10-12  Raytwo: Made the original file. Praise Ulonglong he's stubborn af.
+//------------------------------------------------
+
+LittleEndian();
+
+struct FILE {
+		char magic[0x4]<name="Magic">;
+		uint32 sectionSize<name="Section size", format=hex>;
+		byte paddingHeader[0x20 - FTell() % 0x20]<name="Padding">;
+		byte codecID<name="Codec ID">;
+		byte unk1;
+		byte unk2;
+		byte unk3;
+		uint32 codecStartOffset<name="Codec start offset", format=hex>;
+		byte layerCount<name="Layer count", format=decimal>;
+		byte channelCount<name="Channel count", format=decimal>;
+		short unk4;
+		uint32 sampleRate<name="Sample rate", comment="The frequency at which the KTSS is read", format=decimal>;
+		uint32 sampleCount<name="Sample count", format=decimal>;
+		uint32 loopStartSample<name="Loop start", comment="In sample block", format=decimal>;
+        uint32 loopLength<name="Loop length", comment="In sample block", format=decimal>;
+        uint32 padding<name="Moar padding">;
+		uint32 audioOffset<name="Audio section address", format=hex>;
+        uint32 dataSize<name="Audio section size", format=hex>;
+		uint32 dunno<name="Dunno", format=decimal>;
+		uint32 packetCount<name="Frame count">;
+        short packetSize<name="Frame size", format=hex>;
+        short someConstant<name="Some constant", comment="Always 0x3C0 so far">;
+        uint32 inputSampleRate<name="Sample rate (original)", comment="The frequency the original file was using", format=decimal>;
+        short preSkip<name="Skip", comment="Initial delay in samples">;
+        byte streamCount<name="Stream count">;
+        byte coupledCount<name="Coupled count">;
+        byte channelMappingFamily[channelCount]<name="Channel mapping family">;
+        byte padding2[0x70 - FTell() % 0x70]<name="Big tiddy padding">;
+        struct AUDIO {
+            BigEndian();
+            struct PACKETS {
+                
+                uint32 size;
+                uint32 unk;
+                byte content[size];
+            } Packets[packetCount]<name="Packet", optimize=false>;
+        } Audio<name="Audio Section">;
+} KTSS<name="KTSS Section">;
