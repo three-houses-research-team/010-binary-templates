@@ -9,6 +9,7 @@
 // File Mask: *.g2a
 //  ID Bytes: /
 //   History:
+//   1.0    2019-11-14 healingbrew: Update with more accurate structure
 //   1.0    2019-11-10 healingbrew: Made the original file
 //------------------------------------------------
 
@@ -17,34 +18,25 @@ LittleEndian();
 #include "G1SharedStructures.bt"
 
 typedef struct G2AKEYFRAME {
-    HalfVector3 unknown1;
-    short unknown2;
-    short unknown3;
-    short unknown4;
-    HalfVector3 unknown5;
-    short unknown6;
-    short unknown7;
-    hfloat unknown8;
-    short unknown9;
-    short unknown10;
-    hfloat unknown11;
-    hfloat unknown12;
+    byte blob[32];
 } G2AKeyframe;
 
 typedef struct G2ASTRUCTURE {
     GResourceSectionHeader header<name="Header", read=GetSectionName>;
     float fps<name="Framerate">;
-    short frame_count<name="Keyframe Count">;
-    short unknown1_count<name="Unknown Count">;
-    int buffer_size<name="Buffer Size">;
-    int keyframe_count<name="Keyframe Count">;
-    int reserved<hidden=true>;
 
-    local int unknown1_count_shr = unknown1_count >> 4;
+    // this entire thing is read as two longs
+    int packed_data<name="Packed Data (Frames? + Buffer1 Size)">;
+    int buffer2_size<name="Buffer 2 Size">;
+    ulonglong key_count<name="Keyframe Count">;
 
-    int unknown1[unknown1_count_shr]<name="Unknown indices">;
-    byte buffer[buffer_size]<name="Buffer">;
-    G2AKeyframe keyframes[keyframe_count]<name="Keyframes">;
+    local int buffer1_size = (packed_data >> 18) & 0x3FFC;
+    local int frames = (packed_data & 0xFFF);
+
+    byte buffer1[buffer1_size]<name="Buffer 1">;
+    // version 30 does not have this next array.
+    byte buffer2[buffer2_size]<name="Buffer 2">;
+    G2AKeyframe keys[key_count]<name="Keyframes">;
 } G2AStructure;
 
 G2AStructure File<name="G2A", open=true>;

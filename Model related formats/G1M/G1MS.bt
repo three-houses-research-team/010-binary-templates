@@ -3,12 +3,13 @@
 //
 //      File: G1MS.bt
 //   Authors: Raytwo, HealingBrew
-//   Version: 1.1
+//   Version: 1.2
 //   Purpose: Outlines G1MS (Skeleton) format found in G1M files
 //  Category: Game File
 // File Mask: 
 //  ID Bytes: 53 4D 31 47
 //   History:
+//   1.2      2019-11-01  HealingBrew: Fixed bone indices
 //   1.1      2019-11-01  HealingBrew: Adapted for inclusion
 //   1.0      2019-08-27  Raytwo: Created the file
 //------------------------------------------------
@@ -34,7 +35,7 @@ typedef struct G1MSKELETONBONESET {
 } G1MSkeletonBoneSet;
 
 typedef struct G1MSKELETON {
-    local int32 start = FTell() - 0xE;
+    local int32 start = FTell() - 0x10;
     uint32 data_offset<name="Data region offset", format=hex>;
     uint32 bone_set_count<name="Bone Set Count">;
     uint16 total_bone_count<name="Total Bone Count">;

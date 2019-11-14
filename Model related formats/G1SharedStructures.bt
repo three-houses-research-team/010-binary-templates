@@ -74,4 +74,6 @@ void G1Helper_AlignBytes(int n) {
     FSeek(value + n - (value % n));
 }
 
+typedef uint64 ulonglong;
+
 #endif // G1M_SHAREDSTRUCTURES
