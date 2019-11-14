@@ -15,7 +15,6 @@
 //------------------------------------------------
 
 LittleEndian();
-DisplayFormatHex();
 
 struct {
 	char magic[0x4];
@@ -26,22 +25,28 @@ struct {
 	uint64 padding_1;
 	uint32 decompressed_size;
 	uint32 compressed_size;
-	ubyte padding_2[0x20];
-} ktsr <bgcolor=cYellow>;
+} ktsr <bgcolor=cYellow, size=0x40>;
 
 struct SECTION {
 	uint32 type_id;
-	uint32 total_size;
-	if (type_id == 0x70CBCCC5 && total_size == 0x60) { // info_section (inside ktsl2asbin, linked to ktsl2stbin)
+	uint32 sectionSize;
+	if (type_id == 0x70CBCCC5 && sectionSize == 0x60) { // info_section (inside ktsl2asbin, linked to ktsl2stbin)
 		uint32 link_id;
-		ubyte unknown_1[0x2C];
-		uint32 sample_rate;
-		uint32 ktss_0x30;
+		ubyte unknown_1[0x10];
+		uint32 headerSize<format=hex>;
+		uint32 subTypeId;
+		uint32 subSectionSize<format=hex>;
+		uint32 unk;
+		uint32 channelCount;
+		uint32 musicTransitionRelated;
+		uint32 unk;
+		uint32 sampleRate;
+		uint32 sampleCount;
 		uint32 unknown_2;
-		uint32 ktss_0x34;
+		uint32 loopStart;
 		ubyte unknown_3[0xC];
-		uint32 sound_offset;
-		uint32 sound_size;
+		uint32 KTSSOffset<format=hex>;
+		uint32 KTSSSize<format=hex>;
 		uint32 unknown_4;
 	} else if (type_id == 0x15F4D409) { // // ktss_section (inside ktsl2stbin)
 		uint32 link_id;
@@ -49,9 +54,17 @@ struct SECTION {
 		uint32 kns_size;
 		ubyte padding_1[0x2C];
 	} else if (type_id == 0xA8DB7261) { // padding_section
-		ubyte padding_1[total_size - 0x8];
+		ubyte padding_1[sectionSize - 0x8];
+	} else if (type_id == 0x368C88BD) { // unknown_section
+		uint32 link_id;
+		short channelCount;
+		short layerCount;
+		uint32 padding;
+		uint32 cancel;
+		ubyte unknown_1[sectionSize - 0x18];
 	} else { // unknown
-		ubyte unknown_1[total_size - 0x8];
+        uint32 link_id;
+		ubyte unknown_1[sectionSize - 0xC];
 	};
 };
 
@@ -59,9 +72,46 @@ if (ktsr.type_id == 0xFCDD9402) { // ktsl2stbin
 	local TFindResults kns = FindAll("KTSS");
 	struct {
 		SECTION ktss_section <bgcolor=cRed>;
-		ubyte kns_file[ktss_section.kns_size] <bgcolor=cBlue>;
-		ubyte padding_1[(ktss_section.total_size - 0x40) - ktss_section.kns_size] <bgcolor=cGreen>;
-	} ktss[kns.count] <optimize=false>;
+		struct FILE {
+		char magic[0x4]<name="Magic">;
+		uint32 sectionSize<name="Section size", format=hex>;
+		byte paddingHeader[0x20 - FTell() % 0x20]<name="Padding">;
+		byte codecID<name="Codec ID">;
+		byte unk1;
+		byte unk2;
+		byte unk3;
+		uint32 codecStartOffset<name="Codec start offset", format=hex>;
+		byte layerCount<name="Layer count", format=decimal>;
+		byte channelCount<name="Channel count", format=decimal>;
+		short unk4;
+		uint32 sampleRate<name="Frequency (KTSS)", comment="The frequency at which the KTSS is read", format=decimal>;
+		uint32 sampleCount<name="Num sample...?", format=decimal>;
+		uint32 loopStartSample<name="Loop start", comment="In sample block", format=decimal>;
+        uint32 loopLength<name="Loop length", comment="In sample block", format=decimal>;
+        uint32 padding<name="Moar padding">;
+		uint32 audioOffset<name="Audio section address", format=hex>;
+        uint32 dataSize<name="Audio section size", format=hex>;
+		uint32 dunno<name="Dunno", format=decimal>;
+		uint32 packetCount<name="Packet count">;
+        short packetSize<name="Packet size", format=hex>;
+        short someConstant<name="Some constant", comment="Always 0x3C0 so far">;
+        uint32 inputSampleRate<name="Frequency (original)", comment="The frequency the original file was using", format=decimal>;
+        short preSkip<name="Skip", comment="Initial delay for complicated audio shit">;
+        byte streamCount<name="Stream count">;
+        byte coupledCount<name="Coupled count">;
+        byte channelMappingFamily[channelCount]<name="Channel mapping family">;
+        byte padding2[0x70 - FTell() % 0x70]<name="Big tiddy padding">;
+        struct AUDIO {
+            struct PACKETS {
+                BigEndian();
+                uint32 size;
+                LittleEndian();
+                uint32 unk;
+                byte content[size];
+            } Packets[packetCount]<name="Packet", optimize=false>;
+        } Audio<name="Audio Section">;
+} KTSS<name="KTSS Section">;
+	} ktss<optimize=false>;
 } else if (ktsr.type_id == 0x1A487B77) { // ktsl2asbin
 	local TFindResults unknown = FindAll(0x368C88BD);
 	local TFindResults padding = FindAll(0xA8DB7261);

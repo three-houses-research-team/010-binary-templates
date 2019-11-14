@@ -1,0 +1,89 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: KTSR.bt
+//   Authors: DeathChaos, 0Liam, Raytwo
+//   Version: 1.1.0
+//   Purpose: Storing KTSS files (OPUS variant)
+//   Category: 
+//   File Mask: *.ktsl2stbin, *.bin
+//   ID Bytes: 4B 54 53 52 // KTSR
+//   History
+//   1.0.0    2019-08-05  DeathChaos: Started this
+//   1.0.1    2019-08-06  DeathChaos: Minor Code Cleanup
+//   1.0.2    2019-08-19  0Liam:      Added support for other KTSR types and refactored code
+//   1.1.0    2019-11-12  Raytwo: 	  Refactoring and completion
+//------------------------------------------------
+
+
+
+LittleEndian();
+
+struct KTSL2STBIN {
+	struct KTSR {
+		char magic[0x4]<name="Magic">;
+		uint32 sectionType<name="Section type", format=hex>;
+		ushort flags<name="Flags", format=hex>;
+		ushort console_type<name="Console type", format=hex>;
+		uint32 gameID<name="Game ID", format=hex>;
+		uint64 padding;
+		uint32 decompressedSize<name="Decompressed size", format=hex>;
+		uint32 compressedSize<name="Compressed size", format=hex>;
+		uint32 padding2[8];
+	} Ktsr<name="KTSR section">;
+	while(!FEof())
+	{
+		struct ENTRY {
+			uint32 sectionType<name="Section type", format=hex>;
+			uint32 sectionSize<name="Section size", format=hex>;
+			uint32 linkID<name="Link ID", format=hex>;
+			uint32 headerSize<name="Header size", format=hex>;
+			uint32 KTSSsectionSize<name="KTSS section size", format=hex>;
+			uint32 padding[11];
+
+			struct KTSS {
+				local uint32 start = FTell();
+				char magic[0x4]<name="Magic">;
+				uint32 sectionSize<name="Section size", format=hex>;
+				byte paddingHeader[0x20 - FTell() % 0x20]<name="Padding">;
+				byte codecID<name="Codec ID">;
+				byte unk1;
+				byte unk2;
+				byte unk3;
+				uint32 codecStartOffset<name="Codec start offset", format=hex>;
+				byte layerCount<name="Layer count", format=decimal>;
+				byte channelCount<name="Channel count", format=decimal>;
+				short unk4;
+				uint32 sampleRate<name="Sample rate", comment="The frequency at which the KTSS is read", format=decimal>;
+				uint32 sampleCount<name="Sample count", format=decimal>;
+				uint32 loopStartSample<name="Loop start", comment="In sample block", format=decimal>;
+				uint32 loopLength<name="Loop length", comment="In sample block", format=decimal>;
+				uint32 padding<name="Moar padding">;
+				uint32 audioOffset<name="Audio section address", format=hex>;
+				uint32 dataSize<name="Audio section size", format=hex>;
+				uint32 dunno<name="Dunno", format=decimal>;
+				uint32 packetCount<name="Frame count">;
+				short packetSize<name="Frame size", format=hex>;
+				short someConstant<name="Some constant", comment="Always 0x3C0 so far">;
+				uint32 inputSampleRate<name="Sample rate (original)", comment="The frequency the original file was using", format=decimal>;
+				short preSkip<name="Skip", comment="Initial delay in samples">;
+				byte streamCount<name="Stream count">;
+				byte coupledCount<name="Coupled count">;
+				byte channelMappingFamily[channelCount]<name="Channel mapping family">;
+				//byte padding2[0x70 - FTell() % 0x70]<name="Big tiddy padding">;
+				FSeek(start + audioOffset);
+				struct AUDIO {
+					BigEndian();
+					struct PACKETS {
+						uint32 size;
+						uint32 unk;
+						byte content[size];
+					} Packets[packetCount]<name="Packet", optimize=false>;
+				} Audio<name="Audio Section">;
+				LittleEndian();
+				FSkip(Entry.sectionSize - sectionSize - 0x40);
+			} Ktss<name="KTSS Section">;
+
+		} Entry<name="Entry", open=true>;
+	}
+} Ktsl2stbin<name="KTSL2STBIN">;
