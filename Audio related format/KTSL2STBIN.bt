@@ -1,18 +1,15 @@
 //------------------------------------------------
 //--- 010 Editor v9.0.2 Binary Template
 //
-//      File: KTSR.bt
-//   Authors: DeathChaos, 0Liam, Raytwo
-//   Version: 1.1.0
+//      File: KTSL2STBIN.bt
+//   Authors: Raytwo
+//   Version: 1.0.0
 //   Purpose: Storing KTSS files (OPUS variant)
-//   Category: 
+//   Category: Audio archives
 //   File Mask: *.ktsl2stbin, *.bin
 //   ID Bytes: 4B 54 53 52 // KTSR
 //   History
-//   1.0.0    2019-08-05  DeathChaos: Started this
-//   1.0.1    2019-08-06  DeathChaos: Minor Code Cleanup
-//   1.0.2    2019-08-19  0Liam:      Added support for other KTSR types and refactored code
-//   1.1.0    2019-11-12  Raytwo: 	  Refactoring and completion
+//   1.0.0    2019-11-12  Raytwo: 	  Made the template
 //------------------------------------------------
 
 
