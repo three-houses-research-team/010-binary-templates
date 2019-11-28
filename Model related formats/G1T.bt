@@ -3,7 +3,7 @@
 //
 //      File: Koei Tecmo Texture Container
 //   Authors: Raytwo
-//   Version: 1.0
+//   Version: 1.2
 //   Purpose: Parsing G1T texture containers
 //  Category: File Format
 // File Mask: *.g1t
@@ -11,7 +11,7 @@
 //   History:
 //   1.0    2019-08-22  Raytwo: Made the original file
 //   1.1    2019-08-23  Raytwo: Added the normal map flag table
-//   1.1    2019-09-08  Raytwo: Added support for RGBA8 internal format\
+//   1.1    2019-09-08  Raytwo: Added support for RGBA8 internal format
 //   1.2    2019-11-28  HealingBrew: Updated MipCount, Subsystem, and Dimension logic.
 //------------------------------------------------
 
