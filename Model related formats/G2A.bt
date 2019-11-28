@@ -1,0 +1,42 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: Koei Tecmo Animation
+//   Authors: HealingBrew
+//   Version: 1.0
+//   Purpose: Parsing G2A animations
+//  Category: File Format
+// File Mask: *.g2a
+//  ID Bytes: /
+//   History:
+//   1.0    2019-11-14 healingbrew: Update with more accurate structure
+//   1.0    2019-11-10 healingbrew: Made the original file
+//------------------------------------------------
+
+LittleEndian();
+
+#include "G1SharedStructures.bt"
+
+typedef struct G2AKEYFRAME {
+    byte blob[32];
+} G2AKeyframe;
+
+typedef struct G2ASTRUCTURE {
+    GResourceSectionHeader header<name="Header", read=GetSectionName>;
+    float fps<name="Framerate">;
+
+    // this entire thing is read as two longs
+    int packed_data<name="Packed Data (Frames? + Buffer1 Size)">;
+    int buffer2_size<name="Buffer 2 Size">;
+    ulonglong key_count<name="Keyframe Count">;
+
+    local int buffer1_size = (packed_data >> 18) & 0x3FFC;
+    local int frames = (packed_data & 0xFFF);
+
+    byte buffer1[buffer1_size]<name="Buffer 1">;
+    // version 30 does not have this next array.
+    byte buffer2[buffer2_size]<name="Buffer 2">;
+    G2AKeyframe keys[key_count]<name="Keyframes">;
+} G2AStructure;
+
+G2AStructure File<name="G2A", open=true>;
