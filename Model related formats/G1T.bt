@@ -11,7 +11,8 @@
 //   History:
 //   1.0    2019-08-22  Raytwo: Made the original file
 //   1.1    2019-08-23  Raytwo: Added the normal map flag table
-//   1.1    2019-09-08  Raytwo: Added support for RGBA8 internal format
+//   1.1    2019-09-08  Raytwo: Added support for RGBA8 internal format\
+//   1.2    2019-11-28  HealingBrew: Updated MipCount, Subsystem, and Dimension logic.
 //------------------------------------------------
 
 LittleEndian();
@@ -22,6 +23,15 @@ enum<byte> DXT_TYPE
     RGBA8 = 0x2,
     DXT1 = 0x59,
     DXT5 = 0x5B
+};
+
+enum<byte> G1TG_SUBSYSTEM
+{
+    Generic,
+    PS4, // Treated the same as Xbox
+    PSVita,
+    PS3,
+    Xbox
 };
 
 struct FILE {
@@ -39,13 +49,15 @@ struct FILE {
     uint32 OffsetTable[Header.entryCount]<name="Offset table", comment="Contains pointers to all the textures relative to the beginning of the table", fgcolor=cLtRed>;
 
     local int i = 0;
-
+x
     for(i = 0;i < Header.entryCount;i++)
     {
         FSeek(Header.tableOffset + OffsetTable[i]);
 
         struct TEXHEADER {
-            ubyte mipmapCount<name="Mipmap count", comment="Divide by 0x10 or Right-shift by 4 to obtain the actual count", format=hex>;
+            ubyte mipmapAndSubsystem<name="Mip count and subsystem", comment="Right-shift by 4 to obtain the mips", format=hex>;
+            local ubyte MipCount = mipmapAndSubsystem >> 4;
+            local G1TG_SUBSYSTEM SubSystem = mipmapAndSubsystem & 0xF;
             DXT_TYPE type<name="DXT Type", format=hex>;
             short dimensions<name="Texture dimensions", comment="Width = Pow(2, (value & 0xF)), Height = Pow(2, (value >> 4))", format=decimal>;
             
@@ -60,8 +72,8 @@ struct FILE {
                 }ExtraTexHeader<name="Extra Texture Header", comment="No idea what this does for now", bgcolor=cDkGray>;
             }
             
-            local uint32 Width = Pow(2, (dimensions & 0xF));
-            local uint32 Height = Pow(2, (dimensions >> 4));
+            local uint32 Width = 1 << (dimensions & 0xF);
+            local uint32 Height = 1 << (dimensions >> 4 & 0xF);
             local uint64 Size = 0;
 
             if(type == 0x1 || type == 0x2) //RGBA8 and BGRA8
@@ -81,7 +93,7 @@ struct FILE {
             local int j = 0;
             local int originalSize = Size;
 
-            for(j = 1;j < (mipmapCount >> 4); j++) //Skip the first entry which is the full-sized texture
+            for(j = 1;j < MipCount; j++) //Skip the first entry which is the full-sized texture
             {
                 originalSize = originalSize/4;
                 Size += originalSize;
