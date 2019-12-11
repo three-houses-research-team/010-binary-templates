@@ -78,10 +78,10 @@ struct File{
 		}personheaderpadding<name="Padding">;
 		struct Person{
 			struct ModelScale{
-				float Scale01<name="Model Size Scale">;
-				float Scale02<name="Female Chest Size modifier (pre time skip)">;
-				float Scale03<name="Female Chest Size modifier (post time skip)">;
 				float Scale04<name="Chest Band/Width modifier">;
+				float Scale02<name="Female Chest Size modifier (pre time skip)">;
+				float Scale01<name="Model Size Scale">;
+				float Scale03<name="Female Chest Size modifier (post time skip)">;
 			}modelscale<name="Model Scale Values">;
 			uint16 UnknownValue;
 			Names NameID<name="Name ID">;
@@ -287,8 +287,9 @@ struct File{
 				ubyte bit14 : 1<name="Reserve">;
 				ubyte bit15 : 1<name="Reserve">;
 			}statbits<name="Teachable Stats">;
-			byte CharacterID<name="Character ID">;
+			ushort CharacterID<name="Character ID">;
 			TrueFalse IsTeacher<name="IsTeacher">;
+			byte padding;
 		}facultyid[numFaculty]<name="Faculty Training Stuff">;
 	}facultytraining<bgcolor=cBlack,name="Faculty ID">;
 	
@@ -319,8 +320,9 @@ struct File{
 				ubyte bit14 : 1<name="Reserve">;
 				ubyte bit15 : 1<name="Reserve">;
 			}statbitsseminar<name="Stats Interested">;
-			byte CharacterID<name="Character ID">;
+			ushort CharacterID<name="Character ID">;
 			TrueFalse IsTeacher<name="IsTeacher">;
+			byte padding;
 		}seminarid[numSeminar]<name="Seminar Stuff">;
 	}seminartraining<bgcolor=cGreen,name="Seminar ID">;
 	
