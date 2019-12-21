@@ -1,14 +1,15 @@
 //------------------------------------------------
-//--- 010 Editor v9.0.2 Binary Template
+//--- 010 Editor v9.1.0 Binary Template
 //
 //      File: Koei Tecmo Animation
 //   Authors: HealingBrew
-//   Version: 1.0
+//   Version: 1.1
 //   Purpose: Parsing G2A animations
 //  Category: File Format
-// File Mask: *.g2a
+// File Mask: *.g2a; *.g1a
 //  ID Bytes: /
 //   History:
+//   1.1    2019-11-14 healingbrew: Update with RE'd structure
 //   1.0    2019-11-14 healingbrew: Update with more accurate structure
 //   1.0    2019-11-10 healingbrew: Made the original file
 //------------------------------------------------
@@ -17,26 +18,37 @@ LittleEndian();
 
 #include "G1SharedStructures.bt"
 
+typedef struct G2ATIMING {
+    hfloat unknown1<name="Unknown 1">;   
+    ushort unknown2<name="Unknown 2">;    
+} G2ATiming;
+
 typedef struct G2AKEYFRAME {
-    byte blob[32];
+    ushort unknown1<name="Unknown 1">;
+    ushort bone_count<name="Bone Count">;
+    uint first_matrix<name="First Matrix">;
+    ushort bones[bone_count]<name="Bone IDs">;
+    G1Helper_AlignBytes(4);
 } G2AKeyframe;
 
 typedef struct G2ASTRUCTURE {
     GResourceSectionHeader header<name="Header", read=GetSectionName>;
-    float fps<name="Framerate">;
+    float fps<name="Framerate", comment="Probably">;
 
-    // this entire thing is read as two longs
-    int packed_data<name="Packed Data (Frames? + Buffer1 Size)">;
-    int buffer2_size<name="Buffer 2 Size">;
-    ulonglong key_count<name="Keyframe Count">;
+    int packed_data<name="Packed Data (Unknown + Timings)">;
+    int keyframe_size<name="Keyframe blob size">;
+    int matrix_count<name="Matrix Count">;
+    int unknown1_count<name="Unknown 1">;
 
-    local int buffer1_size = (packed_data >> 18) & 0x3FFC;
-    local int frames = (packed_data & 0xFFF);
+    local int timing_size = (packed_data >> 18) & 0x3FFC;
+    local int unknown_count = (packed_data & 0xFFF);
 
-    byte buffer1[buffer1_size]<name="Buffer 1">;
-    // version 30 does not have this next array.
-    byte buffer2[buffer2_size]<name="Buffer 2">;
-    G2AKeyframe keys[key_count]<name="Keyframes">;
+    G2ATiming timings[timing_size / sizeof(G2ATiming)]<name="Timings">;
+    local int endp = FTell() + keyframe_size;
+    while(FTell() < endp) {
+        G2AKeyframe keyframe<name="Keyframe">;
+    }
+    HalfMatrix44 matrices[matrix_count]<name="Matrices">;
 } G2AStructure;
 
 G2AStructure File<name="G2A", open=true>;

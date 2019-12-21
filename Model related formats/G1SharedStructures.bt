@@ -57,6 +57,10 @@ typedef struct MATRIX44 {
     float indices[16];
 } Matrix44;
 
+typedef struct HALFMATRIX44 {
+    hfloat indices[16];
+} HalfMatrix44;
+
 string GetSectionName(GRESOURCESECTIONHEADER &section) {
     local char version[4];
     version[0] = section.version[3];
