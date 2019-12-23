@@ -900,7 +900,7 @@ enum<byte> TrueFalse
 	True,
 };
 
-enum<ubyte> CharID
+enum<uint16> CharID
 {
 	MByleth,
 	FByleth,
@@ -959,6 +959,13 @@ enum<ubyte> CharID
 	_LordArundel_,
 	Tomas,
 	Nemesis,
+	Yuri = 1040,
+	Balthus = 1041,
+	Constance = 1042,
+	Hapi = 1043,
+	ChurchOfSeirosDudeWithMinorCrest = 1044,
+	Jeritza_Playable = 1045,
+	Anna_Playable = 1046,
 };
 
 enum<ubyte> RankStats
