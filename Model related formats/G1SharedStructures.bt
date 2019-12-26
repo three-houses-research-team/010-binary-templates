@@ -3,10 +3,11 @@
 //
 //      File: G1SharedStructures.bt
 //   Authors: HealingBrew
-//   Version: 1.0
+//   Version: 1.0.1
 //   Purpose: Shared formats in G1 assets
 //  Category: File Format
 //   History:
+//   1.0.1  2019-12-26 Lukas Cone: Updated Align method, Quaternion namings.
 //   1.0    2019-11-01 HealingBrew: Initial File
 //------------------------------------------------
 
@@ -39,18 +40,18 @@ typedef struct HALFVECTOR3 {
 } HalfVector3;
 
 typedef struct QUATERNION {
-    float x<name="X">;
-    float y<name="Y">;
-    float z<name="Z">;
-    float W<name="Axis">;
+    float x<name="i">;
+    float y<name="j">;
+    float z<name="k">;
+    float W<name="R">;
 } Quaternion;
 
 
 typedef struct HALFQUATERNION {
-    hfloat x<name="X">;
-    hfloat y<name="Y">;
-    hfloat z<name="Z">;
-    hfloat W<name="Axis">;
+    hfloat x<name="i">;
+    hfloat y<name="j">;
+    hfloat z<name="k">;
+    hfloat W<name="R">;
 } HalfQuaternion;
 
 typedef struct MATRIX44 {
@@ -73,9 +74,7 @@ string GetSectionName(GRESOURCESECTIONHEADER &section) {
 }
 
 void G1Helper_AlignBytes(int n) {
-    local int value = FTell();
-    if (value % n == 0) return;
-    FSeek(value + n - (value % n));
+    FSkip(n - FTell() % n);
 }
 
 typedef uint64 ulonglong;

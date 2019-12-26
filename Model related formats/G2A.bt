@@ -3,52 +3,69 @@
 //
 //      File: Koei Tecmo Animation
 //   Authors: HealingBrew
-//   Version: 1.1
+//   Version: 1.2
 //   Purpose: Parsing G2A animations
 //  Category: File Format
 // File Mask: *.g2a; *.g1a
 //  ID Bytes: /
 //   History:
+//   1.2    2019-12-26 Lukas Cone: Updated structures.
 //   1.1    2019-11-14 healingbrew: Update with RE'd structure
 //   1.0    2019-11-14 healingbrew: Update with more accurate structure
 //   1.0    2019-11-10 healingbrew: Made the original file
 //------------------------------------------------
 
 LittleEndian();
-
+SetBackColor( cLtGreen );
 #include "G1SharedStructures.bt"
 
-typedef struct G2ATIMING {
-    hfloat unknown1<name="Unknown 1">;   
-    ushort unknown2<name="Unknown 2">;    
-} G2ATiming;
+typedef struct {
+    int numSplines : 2,
+        nextFrameOffset : 10,
+        keyFrameOffset : 20;
+}G2AFrameHeader;
 
-typedef struct G2AKEYFRAME {
-    ushort unknown1<name="Unknown 1">;
+typedef struct {
+    int maxBoneIndex : 20,
+        numFrameHeaders : 12;
+}G2AFrameInfo;
+
+typedef enum<short> {
+    Rotation,
+    Position,
+    Scale
+}G2AKeyframeType;
+
+typedef struct {
+    G2AKeyframeType type<name="Spline Type">;
     ushort bone_count<name="Bone Count">;
     uint first_matrix<name="First Matrix">;
     ushort bones[bone_count]<name="Bone IDs">;
     G1Helper_AlignBytes(4);
-} G2AKeyframe;
+}G2AKeyframe;
 
-typedef struct G2ASTRUCTURE {
+typedef struct {
     GResourceSectionHeader header<name="Header", read=GetSectionName>;
     float fps<name="Framerate", comment="Probably">;
-
-    int packed_data<name="Packed Data (Unknown + Timings)">;
+    G2AFrameInfo frameInfo<name="Frame Info">;
     int keyframe_size<name="Keyframe blob size">;
     int matrix_count<name="Matrix Count">;
-    int unknown1_count<name="Unknown 1">;
+    int reserved;
 
-    local int timing_size = (packed_data >> 18) & 0x3FFC;
-    local int unknown_count = (packed_data & 0xFFF);
-
-    G2ATiming timings[timing_size / sizeof(G2ATiming)]<name="Timings">;
-    local int endp = FTell() + keyframe_size;
-    while(FTell() < endp) {
-        G2AKeyframe keyframe<name="Keyframe">;
+    G2AFrameHeader keyFrameHeaders[frameInfo.numFrameHeaders]<name="Frame Header">;
+    local int i = 0, j = 0;
+    local uint keyFramesBegin = FTell();
+    
+    for (i; i < frameInfo.numFrameHeaders; i++) {
+        FSeek(keyFramesBegin + keyFrameHeaders[i].keyFrameOffset);
+        
+        for (j = 0; j < keyFrameHeaders[i].numSplines; j++)
+            G2AKeyframe keyframe<name="Keyframe">;
     }
-    HalfMatrix44 matrices[matrix_count]<name="Matrices">;
+    
+    FSeek(keyFramesBegin + keyframe_size);
+
+    HalfMatrix44 matrices[matrix_count]<name="Quantized Data">;
 } G2AStructure;
 
 G2AStructure File<name="G2A", open=true>;
