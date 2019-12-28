@@ -74,7 +74,10 @@ string GetSectionName(GRESOURCESECTIONHEADER &section) {
 }
 
 void G1Helper_AlignBytes(int n) {
-    FSkip(n - FTell() % n);
+    local int value = FTell() % n;
+
+    if (value)
+        FSkip(n - value);
 }
 
 typedef uint64 ulonglong;
