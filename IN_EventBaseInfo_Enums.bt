@@ -1,23 +1,5 @@
 // Enums for Support
-// In Little Endian
 
-/*enum<uint32> Support
-{
-    C = 0xFF00FF00,
-    C_Byleth = 0x20F00, 20F02 Rhea 2010106 Cyril
-    C_Annette = 0xFF00, //Annette x Ingrid
-    B = 0xFF00FF02,
-    B_Byleth = 0xFF020F02,
-    B_Plus = 0xFF00FF01,
-    B_Annette_Plus = 0xFF00FF03,  // Annette Hanneman
-    B_Ashe_1 = 0x100FF02, // Ashe Gilbert and Shamir
-    B_Ashe_2 = 0x100FF03,
-    A = 0x100FF04,
-    A_Byleth = 0x1020F04,
-    A_Plus = 0x100FF05,
-    S_MByleth = 0xFF010F07, 2010006
-    S_FByleth = 0x2010F06,  2010106      
-};*/
 enum<byte> Support
 {
     C = 0x00,
@@ -29,23 +11,24 @@ enum<byte> Support
     S = 0x06,
     Goddess_Tower = 0x07
 };
-
 enum<byte> Byleth_Gender
 {
     Male = 0x00,
     Female = 0x01,
-    Not_Byleth = 0xFF,
-    Same_Sex = 0x0F
+    Both = 0x0F,
+    Not_Byleth = 0xFF
 };
-enum<byte> Timeskip
+enum<byte> Availability
 {
     Pre_Timeskip_Only = 0x00,
+    Post_Timeskip_Only = 0x01,
+    Wedding_Ring_Needed = 0x02,             // ?? Educated Guess
     No_Restriction = 0xFF,
-    Post_Timeskip_Only = 0x01
+
 };
 enum<byte> Flag
 {
-    None = -1
+    Not_Used = -1
 };
 enum<uint16> Names
 {
@@ -98,7 +81,7 @@ enum<uint16> Names
 	Randolph_46 = 46,
 	Flame_Emperor_47 = 47,
 	Anna_48 = 48,
-	Jeritza_49 = 1045,
+	Jeritza_49 = 1045,          // Changed to match ID
 	Rodrigue_50 = 50,
 	Judith_51 = 51,
 	Nader_52 = 52,
