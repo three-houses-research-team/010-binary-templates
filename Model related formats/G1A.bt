@@ -21,16 +21,26 @@ LittleEndian();
 #include "G1SharedStructures.bt"
 
 typedef struct G1APACKEDFRAMEINFO {
-    int unknown1_count : 12,
-        unknown2 : 6,
-        frame_header_blob_size : 12,
-        unknown3 : 2;
-    // local int frame_header_size = (packed_data >> 18) & 0x3FFC;
-    // local int unknown_count = (packed_data & 0xFFF);
+    int max_bone_index : 18,
+        frame_header_blob_size : 14
+    // Actual disasm
+    // frame_header_size = (packed_data >> 18) & 0x3FFC;
+    // max_bone_index    =  packed_data & 0xFFF;
+    //
+    // frame_header_blob_size could be 12 bits, and max_bone_index could be 20--
+    // however this is not how the game parses the data.
 } G1APackedFrameInfo;
 
+
+typedef enum <ushort> {
+    Rotation,
+    Position,
+    Scale
+} G1AKeyframeType;
+
+
 typedef struct G1AFRAMESPLINE {
-    ushort unknown1<name="Unknown 1">;
+    G1AKeyframeType type<name="type">;
     ushort bone_count<name="Bone Count">;
     uint first_matrix<name="First Matrix">;
     ushort bones[bone_count]<name="Bone IDs">;
@@ -65,7 +75,7 @@ typedef struct G2ASTRUCTURE {
 
     local int startp = FTell();
     G1AFrame frames[frame_count]<name="Frames", optimize=false>;
-    FSeek(startp + frame_size);
+    FSeek(startp + packed_data.frame_header_blob_size + frame_size);
     HalfMatrix44 matrices[matrix_count]<name="Matrices">;
 } G1AStructure;
 
