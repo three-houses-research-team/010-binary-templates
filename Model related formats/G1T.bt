@@ -67,9 +67,9 @@ x
             {
                 struct EXTRATEXHEADER {
                     uint32 size<name="Extra Texture Header size", format=hex>;
-                    uint32 unk;
-                    uint32 unk;
-                }ExtraTexHeader<name="Extra Texture Header", comment="No idea what this does for now", bgcolor=cDkGray>;
+                    uint32 width;
+                    uint32 height;
+                }ExtraTexHeader<name="Extra Texture Header", comment="Width and Height values for non-powers of two and large textures", bgcolor=cDkGray>;
             }
             
             local uint32 Width = 1 << (dimensions & 0xF);
