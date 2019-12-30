@@ -29,8 +29,14 @@ typedef struct G1APACKEDFRAMEINFO {
     // local int unknown_count = (packed_data & 0xFFF);
 } G1APackedFrameInfo;
 
+typedef enum<short> {
+    Rotation,
+    Position,
+    Scale
+}G2AKeyframeType;
+
 typedef struct G1AFRAMESPLINE {
-    ushort unknown1<name="Unknown 1">;
+    G2AKeyframeType type<name="Spline Type">;
     ushort bone_count<name="Bone Count">;
     uint first_matrix<name="First Matrix">;
     ushort bones[bone_count]<name="Bone IDs">;
