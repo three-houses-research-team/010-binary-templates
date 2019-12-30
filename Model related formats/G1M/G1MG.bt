@@ -91,7 +91,7 @@ string GetGeometrySectionName(G1MGEOMETRYSECTION &section) {
 }
 
 typedef struct G1MGEOMETRY {
-    string model_type<name="Model Type">;
+    char model_type[4]<name="Model Type">;
     uint32 reserved1<name="Unknown 1", hidden=true>;
     Vector3 bbox_brc<name="BBox Bottom Right">;
     Vector3 bbox_tlc<name="BBox Top Left">;
