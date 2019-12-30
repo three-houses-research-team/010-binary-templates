@@ -22,7 +22,7 @@ LittleEndian();
 
 typedef struct G1APACKEDFRAMEINFO {
     int max_bone_index : 18,
-        frame_header_blob_size : 14
+        frame_header_blob_size : 14;
     // Actual disasm
     // frame_header_size = (packed_data >> 18) & 0x3FFC;
     // max_bone_index    =  packed_data & 0xFFF;
@@ -45,18 +45,15 @@ typedef struct G1AFRAMESPLINE {
     G1Helper_AlignBytes(4);
 } G1AFrameSpline;
 
-typedef struct G1AFRAMEHEADER {
+typedef struct G1AFRAME {
     int spline_count : 2,
         next_header_offset : 10,
         data_offset : 20;
-} G1AFrameHeader;
 
-typedef struct G1AFRAME {
-    G1AFrameHeader header;
     local int locp = FTell();
-    FSeek(parentof(this).startp + header.data_offset + parentof(this).packed_data.frame_header_blob_size);
+    FSeek(parentof(this).startp + data_offset + parentof(this).packed_data.frame_header_blob_size);
     G1Helper_AlignBytesReverse(4);
-    G1AFrameSpline frame[header.spline_count]<name="splines", optimize=false>;
+    G1AFrameSpline frame[spline_count]<name="splines", optimize=false>;
     FSeek(locp);
 } G1AFrame;
 
@@ -69,7 +66,7 @@ typedef struct G2ASTRUCTURE {
     int matrix_count<name="Matrix Count">;
     int unknown1_count<name="Unknown 1">;
 
-    local int frame_count = packed_data.frame_header_blob_size / sizeof(G1AFRAMEHEADER);
+    local int frame_count = packed_data.frame_header_blob_size / sizeof(int);
 
     local int startp = FTell();
     G1AFrame frames[frame_count]<name="Frames", optimize=false>;
