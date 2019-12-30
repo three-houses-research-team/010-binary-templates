@@ -31,13 +31,11 @@ typedef struct G1APACKEDFRAMEINFO {
     // however this is not how the game parses the data.
 } G1APackedFrameInfo;
 
-
 typedef enum <ushort> {
     Rotation,
     Position,
     Scale
 } G1AKeyframeType;
-
 
 typedef struct G1AFRAMESPLINE {
     G1AKeyframeType type<name="type">;
