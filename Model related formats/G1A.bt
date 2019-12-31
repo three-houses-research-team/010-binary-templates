@@ -1,0 +1,79 @@
+//------------------------------------------------
+//--- 010 Editor v9.1.0 Binary Template
+//
+//      File: Koei Tecmo Animation
+//   Authors: HealingBrew, Lucas Cone
+//   Version: 1.3
+//   Purpose: Parsing G2A animations
+//  Category: File Format
+// File Mask: *.g2a; *.g1a
+//  ID Bytes: /
+//   History:
+//   1.4    2019-12-31 Joschka: Updated structures
+//   1.3    2019-12-30 healingbrew: Normalized file.
+//   1.2    2019-12-26 Lukas Cone: Updated structures.
+//   1.1    2019-11-14 healingbrew: Update with RE'd structure
+//   1.0    2019-11-14 healingbrew: Update with more accurate structure
+//   1.0    2019-11-10 healingbrew: Made the original file
+//------------------------------------------------
+
+LittleEndian();
+
+#include "G1SharedStructures.bt"
+
+typedef struct G1APACKEDBONEINFO {
+    int animation_length_in_frames : 18, /*number of frames (including non-keyframes*/
+        bone_info_blob_size : 14;
+    // Actual disasm
+    // bone_info_blob_size = (packed_data >> 18) & 0x3FFC;
+    // animation_length_in_frames    =  packed_data & 0xFFF;
+    //
+    // bone_info_blob_size could be 12 bits, and animation_length_in_frames could be 20--
+    // however this is not how the game parses the data.
+} G1APackedBoneInfo;
+
+
+typedef enum <ushort> {
+    Rotation,
+    Position,
+    Scale
+} G1AKeyframeType;
+
+typedef struct G1AFRAMESPLINE {
+    G1AKeyframeType type<name="type">;
+    ushort keyframe_count<name="Keyframes' Count">;
+    uint first_matrix<name="First Matrix Index">;
+    ushort keyframes[keyframe_count]<name="Keyframes' Timing", comment="In frames probably">;
+    G1Helper_AlignBytes(4);
+} G1AFrameSpline;
+
+typedef struct G1ABONEINFO {
+    int spline_type_count : 2, //number of channels
+        bone_ID : 10, //divide by 4 to get the actual ID
+        bone_timing_data_offset : 20; //may need to divide by 4 in some G2A versions
+
+    local int locp = FTell();
+    FSeek(parentof(this).startp + bone_timing_data_offset + parentof(this).packed_data.bone_info_blob_size);
+    G1Helper_AlignBytesReverse(4);
+    G1AFrameSpline frame[spline_type_count]<name="splines", optimize=false>;
+    FSeek(locp);
+} G1ABoneInfo;
+
+typedef struct G2ASTRUCTURE {
+    GResourceSectionHeader header<name="Header", read=GetSectionName>;
+    float fps<name="Framerate", comment="Probably">;
+
+    G1APackedBoneInfo packed_data<name="Packed Data", comment="Divide 1st by framerate = length in sec ?">;
+    int timing_section_size<name="Timing section size">;
+    int matrix_count<name="Matrix Count">;
+    int unknown1_count<name="Unknown 1">;
+
+    local int bone_count = packed_data.bone_info_blob_size / sizeof(int);
+
+    local int startp = FTell();
+    G1ABoneInfo bones[bone_count]<name="BoneInfo", optimize=false>;
+    FSeek(startp + packed_data.bone_info_blob_size + timing_section_size);
+    HalfMatrix44 matrices[matrix_count]<name="Matrices">;
+} G1AStructure;
+
+G1AStructure File<name="G1A", open=true>;

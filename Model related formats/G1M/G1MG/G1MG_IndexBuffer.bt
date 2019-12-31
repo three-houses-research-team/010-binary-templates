@@ -15,11 +15,16 @@
 #ifndef G1M_GEOMETRY_INDEXBUFFER
 #define G1M_GEOMETRY_INDEXBUFFER
 
+#ifndef G1M_SHAREDSTRUCTURES
+#include "../../G1SharedStructures.bt"
+#endif // G1M_SHAREDSTRUCTURES
+
 typedef struct G1MGEOMETRYINDEXBUFFER {
     int count<name="Count">;
     int unknown1<name="Unknown 1">;
     int unknown2<name="Unknown 2">;
     ushort indices[count]<name="Indices">;
+    G1Helper_AlignBytes(4);
 } G1MGeometryIndexBuffer;
 
 #endif // G1M_GEOMETRY_INDEXBUFFER

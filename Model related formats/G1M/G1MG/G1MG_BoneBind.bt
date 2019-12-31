@@ -17,9 +17,8 @@
 
 typedef struct G1MGEOMETRYBONEBIND {
     int index<name="Index">;
-    int unknown1<name="Unknown 1">;
-    short bone_id<name="Bone ID">;
-    short unknown2<name="Unknown 2">;
+    int cloth_id<name="Cloth Id">;
+    int bone_id<name="Bone Id">;
 } G1MGeometryBoneBind;
 
 typedef struct G1MGEOMETRYBONEBINDSET {

@@ -134,6 +134,15 @@ enum<uint16> CharID
 	Leonie_Replacement = 281,
 	
 	Deploy_Tile = 300,
+	
+	Yuri = 1041,
+	Balthus = 1042,
+	Constance = 1043,
+	Hapi = 1044,
+	ChurchOfSeirosDudeWithMinorCrest = 1045,
+	Jeritza_Playable = 1046,
+	Anna_Playable = 1047,
+	Jeritza_Playable_NPC_Copy = 1049,
 	};
 	
 	enum<ubyte> AbilityID
