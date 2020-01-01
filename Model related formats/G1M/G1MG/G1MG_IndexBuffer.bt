@@ -21,7 +21,7 @@
 
 typedef struct G1MGEOMETRYINDEXBUFFER {
     int count<name="Count">;
-    int unknown1<name="Unknown 1">;
+    int width<name="Unknown 1", comment="bit width of each index; i.e. 16 = 2 bytes">;
     int unknown2<name="Unknown 2">;
     ushort indices[count]<name="Indices">;
     G1Helper_AlignBytes(4);
