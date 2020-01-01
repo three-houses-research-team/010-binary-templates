@@ -9,6 +9,7 @@
 // File Mask: *.g1m
 //  ID Bytes: 5F 4D 31 47
 //   History:
+//   1.2      2020-01-01  Joschka : Updated with NUNO parsing
 //   1.1      2019-11-01  HealingBrew: Updated with section parsing
 //   1.0      2019-08-26  Raytwo: Made the original file
 //------------------------------------------------
@@ -38,9 +39,10 @@ LittleEndian();
 #include "G1M/G1MG/G1MG_SubMesh.bt"
 #include "G1M/G1MG/G1MG_Mesh.bt"
 #include "G1M/G1MG.bt"
+#include "G1M/NUNO.bt"
 #include "G1M/EXTR.bt"
 
-// TODO: NUNO (Cloth,) NUNV (Cloth?,) COLL (Collision)
+//NUNV (Hair,) COLL (Collision)
 
 typedef struct G1MSUBSECTION {
     local int32 pos = FTell();
@@ -58,6 +60,9 @@ typedef struct G1MSUBSECTION {
             break;
         case "GM1G":
             G1MGeometry data<name="Geometry">;
+            break;
+        case "ONUN":
+            G1MNunoSection date<name="Nuno data">;
             break;
         case "RTXE":
             G1MExtraSet data<name="Extra">;
