@@ -2,8 +2,8 @@
 //--- 010 Editor v9.0.2 Binary Template
 //
 //      File: NUNO.bt
-//   Authors: Raytwo
-//   Version: 1.0
+//   Authors: Raytwo, Joschka
+//   Version: 1.1
 //   Purpose: 
 //  Category: 
 // File Mask: 
@@ -47,18 +47,17 @@ typedef struct {
     uint32 unk3;
     uint32 unk2;
     FSkip(0x4C); //Unknown
-    if(header.version>=0x30303235)
-        FSkip(0x10);
+    FSkip(0x10); //if(header.version>=0x30303235)        
     ControlPoint controlPoints[controlPointsCount]<name="Control Point">;
     Influence influences[controlPointsCount]<name="Influence">;
     UnkSection unknownSections[unknownSectionCount]<name="Unknown Section">;
     FSkip((unk1+unk2+unk3) * 4);    
-} entry_00030001<name="Entry (0x00030001)", optimize=false>;
+} nunoentry_00030001<name="Entry (0x00030001)", optimize=false>;
 
 //No idea what the entry is for but it's not necessary to rebuild meshes or bones.
 typedef struct {
 
-} entry_00030002<name="Entry (0x00030002)", optimize=false>;
+} nunoentry_00030002<name="Entry (0x00030002)", optimize=false>;
 
 typedef struct {
     uint32 unk1;
@@ -73,7 +72,7 @@ typedef struct {
     UnkSection unknownSections[unknownSectionCount]<name="Unknown Sections">;
     FSkip(unk2 * 4);
     FSkip(unk3 * 8);    
-} entry_00030003<name="Entry (0x00030003)", optimize=false>;
+} nunoentry_00030003<name="Entry (0x00030003)", optimize=false>;
 
 typedef struct G1MNUNOSECTION {
     uint32 subSectionCount<name="Subsection count">;
@@ -89,13 +88,13 @@ typedef struct G1MNUNOSECTION {
             switch(flag)
             {
                 case 0x00030001:
-                    entry_00030001 entries[entry_count];
+                    nunoentry_00030001 entries[entry_count];
                     break;
                 case 0x00030002:
-                    entry_00030002 entries[entry_count];
+                    nunoentry_00030002 entries[entry_count];
                     break;
                 case 0x00030003:
-                    entry_00030003 entries[entry_count];
+                    nunoentry_00030003 entries[entry_count];
                     break;
             }
         }NunoSubSection<name="SubSection",optimize=false>; 
