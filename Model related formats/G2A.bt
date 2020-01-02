@@ -3,12 +3,13 @@
 //
 //      File: Koei Tecmo Animation
 //   Authors: HealingBrew, Lukas Cone, Joschka
-//   Version: 1.4
+//   Version: 1.5
 //   Purpose: Parsing G2A animations
 //  Category: File Format
 // File Mask: *.g2a
 //  ID Bytes: /
 //   History:
+//   1.5    2020-01-02 Joschka: Updated structures
 //   1.4    2019-12-31 Joschka: Updated structures
 //   1.3    2019-12-30 healingbrew: Normalized file.
 //   1.2    2019-12-26 Lukas Cone: Updated structures.
@@ -73,7 +74,10 @@ typedef struct G2ASTRUCTURE {
     local int startp = FTell();
     G2ABoneInfo bones[bone_count]<name="BoneInfo", optimize=false>;
     FSeek(startp + packed_data.bone_info_blob_size + timing_section_size);
-    HalfMatrix44 matrices[matrix_count]<name="Matrices">;
+    //HalfMatrix44 matrices[matrix_count]<name="Matrices">;
+    struct G2AQUANTIZEDDATA {
+        uint64 data[4]<name="data">;
+    }G2AQuantizedData[matrix_count]<name="Quantized data">;
 } G2AStructure;
 
 G2AStructure File<name="G2A", open=true>;
