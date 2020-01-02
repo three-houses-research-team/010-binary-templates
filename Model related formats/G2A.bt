@@ -66,7 +66,7 @@ typedef struct G2ASTRUCTURE {
 
     G2APackedBoneInfo packed_data<name="Packed Data", comment="Divide 1st by framerate = length in sec ?">;
     int timing_section_size<name="Timing section size">;
-    int matrix_count<name="Matrix Count">;
+    int entry_count<name="Entry Count">;
     int unknown1_count<name="Unknown 1">;
 
     local int bone_count = packed_data.bone_info_blob_size / sizeof(int);
@@ -74,10 +74,9 @@ typedef struct G2ASTRUCTURE {
     local int startp = FTell();
     G2ABoneInfo bones[bone_count]<name="BoneInfo", optimize=false>;
     FSeek(startp + packed_data.bone_info_blob_size + timing_section_size);
-    //HalfMatrix44 matrices[matrix_count]<name="Matrices">;
     struct G2AQUANTIZEDDATA {
         uint64 data[4]<name="data">;
-    }G2AQuantizedData[matrix_count]<name="Quantized data">;
+    }G2AQuantizedData[entry_count]<name="Quantized data">;
 } G2AStructure;
 
 G2AStructure File<name="G2A", open=true>;
