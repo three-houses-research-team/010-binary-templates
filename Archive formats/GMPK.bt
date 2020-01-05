@@ -122,25 +122,23 @@ typedef struct GMPKENTRYMAPENTRY {
     uint unknown_index1<name="Unknown Index 1">;
     uint model_index<name="Model Index">;
     uint unknown_index2<name="Unknown Index 2">;
-    int unknown1<name="Unknown 1">;
-
-    if(unknown1 == -1) {
-        // GMPKEntryMapEntry sub_entites[2]<name="Subentries">;
-    }
+    int unknown1<name="Name Index">;
 } GMPKEntryMapEntry;
 
 typedef struct GMPKENTRYMAP {
+    local int refptr = FTell();
     GMPKEntryMapHeader header<name="Header">;
     FSeek(parentof(this).header.entry_map_pointer + header.unknown_pointer);
     GMPKEntryMapUnknownTable unknown_table<name="Unknown Table">;
     FSeek(parentof(this).header.entry_map_pointer + header.entry_pointer);
-    GMPKEntryMapEntry entries[header.entry_count]<name="Entries", optimize=false>;
+    local int count = (header.size - (FTell() - refptr)) / sizeof(GMPKEntryMapEntry);
+    GMPKEntryMapEntry entries[count]<name="Entries", optimize=false>;
 } GMPKEntryMap;
 
 typedef struct GMPKMAPINFO {
     uint entry_map_pointer<name="Entry Map Pointer">;
     uint pointer<name="Map Pointer">;
-    uint size<name="size">;
+    uint size<name="Size">;
     uint type<name="Type", comment="Assumption">;
     uint unknown1<hidden=true>;
     uint unknown2<hidden=true>;
