@@ -1,0 +1,88 @@
+//------------------------------------------------
+//--- 010 Editor v9.1.0 Binary Template
+//
+//      File: GAPK.bt
+//   Authors: HealingBrew
+//   Version: 1.0
+//   Purpose: Parsing GAPK Animation Packs
+//  Category: Archives
+// File Mask: *.gapk
+//  ID Bytes: 47 41 50 4B
+//   History:
+//   1.0    2020-01-04 - Initial file 
+//                       LOTS of assumptions
+//------------------------------------------------
+
+LittleEndian();
+
+typedef struct GAPKHEADER {
+    uint magic<name="Magic">;
+    char version[4]<name="Version">;
+    ushort unknown1<hidden=true>;
+    ubyte unknown2<hidden=true>;
+    ubyte unknown3<hidden=true>;
+    int header_sz<name="Header Size">;
+    int file_size<name="File Size">;
+    int pointer_table_count<name="Pointer Table Count">;
+    int size_table_count<name="Size Table Count">;
+    int unknown4<hidden=true>;
+    int pointer_table_pointer<name="Pointer Table Pointer">;
+    int size_table_pointer<name="Size Table Pointer">;
+    int index_table_pointer<name="Index Table Pointer">;
+} GAPKHeader;
+
+typedef struct GAPKMOTIONENTRY {
+    int unknown1<name="Unknown 1">;
+    int unknown2<name="Unknown 2">;
+} GAPKMotionEntry;
+
+typedef struct GAPKMOTIONENTRY2 {
+    ushort unknown1<name="Unknown 1">;
+    ushort unknown2<name="Unknown 2">;
+} GAPKMotionEntry2;
+
+typedef struct GAPKMOTIONNAME {
+    ubyte size<name="Size">;
+    char name[size]<name="Name">;
+} GAPKMotionName;
+
+string GetGAPKMotionNameText(GAPKMOTIONNAME &tmp) {
+    return tmp.name;
+}
+
+typedef struct GAPKMOTIONINDEXHEADER {
+    uint64 magic<name="Magic">;
+    char version[4]<name="Version">;
+    uint size<name="Size">;
+    int entry_count<name="Count">;
+} GAPKMotionIndexHeader;
+
+typedef struct GAPKMOTIONINDEX {
+    GAPKMotionIndexHeader header<name="header">;
+    GAPKMotionEntry entries[header.entry_count]<name="Entries">;
+    ushort unknown1<hidden=true>;
+    short unknown2<hidden=true>;
+    GAPKMotionEntry2 entries2[header.entry_count]<name="Entries 2">;
+    GAPKMotionName names[header.entry_count]<name="Names", optimize=false, read=GetGAPKMotionNameText>;
+} GAPKMotionIndex;
+
+typedef struct GAPKBLOB {
+    ubyte blob[sizes[i]]<name="File Entry">;
+} GAPKBlob;
+
+typedef struct GAPK_ {
+    GAPKHeader header<name="Header">;
+    FSeek(header.pointer_table_pointer);
+    int pointers[header.pointer_table_count]<name="Pointers">;
+    FSeek(header.size_table_pointer);
+    int sizes[header.size_table_count]<name="Sizes">;
+    FSeek(header.index_table_pointer);
+    GAPKMotionIndex motion_index<name="Index">;
+    local int i = 0;
+    for(i = 0; i < header.pointer_table_count; ++i) {
+        FSeek(pointers[i]);
+        GAPKBlob blob<name="File Entry">;
+    }
+} GAPK;
+
+GAPK File<name="GAPK", open=true>;
