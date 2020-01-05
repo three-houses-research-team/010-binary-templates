@@ -88,6 +88,7 @@ typedef struct GMPKNAMEMAPTEXT {
 
 
 string GetGMPKNameMapText(GMPKNAMEMAPTEXT &tmp) {
+    if(tmp.size == 0) return "";
     return tmp.name;
 }
 
@@ -95,15 +96,13 @@ typedef struct GMPKNAMEMAP {
     GMPKNameMapHeader header<name="Header">;
     GMPKNameMapEntry entries[header.count]<name="Entries">;
     local int refptr = FTell();
-    FSeek(parentof(this).entry_map_pointer + 0x18);
-    int count<hidden=true>;
-    FSeek(refptr);
-    local int total_count = count + header.count;
-    ushort pointers[total_count];
+    ushort pointers[header.count * 2];
     local int i = 0;
-    for(i = 0; i < total_count; ++i) {
-        FSeek(refptr + pointers[i]);
+    for(i = 0; i < header.count; ++i) {
+        FSeek(refptr + pointers[i * 2 + 1]);
         GMPKNameMapText text<name="Text", read=GetGMPKNameMapText>;
+        FSeek(refptr + pointers[i * 2]);
+        GMPKNameMapText text<name="Text Suffix", read=GetGMPKNameMapText>;
     }
 } GMPKNameMap;
 
@@ -126,7 +125,7 @@ typedef struct GMPKENTRYMAPENTRY {
     int unknown1<name="Unknown 1">;
 
     if(unknown1 == -1) {
-        // GMPKEntryMapEntry sub_entites[2]<name="Subentities">;
+        // GMPKEntryMapEntry sub_entites[2]<name="Subentries">;
     }
 } GMPKEntryMapEntry;
 
@@ -135,7 +134,7 @@ typedef struct GMPKENTRYMAP {
     FSeek(parentof(this).header.entry_map_pointer + header.unknown_pointer);
     GMPKEntryMapUnknownTable unknown_table<name="Unknown Table">;
     FSeek(parentof(this).header.entry_map_pointer + header.entry_pointer);
-    GMPKEntryMapEntry entities[header.entry_count]<name="Entities", optimize=false>;
+    GMPKEntryMapEntry entries[header.entry_count]<name="Entries", optimize=false>;
 } GMPKEntryMap;
 
 typedef struct GMPKMAPINFO {

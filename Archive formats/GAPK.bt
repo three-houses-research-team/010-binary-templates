@@ -47,6 +47,7 @@ typedef struct GAPKMOTIONNAME {
 } GAPKMotionName;
 
 string GetGAPKMotionNameText(GAPKMOTIONNAME &tmp) {
+    if(tmp.size == 0) return "";
     return tmp.name;
 }
 
