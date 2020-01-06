@@ -43,7 +43,7 @@ typedef struct KTSLTEXTUREPOINTER {
     int unknown4<name="Unknown 4">;
 } KTGLScreenLayoutTexturePointer;
 
-typedef struct KSLTPOINTER {
+typedef struct KSLTMATRIX {
     int unknown1<name="Unknown 1">;
     int unknown2<name="Unknown 2">;
     Matrix34 matrix<name="Matrix">;

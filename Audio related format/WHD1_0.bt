@@ -1,0 +1,145 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: WHD1_0.bt
+//   Authors: HealingBrew
+//   Version: 1.0
+//   Purpose: Parsing WHD Files
+//  Category: Game File
+// File Mask: *.sed, *.whd
+//  ID Bytes: 57 48 44 31 2E 30
+//   History: 
+//------------------------------------------------
+
+LittleEndian();
+
+#include "../Model related formats/G1SharedStructures.bt"
+
+typedef struct WHDHEADER {
+    string magic<name="Magic">;
+    G1Helper_AlignBytes(0x4);
+    short unknown1<name="Unknown 1">;
+    byte unknown2<name="Unknown 2">;
+    byte unknown3<name="Unknown 3">;
+    int header_size<name="Header Size">;
+    int file_size<name="File Size">;
+    int pointer_count<name="Pointer Count">;
+    int size_count<name="Size Count">;
+    int unknown4<hidden=true>;
+    int pointer_table_pointer<name="Pointer Table Pointer">;
+    int size_table_pointer<name="Size Table Pointer">;
+} WHDHeader;
+
+typedef struct WBHHEADER {
+    GResourceSectionHeader header<name="Header">;
+    uint type<name="Type", comment="Assumption">;
+    short unknown1<name="Unknown 1">;
+    short count<name="Count">;
+    int unknown3<name="Unknown 3">;
+    float unknown4<name="Unknown 4">;
+    int codec<name="Codec", comment="Assumption, DFFNT uses this in a switch and remaps it.">;
+    int codec_target<name="Codec Target", comment="Assumption? Always zero, DFFNT copies the remapped value to this value">;
+} WBHHeader;
+
+typedef struct WBHENTRYDATA {
+    int unknown1<name="Unknown 1">;
+    short unknown2<name="Unknown 2">;
+    short unknown3<name="Unknown 3">;
+    int unknown4<name="Unknown 4">;
+    int unknown5<name="Unknown 5">;
+    int unknown6<name="Unknown 6">;
+    int unknown7<name="Unknown 7">;
+    int unknown8<name="Unknown 8">;
+    int unknown9<name="Unknown 9">;
+    float unknown10<name="Unknown 10">;
+    float unknown11<name="Unknown 11">;
+    float unknown12<name="Unknown 12">;
+    float unknown13<name="Unknown 13">;
+    float unknown14<name="Unknown 14">;
+    float unknown15<name="Unknown 15">;
+    float unknown16<name="Unknown 16">;
+    float unknown17<name="Unknown 17">;
+    int unknown18<name="Unknown 18">;
+    int unknown19<name="Unknown 19">;
+    int unknown20<name="Unknown 20">;
+    int unknown21<name="Unknown 21">;
+    int unknown22<name="Unknown 22">;
+    int unknown23<name="Unknown 23">;
+    int unknown24<name="Unknown 24">;
+    int unknown25<name="Unknown 25">;
+    int unknown26<name="Unknown 26">;
+    int unknown27<name="Unknown 27">;
+    int unknown28<name="Unknown 28">;
+    int unknown29<name="Unknown 29">;
+    int unknown30<name="Unknown 30">;
+    int unknown31<name="Unknown 31">;
+    int unknown32<name="Unknown 32">;
+    int unknown33<name="Unknown 33">;
+    int unknown34<name="Unknown 34">;
+    int unknown35<name="Unknown 35">;
+    int unknown36<name="Unknown 36">;
+    int unknown37<name="Unknown 37">;
+    int unknown38<name="Unknown 38">;
+    int unknown39<name="Unknown 39">;
+    int unknown40<name="Unknown 40">;
+    int unknown41<name="Unknown 41">;
+    int unknown42<name="Unknown 42">;
+    int unknown43<name="Unknown 43">;
+    int unknown44<name="Unknown 44">;
+} WBHEntryData;
+
+typedef struct WBHENTRY {
+    byte unknown1<name="Unknown 1">;
+    byte unknown2<name="Unknown 2">;
+    byte unknown3<name="Unknown 3">;
+    byte count<name="Count">;
+    int unknown4<name="Unknown 4">;
+    float unknown5<name="Unknown 5">;
+    float unknown6<name="Unknown 6">;
+    float unknown7<name="Unknown 7">;
+    int unknown8<name="Unknown 8">;
+    int unknown9<name="Unknown 9">;
+    int unknown10<name="Unknown 10">;
+    int unknown11<name="Unknown 11">;
+    int unknown12<name="Unknown 8">;
+    int unknown13<name="Unknown 9">;
+    short unknown14<name="Unknown 10">;
+    short unknown15<name="Unknown 11">;
+    int unknown16<name="Unknown 11">;
+    WBHEntryData data[count]<name="Data">;
+} WBHEntry;
+
+typedef struct WBHSTRUCT {
+    local int refptr = FTell() + sizeof(GResourceSectionHeader);
+    WBHHeader header<name="Header">;
+    int pointers[header.count]<name="Pointers">;
+    local int i = 0;
+    for(i = 0; i < header.count; ++i) {
+        if(pointers[i] == 0) continue;
+        FSeek(refptr + pointers[i]);
+        WBHEntry entry<name="Entry">;
+    }
+} WBH;
+
+typedef struct WBDHEADER {
+    GResourceSectionHeader header<name="Header">;
+    // TODO
+} WBDHeader;
+
+typedef struct WBDSTRUCT {
+    WBDHeader header<name="Header">;
+} WBD;
+
+typedef struct WHDSTRUCT {
+    WHDHeader header<name="Header">;
+    FSeek(header.pointer_table_pointer);
+    int pointers[header.pointer_count]<name="Pointers">;
+    FSeek(header.size_table_pointer);
+    int sizes[header.size_count]<name="Sizes">;
+    FSeek(pointers[0]); // WBH
+    WBH wbh<name="WBH">;
+    FSeek(pointers[1]); // WBD
+    WBD wbd<name="WBD">;
+} WHD;
+
+WHD File<name="WHD", open=true>;
