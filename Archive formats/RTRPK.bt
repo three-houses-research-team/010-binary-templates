@@ -1,0 +1,57 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: RTRPK.bt
+//   Authors: HealingBrew
+//   Version: 1.0
+//   Purpose: Parsing RTRPK Files
+//  Category: Game File
+// File Mask: *.rtrpk
+//  ID Bytes: 52 54 50 4B
+//   History: 
+//   1.0    2020-01-08 - Initial file
+//------------------------------------------------
+
+#ifndef RTRPK_BT
+#define RTRPK_BT
+
+#include "../Model related formats/G1SharedStructures.bt"
+
+typedef struct RTRPKHEADER {
+    string magic<name="Magic">;
+    G1Helper_AlignBytes(0x8);
+    short unknown1<name="Unknown 1">;
+    byte unknown2<name="Unknown 2">;
+    byte unknown3<name="Unknown 3">;
+    int header_size<name="Header Size">;
+    int file_size<name="File Size">;
+    int pointer_count<name="Pointer Count">;
+    int size_count<name="Size Count">;
+    int unknown4<hidden=true>;
+    int pointer_table_pointer<name="Pointer Table Pointer">;
+    int size_table_pointer<name="Size Table Pointer">;
+} RTRPKHeader;
+
+#ifndef RTRPK_FILELESS
+#define RTRPK_FILELESS
+typedef struct RTRPKBLOB {
+    ubyte blob[sizes[i]]<name="Blob">;
+} RTRPKBlob;
+
+typedef struct RTRPKSTRUCT {
+    RTRPKHeader header<name="Header">;
+    FSeek(header.pointer_table_pointer);
+    int pointers[header.pointer_count]<name="Pointers">;
+    FSeek(header.size_table_pointer);
+    int sizes[header.size_count]<name="Sizes">;
+    local int i = 0;
+    for(i = 0; i < header.size_count; ++i) {
+        FSeek(pointers[i]);
+        RTRPKBlob file<name="File">;
+    }
+} RTRPK;
+
+RTRPK File<name="RTRPK", open=true>;
+
+#endif // RTRPK_FILELESS
+#endif // RTRPK_BT

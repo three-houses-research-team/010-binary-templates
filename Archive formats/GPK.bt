@@ -1,0 +1,76 @@
+//------------------------------------------------
+//--- 010 Editor v9.1.0 Binary Template
+//
+//      File: GPK.bt
+//   Authors: HealingBrew
+//   Version: 1.0
+//   Purpose: Common Structures Between GAPK, GMPK, and GEPK
+//  Category: Archives
+//   History:
+//   1.0    2020-01-08 - Initial file
+//------------------------------------------------
+
+#ifndef GPK_BT
+#define GPK_BT
+
+LittleEndian();
+
+typedef enum GPKCHUNKMAGIC {
+    NameIndexDirectoryV1 = 0x4E494431,
+    SDP_V1 = 0x53445031
+} GPKChunkMagic;
+
+typedef struct GPKCHUNKHEADER {
+    char name[8]<name="Name">;
+    GPKChunkMagic type<name="Type">;
+    int size<name="Size">;
+} GPKChunkHeader;
+
+
+typedef struct GPKNAMETABLEHEADER {
+    GPKChunkHeader header<name="Header">;
+    int count<name="Count">;
+    int largest_string<name="Largest String Size">;
+} GPKNameTableHeader;
+
+typedef struct GPKNAMETABLEENTRY { 
+    int id<name="Id">;
+    ushort unknown1<name="Unknown 1">;
+    ushort unknown2<name="Unknown 2">;
+} GPKNameTableEntry;
+
+typedef struct GPKNAMETABLETEXT {
+    ubyte size<name="Size">;
+    char name[size]<name="Name">;
+} GPKNameTableText;
+
+string GetGPKNameTableText(GPKNAMETABLETEXT &text) {
+    if(text.size == 0) return "";
+    return text.name;
+}
+
+typedef struct GPKNAMETABLESTRING { 
+    short suffix_pointer<name="Suffix Pointer">;
+    short prefix_pointer<name="Prefix Pointer">;
+    local int localptr = FTell();
+    FSeek(refptr + suffix_pointer);
+    GPKNameTableText suffix<name="Suffx", read=GetGPKNameTableText>;
+    FSeek(refptr + prefix_pointer);
+    GPKNameTableText prefix<name="Suffx", read=GetGPKNameTableText>;
+    FSeek(localptr);
+} GPKNameTableString;
+
+string GetGPKNameTableString(GPKNAMETABLESTRING &str) {
+    local char buffer[parentof(str).header.largest_string];
+    SPrintf(buffer, "%s%s", str.prefix.name, str.suffix.name);
+    return buffer;
+}
+
+typedef struct GPKNAMETABLE {
+    GPKNameTableHeader header<name="Header">;
+    GPKNameTableEntry table[header.count]<name="Table">;
+    local int refptr = FTell();
+    GPKNameTableString strings[header.count]<name="Strings", optimize=false, read=GetGPKNameTableString>;
+} GPKNameTable;
+
+#endif // GPK_BT
