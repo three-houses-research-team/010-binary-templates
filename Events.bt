@@ -30,7 +30,7 @@ struct Cube_Scenes{
     Cube Cube9<name="Cube Scene">;
     Cube Cube10<name="Cube Scene">;
     Cube Cube11<name="Cube Scene">;
-}cube_scenes<bgcolor=cRed, name="Cube scene">;
+}cube_scenes<bgcolor=cRed, name="Cube Scene">;
 
 int magic<hidden=true>;
 
@@ -116,6 +116,19 @@ if(eventCall == 0x1)
 int newMagic<hidden=true>;
 eventCall = newMagic;
 }
+struct SomethingElse2{
+    int Unknown;
+    int Unknown;
+    int Unknown;
+    int Unknown;
+    int Unknown;
+    int Unknown;
+    int Unknown;
+    int Unknown;
+    int Unknown;
+    int Unknown;
+    int Unknown;
+}somethingElse2<name="Unknown">;
 
 struct Scenes{
     Character Magic<hidden=true>;
