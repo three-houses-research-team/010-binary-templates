@@ -1,0 +1,80 @@
+// Enums for Support
+
+enum<byte> Support
+{
+    C = 0x00,
+    C_Plus = 0x01,
+    B = 0x02,
+    B_Plus = 0x03,
+    A = 0x04,
+    A_Plus = 0x05,
+    S = 0x06,
+    Goddess_Tower = 0x07
+};
+enum<byte> Byleth_Gender
+{
+    Male = 0x00,
+    Female = 0x01,
+    Both = 0x0F,
+    Not_Byleth = 0xFF
+};
+enum<byte> Availability
+{
+    Pre_Timeskip_Only = 0x00,
+    Post_Timeskip_Only = 0x01,
+    Wedding_Ring_Needed = 0x02,             // ?? Educated Guess
+    No_Restriction = 0xFF,
+
+};
+enum<byte> Flag
+{
+    Not_Used = -1
+};
+enum<uint16> Names
+{
+	Byleth_0 = 0,
+	Byleth_1 = 1,
+	Edelgard_2 = 2,
+	Dimitri_3 = 3,
+	Claude_4 = 4,
+	Hubert_5 = 5,
+	Ferdinand_6 = 6,
+	Linhardt_7 = 7,
+	Caspar_8 = 8,
+	Bernadetta_9 = 9,
+	Dorothea_10 = 10,
+	Petra_11 = 11,
+	Dedue_12 = 12,
+	Felix_13 = 13,
+	Ashe_14 = 14,
+	Sylvain_15 = 15,
+	Mercedes_16 = 16,
+	Annette_17 = 17,
+	Ingrid_18 = 18,
+	Lorenz_19 = 19,
+	Raphael_20 = 20,
+	Ignatz_21 = 21,
+	Lysithea_22 = 22,
+	Marianne_23 = 23,
+	Hilda_24 = 24,
+	Leonie_25 = 25,
+	Seteth_26 = 26,
+	Flayn_27 = 27,
+	Hanneman_28 = 28,
+	Manuela_29 = 29,
+	Gilbert_30 = 30,
+	Alois_31 = 31,
+	Catherine_32 = 32,
+	Shamir_33 = 33,
+	Cyril_34 = 34,
+	Jeralt_35 = 35,
+	Rhea_36 = 36,
+	Sothis_37 = 37,
+	Yuri = 1040,
+	Balthus = 1041,
+	Constance = 1042,
+	Hapi = 1043,
+	ChurchOfSeirosDudeWithMinorCrest = 1044,
+	Jeritza_Playable = 1045,
+	Anna_Playable = 1046,
+};
