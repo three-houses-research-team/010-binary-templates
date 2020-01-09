@@ -109,7 +109,7 @@ if (ktsr.type_id == 0xFCDD9402) { // ktsl2stbin
 			LittleEndian();
 			uint32 unknown_1;
 			ubyte content[size] <name="Content">;
-		} packet[packetCount] <name="Packet", optimize=false>;
+		} packet[packet_count] <name="Packet", optimize=false>;
 	} ktss[ktss.count] <name="KTSS", optimize=false>;
 } else if (ktsr.type_id == 0x1A487B77) { // ktsl2asbin
 	local TFindResults info = FindAll(0x368C88BD);
