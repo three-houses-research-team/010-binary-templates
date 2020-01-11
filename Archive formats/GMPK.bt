@@ -1,0 +1,144 @@
+//------------------------------------------------
+//--- 010 Editor v9.1.0 Binary Template
+//
+//      File: GMPK.bt
+//   Authors: HealingBrew
+//   Version: 1.0
+//   Purpose: Parsing GMPK Model Packs
+//  Category: Archives
+// File Mask: *.gmpk
+//  ID Bytes: 47 41 50 4B
+//   History:
+//   1.1    2020-01-08 - Update Name Table
+//   1.0    2020-01-04 - Initial file
+//                       LOTS of assumptions
+//------------------------------------------------
+
+#include "GPK.bt";
+
+LittleEndian();
+
+typedef struct GMPKHEADER {
+    uint magic<name="Magic">;
+    char version[4]<name="Version">;
+    char system[4]<name="System">;
+    int file_table_pointer<name="File Table Pointer">;
+    int unknown1_count<name="Unknown Count 1">;
+    int unknown2_count<name="Unknown Count 2">;
+    int unknown3_count<name="Unknown Count 3">;
+    int unknown4_count<name="Unknown Count 4">;
+    int unknown1_pointer<name="Unknown Pointer 1">;
+    int name_map_pointer<name="Name Map Pointer">;
+    int unknown<name="Unknown", hidden=true>;
+    int entry_map_pointer<name="Entry Map Pointer">;
+} GMPKHeader;
+
+typedef struct GMPKFILETYPETABLEHEADER {
+    uint flags<name="Flags">;
+    int count<name="Count">;
+    int pointer<name="Pointer">;
+    int unknown<hidden=true>;
+} GMPKFileTypeTableHeader;
+
+typedef struct GMPKFILETYPETABLEENTRY {
+    uint flags<name="Flags">;
+    uint count<name="Count">;
+    int size<name="Size">;
+    short unknown1<name="Unknown 1">;
+    short unknown2<name="Unknown 2">;
+} GMPKFileTypeTableEntry;
+
+typedef struct GMPKFILETYPEBLOB {
+    ubyte blob[entries[i].size]<name="Data">;
+} GMPKFileTypeBlob;
+
+typedef struct GMPKFILETYPETABLE {
+    local int refptr = FTell();
+    GMPKFileTypeTableHeader header<name="Header">;
+    FSeek(refptr + header.pointer);
+    GMPKFileTypeTableEntry entries[header.count]<name="Entries">;
+    local int i = 0;
+    for(i = 0; i < header.count; ++i) {
+        GMPKFileTypeBlob blob<name="Data">;
+    }
+} GMPKFileTypeTable;
+
+typedef struct GMPKENTTIYMAPUNKNOWNTABLE {
+    local int refptr = FTell();
+    GMPKFileTypeTableEntry entries[header.unknown1_count]<name="Entries">;
+} GMPKEntryMapUnknownTable;
+
+typedef struct GMPKENTRYMAPHEADER {
+    GPKChunkHeader header<name="Header">;
+    int unknown1_count<name="Unknown Count 1">;
+    int unknown2_count<name="Unknown Count 2">;
+    int entry_count<name="Entry Count">;
+    int unknown3_count<name="Unknown Count 3">;
+    int unknown_pointer<name="Unknown Pointer">;
+    int entry_pointer<name="Entry Map Pointer">;
+} GMPKEntryMapHeader;
+
+typedef struct GMPKENTRYMAPENTRY {
+    uint unknown_index1<name="Unknown Index 1">;
+    uint model_index<name="Model Index">;
+    uint unknown_index2<name="Unknown Index 2">;
+    int unknown1<name="Name Index">;
+} GMPKEntryMapEntry;
+
+typedef struct GMPKENTRYMAP {
+    local int refptr = FTell();
+    GMPKEntryMapHeader header<name="Header">;
+    FSeek(parentof(this).header.entry_map_pointer + header.unknown_pointer);
+    GMPKEntryMapUnknownTable unknown_table<name="Unknown Table">;
+    FSeek(parentof(this).header.entry_map_pointer + header.entry_pointer);
+    local int count = (header.header.size - (FTell() - refptr)) / sizeof(GMPKEntryMapEntry);
+    GMPKEntryMapEntry entries[count]<name="Entries", optimize=false>;
+} GMPKEntryMap;
+
+typedef struct GMPKMAPINFO {
+    uint entry_map_pointer<name="Entry Map Pointer">;
+    uint pointer<name="Map Pointer">;
+    uint size<name="Size">;
+    uint unknown1<name="Unknown 1">;
+    uint count<name="Count">;
+    uint unknown3<name="Unknown 3">;
+    uint unknown4<name="Unknown 4">;
+    
+    local int pos = FTell();
+    FSeek(pointer);
+    local GPKChunkMagic magic = (GPKChunkMagic) ReadInt(FTell() + 8);
+    switch(magic) {
+        case NameIndexDirectoryV1:
+            GPKNameTable name_directory<name="Name Directory">;
+            break;
+    }
+    FSeek(pos);
+} GMPKMapInfo;
+
+typedef struct GMPKFILEENTRY {
+    int pointer<name="Pointer">;
+    int size<name="Size">;
+} GMPKFileEntry;
+
+typedef struct GMPKFILEBLOB {
+    ubyte blob[entries[i].size]<name="File Entry">;
+} GMPKFileBlob;
+
+typedef struct GMPK_ {
+    GMPKHeader header<name="Header">;
+    FSeek(header.unknown1_pointer);
+    GMPKFileTypeTable type_table<name="Type Table">;
+    FSeek(header.entry_map_pointer);
+    GMPKEntryMap entry_map<name="Entry Map">;
+    FSeek(header.name_map_pointer);
+    GMPKMapInfo name_map_info<name="Name Table">;
+    FSeek(header.file_table_pointer);
+    GMPKFileEntry entries[name_map_info.count]<name="File Pointer">;
+    local int i = 0;
+    for(i = 0; i < name_map_info.count; ++i) {
+        FSeek(header.file_table_pointer + entries[i].pointer);
+        GMPKFileBlob blob<name="File Entry">;
+    }
+} GMPK;
+
+GMPK File<name="GMPK", open=true>;

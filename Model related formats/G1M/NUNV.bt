@@ -1,0 +1,73 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: NUNV.bt
+//   Authors: Joschka
+//   Version: 1.0
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History:
+//  1.0 2020-01-01  Joschka: Created the file
+//------------------------------------------------
+#ifndef G1M_NUNV
+#define G1M_NUNV
+
+#ifndef G1M_SHAREDSTRUCTURES
+#include "../G1SharedStructures.bt"
+#endif // G1M_SHAREDSTRUCTURES
+
+#ifndef G1M_NUNO
+#include "NUNO.bt"
+#endif // G1M_NUNO
+
+//only one see
+typedef struct {
+    uint32 parentBoneId<name="Parent Bone ID">; //to be confirmed with implementation
+    uint32 controlPointsCount<name="Control points count">;
+    uint32 unknownSectionCount<name="Unknown section count">;
+    uint32 unk1;     
+    FSkip(0x54); //Unknown
+    FSkip(0x10); //if version > 0x30303131
+    ControlPoint controlPoints[controlPointsCount]<name="Control Point">;
+    Influence influences[controlPointsCount]<name="Influence">;
+    UnkSection unknownSections[unknownSectionCount]<name="Unknown Section">;
+    FSkip(unk1 * 4);    
+} nunventry_00050001<name="Entry (0x00050001)", optimize=false>;
+
+typedef struct G1MNUNVSECTION {
+    uint32 subSectionCount<name="Subsection count">;
+    local int i = 0;
+    local int pos = 0;
+    for (i = 0;i < subSectionCount; i++)
+    {   
+        pos = FTell();
+        struct NUNVSUBCHUNK {
+            uint32 flag<name="Subsection type", format=hex>;
+            uint32 subsection_size<name="Subsection size", format=hex>;
+            uint32 entry_count<name="Entry count">;
+            switch(flag)
+            {
+                case 0x00050001:
+                    nunventry_00050001 entries[entry_count];
+                    break;
+            }
+        }NunvSubSection<name="SubSection",optimize=false>; 
+        FSeek(pos + NunvSubSection.subsection_size);
+    }
+}G1MNunvSection<name="NUNVSection",open=true>;
+
+#ifndef G1M_FILELESS
+#define G1M_FILELESS
+
+LittleEndian();
+
+struct FILE {
+    GResourceSectionHeader header<name="Header">;
+    G1MNunvSection data<name="Nunv data">;
+} File<name="NUNV", open=true>;
+
+#endif // G1M_FILELESS
+
+#endif // G1M_NUNV

@@ -1,0 +1,55 @@
+//------------------------------------------------
+//--- 010 Editor v9.1.0 Binary Template
+//
+//      File: GAPK.bt
+//   Authors: HealingBrew
+//   Version: 1.1
+//   Purpose: Parsing GAPK Animation Packs
+//  Category: Archives
+// File Mask: *.gapk
+//  ID Bytes: 47 41 50 4B
+//   History:
+//   1.1    2020-01-08 - Update Name Table
+//   1.0    2020-01-04 - Initial file 
+//                       LOTS of assumptions
+//------------------------------------------------
+
+#include "GPK.bt";
+
+LittleEndian();
+
+typedef struct GAPKHEADER {
+    char magic[8]<name="Magic">;
+    ushort unknown1<hidden=true>;
+    ubyte unknown2<hidden=true>;
+    ubyte unknown3<hidden=true>;
+    int header_sz<name="Header Size">;
+    int file_size<name="File Size">;
+    int pointer_table_count<name="Pointer Table Count">;
+    int size_table_count<name="Size Table Count">;
+    int unknown4<hidden=true>;
+    int pointer_table_pointer<name="Pointer Table Pointer">;
+    int size_table_pointer<name="Size Table Pointer">;
+    int index_table_pointer<name="Index Table Pointer">;
+} GAPKHeader;
+
+typedef struct GAPKBLOB {
+    ubyte blob[sizes[i]]<name="File Entry">;
+} GAPKBlob;
+
+typedef struct GAPK_ {
+    GAPKHeader header<name="Header">;
+    FSeek(header.pointer_table_pointer);
+    int pointers[header.pointer_table_count]<name="Pointers">;
+    FSeek(header.size_table_pointer);
+    int sizes[header.size_table_count]<name="Sizes">;
+    FSeek(header.index_table_pointer);
+    GPKNameTable motion_index<name="Index">;
+    local int i = 0;
+    for(i = 0; i < header.pointer_table_count; ++i) {
+        FSeek(pointers[i]);
+        GAPKBlob blob<name="File Entry">;
+    }
+} GAPK;
+
+GAPK File<name="GAPK", open=true>;

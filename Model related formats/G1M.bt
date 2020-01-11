@@ -2,13 +2,14 @@
 //--- 010 Editor v9.0.2 Binary Template
 //
 //      File: G1M.bt
-//   Authors: Raytwo, HealingBrew
-//   Version: 1.0
+//   Authors: Raytwo, HealingBrew, Joschka
+//   Version: 1.2
 //   Purpose: Parsing G1M models
 //  Category: Game File
 // File Mask: *.g1m
 //  ID Bytes: 5F 4D 31 47
 //   History:
+//   1.2      2020-01-01  Joschka : Updated with NUNO and NUNV parsing
 //   1.1      2019-11-01  HealingBrew: Updated with section parsing
 //   1.0      2019-08-26  Raytwo: Made the original file
 //------------------------------------------------
@@ -38,9 +39,11 @@ LittleEndian();
 #include "G1M/G1MG/G1MG_SubMesh.bt"
 #include "G1M/G1MG/G1MG_Mesh.bt"
 #include "G1M/G1MG.bt"
+#include "G1M/NUNO.bt"
+#include "G1M/NUNV.bt"
 #include "G1M/EXTR.bt"
 
-// TODO: NUNO (Cloth,) NUNV (Cloth?,) COLL (Collision)
+//NUNV (Hair,) COLL (Collision)
 
 typedef struct G1MSUBSECTION {
     local int32 pos = FTell();
@@ -58,6 +61,12 @@ typedef struct G1MSUBSECTION {
             break;
         case "GM1G":
             G1MGeometry data<name="Geometry">;
+            break;
+        case "ONUN":
+            G1MNunoSection date<name="Nuno data">;
+            break;
+        case "VNUN":
+            G1MNunvSection date<name="Nunv data">;
             break;
         case "RTXE":
             G1MExtraSet data<name="Extra">;
