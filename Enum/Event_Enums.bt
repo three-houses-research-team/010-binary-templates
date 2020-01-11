@@ -1,13 +1,87 @@
 //Enums for Events
 
-enum<int> Cube {
+enum<int> Cube
+{
+    Dormitory_Room = 1,   
     Goddess_Tower = 3,
     Dining_Hall = 7,
     Entrance_Hall = 8,
+    Knights_Hall = 10,
+    Greenhouse = 13,
+    Fishing_Area = 14,
+    Outside_Dormitory = 16,
+    Stable = 20,
+    Marketplace = 22,
+    Reception_Hall = 25,
 };
 
-enum<int> Character {
-    No_Character = -1,
+enum<int> Expression
+{
+    Neutral = 0,
+    Happy = 1,
+    Angry = 2,
+    Disappointed = 3,
+    Shocked = 4,
+    Blushing = 5,
+};
+
+enum<int>Scene_Event
+{
+    New_Scene = 0,
+    New_Character_Walk_In_From_Right = 1,
+    New_Character_Walk_In_From_Left = 2,
+    New_Character_Walk_In_Behind_Character = 3,     // Very Unsure About this
+    New_Character_Run_In_From_Right = 5,
+};
+
+enum<int> Animation
+{
+    Neutral_Pose = -1,
+    Holding_Hand_Out = 1,
+    Hand_On_Left_Hip = 2,
+    Nod_Head = 3,
+    Shaking_Head_OR_Shrugging = 4,
+    Fist_Pump = 5,
+    Laughing = 6,
+    Throwing_Hands_Down = 7,
+    Clasping_Hands = 8,
+    Bow = 16,
+    Hand_On_Chin = 17,
+    Hand_On_Chin_To_Neutral = 19,
+    Hands_Behind_Head = 22,
+};
+
+enum<int> Head_Move
+{
+    Return_To_Neutral = 0,        //Return to Neutral Pose
+    Head_Down = 3,
+    Head_Up = 60
+};
+
+enum<int> Play_At
+{
+    End = 0,
+    Start = 30,
+};
+
+enum<int> Emote_Effect
+{
+    Sparkle = 0,
+    Sweat_Drop = 1,
+    Sweating = 2,
+    Shock = 4,    
+    Bothered = 7,
+    Chatter = 10,
+    Anger = 11,
+    Bubbles = 12,
+};
+
+enum<int> Card
+{
+};
+
+enum<int> Name
+{
     Byleth_0 = 0,
     Byleth_1 = 1,
     Edelgard_2 = 2,
@@ -777,7 +851,7 @@ enum<int> Character {
     Knight_of_Seiros_155_49 = 766,
     Knight_of_Seiros_155_50 = 767,
     Knight_of_Seiros_155_51 = 768,
-    Byleth_0_97 = 769,
+    Horse = 769,
     Byleth_0_98 = 770,
     Byleth_0_99 = 771,
     Byleth_0_100 = 772,
