@@ -4,10 +4,10 @@
 //      File: GAPK.bt
 //   Authors: HealingBrew
 //   Version: 1.1
-//   Purpose: Parsing GAPK Animation Packs
+//   Purpose: Parsing GAPK Animation/GEPK Effect Packs
 //  Category: Archives
-// File Mask: *.gapk
-//  ID Bytes: 47 41 50 4B
+// File Mask: *.gapk, *.gepk
+//  ID Bytes: 47 41 50 4B; 47 45 50 4B
 //   History:
 //   1.1    2020-01-08 - Update Name Table
 //   1.0    2020-01-04 - Initial file 
