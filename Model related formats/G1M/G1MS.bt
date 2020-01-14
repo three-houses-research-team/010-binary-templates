@@ -9,7 +9,7 @@
 // File Mask: 
 //  ID Bytes: 53 4D 31 47
 //   History:
-//   1.2.1    2020-01-14  Joschka: Small change on bone parsing due to crash on some g1ms 
+//   1.2.1    2020-01-14  Joschka: Small struct change due to crash on samples
 //   1.2      2019-11-01  HealingBrew: Fixed bone indices
 //   1.1      2019-11-01  HealingBrew: Adapted for inclusion
 //   1.0      2019-08-27  Raytwo: Created the file
