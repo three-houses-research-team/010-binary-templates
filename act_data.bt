@@ -1,0 +1,371 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: 13.bin/act_data.bin
+//   Authors: Moonling
+//   Version: 1.0
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+#include "3H_WepEnums.bt"
+enum<ubyte> EffectFlag
+{
+	Anyone = 0,
+	Right_Crest = 5,
+	Any_Crest1 = 6,
+	Any_Crest2 = 7,
+	Byleth = 8,
+};
+
+LittleEndian();
+local int i<hidden=true>;
+
+struct FILE {
+    struct HEADER{
+        uint NumOfSections<fgcolor=cGray>;
+        uint Pointer01;
+        uint Size01;
+        uint ClassUniAniP;
+        uint ClassUniAniS;
+        uint ClassBaseAniP;
+        uint ClassBaseAniS;
+        uint Pointer04;
+        uint Size04;
+        uint Pointer05;
+        uint Size05;
+        uint Pointer06;
+        uint Size06;
+        uint Pointer07;
+        uint Size07;
+        uint Pointer08;
+        uint Size08;
+        uint Pointer09;
+        uint Size09;
+        uint Pointer10;
+        uint Size10;
+        uint Pointer11;
+        uint Size11;
+        uint Pointer12;
+        uint Size12;
+        uint Pointer13;
+        uint Size13;
+        uint Pointer14;
+        uint Size14;
+        uint Pointer15;
+        uint Size15;
+        uint WeaponAnimP;
+        uint WeaponAnimS;
+        uint Pointer17;
+        uint Size17;
+        uint Pointer18;
+        uint Size18;
+        uint Pointer19;
+        uint Size19;
+        uint Pointer20;
+        uint Size20;
+        uint WeaponPointer;
+        uint WeaponSize;
+        uint EquipmentPointer;
+        uint EquipmentSize;
+		uint WeaponAuraPointer;
+        uint WeaponAuraSize;
+		uint Pointer24;
+        uint Size24;
+		uint Pointer25;
+        uint Size25;
+		uint WeaponBulletPointer;
+        uint WeaponBulletSize;
+		uint Pointer27;
+        uint Size27;
+		uint Pointer28;
+        uint Size28;
+		uint Pointer29;
+        uint Size29;
+    }Header<name="Header", fgcolor=cLtBlue>;
+	
+	FSeek(Header.ClassUniAniP);
+	struct ClassUniAnim{
+		uint Unk_Magic<bgcolor=cRed, name="Magic">;
+        uint NumOfClassUniAni<bgcolor=cRed, name="Number of Entires">;
+        uint SizeOfClassUniAni<bgcolor=cRed, name="Size of Entires">;
+        ubyte Padding[0x34]<bgcolor=cBlue, name="Padding">;
+		struct ClassUniAnimData{
+			ushort AnimSet1<name="Unknown Animations">;
+			ushort MainAnim<name="Main Animations">;
+			ushort MountAnim<name="Mount Animations">;
+			ClassName Class<name="Class">;
+			ubyte ClassType<name="Class Type?">;
+			TrueFalse Enabled<name="Is Enable?">;
+			WeapAnimType Weapon<name="Weapon Type">; 
+			ubyte Unk;
+			ubyte Unk;
+		}classunianimdata[NumOfClassUniAni]<bgcolor=cLtBlue, read=GetClassNamesUni>;
+	}classunianim;
+	
+	FSeek(Header.ClassBaseAniP);
+	struct ClassBaseAnim{
+		uint Unk_Magic<bgcolor=cRed, name="Magic">;
+        uint NumOfClassBaseAni<bgcolor=cRed, name="Number of Entires">;
+        uint SizeOfClassBaseAni<bgcolor=cRed, name="Size of Entires">;
+        ubyte Padding[0x34]<bgcolor=cBlue, name="Padding">;
+		struct ClassBaseAnimData {
+			ushort Unk;
+			ushort Unk;
+			ushort Unk;
+			ushort Unk;
+			ushort Unk;
+		}classbaseanimdata[NumOfClassBaseAni]<bgcolor=cLtBlue>;
+	}classbaseanim;
+	
+	FSeek(Header.WeaponAnimP);
+	struct WEAPANIM {
+		uint Unk_Magic<bgcolor=cRed, name="Magic">;
+        uint NumOfWeapAnim<bgcolor=cRed, name="Number of Entires">;
+        uint SizeOfWeapAnim<bgcolor=cRed, name="Size of Entires">;
+		ubyte Padding[0x34]<bgcolor=cBlue, name="Padding">;
+		struct WeapAnimData{
+			for( i = 0; i < NumOfWeapAnim; i++ )
+			{
+				struct WeapAnimData01 {
+					local WeapID NameOfWeapon<hidden=true>;
+				    NameOfWeapon = i;  
+					BulletEffectEnum BowEffect;
+					WeapAnimType AnimationSet;
+					BulletEffectEnum Effect;
+					BulletEffectEnum BowEffectRelic;
+					BulletEffectEnum EffectRelic;
+				}weapanimdata01<bgcolor=cLtBlue, read=GetWeaponAnimName>;
+			}
+		}weapanimdata;
+	}WeapAnim;
+
+    FSeek(Header.WeaponPointer);
+    struct WEAPEFFECTS {
+        uint Unk_Magic<bgcolor=cRed, name="Magic">;
+        uint NumOfWeap<bgcolor=cRed, name="Number of Entires">;
+        uint SizeOfWeap<bgcolor=cRed, name="Size of Entires">;
+        ubyte Padding[0x34]<bgcolor=cBlue, name="Padding">;
+        struct WEAPEFFECTDATA{
+			local int WeapStringStart<hidden=true> =((Header.WeaponPointer+64) + (NumOfWeap*SizeOfWeap));
+            uint WeapEffectPointer;
+			local string WeaponEffect<name="Weapon Effect">;
+			WeaponEffect = ReadString(WeapStringStart+WeapEffectPointer);
+            float Scale<name="Scale">;
+            float RotationZ<name="Rotation Z">;
+            float RotationY<name="Rotation Y">;
+            float PositionZ<name="Position Z">;
+            float RotationX<name="Rotation X">;
+            float PositionX<name="Position X">;
+            float PositionY<name="Position Y">;
+            WeapID WeaponID<name="Weapon">;
+            ubyte Unk;
+			ubyte Unk;
+            ubyte Unk;
+			EffectFlag Flag<name="Effect Flags">;
+			ubyte ModelIndex;
+			ubyte Padding;
+        }WeapEffectData[NumOfWeap]<bgcolor=cYellow, read=GetWeapNames, name="Effect Data", optimize=false>;
+		struct WEAPEFFECTSTRING{
+			for( i = 0; i < NumOfWeap; i++ )
+			struct WEAPEFFECTNAME{
+				char EffectName[ReadStringLength(FTell())]<bgcolor=cLtGreen>;
+			}WeapEffectName<read=GetWeapEffectName, name="Effect Name">;
+		}WeapEffectString<name="Effect Strings">;
+    }WeapEffects<name="Weapon Effect Table">;
+	
+    FSeek(Header.EquipmentPointer);
+    struct EQUIPMENTEFFECTS {
+        uint Unk_Magic<bgcolor=cRed, name="Magic">;
+        uint NumOfEquip<bgcolor=cRed, name="Number of Entires">;
+        uint SizeOfEquip<bgcolor=cRed, name="Size of Entires">;
+        ubyte Padding[0x34]<bgcolor=cBlue, name="Padding">;
+        struct EQUIPMENTEFFECTDATA{
+			local int EquipmentStringStart<hidden=false> =((Header.EquipmentPointer+64) + (NumOfEquip*SizeOfEquip));
+            uint EquipEffectPointer;
+			local string EquipmentEffect<name="Equipment Effect">;
+			EquipmentEffect = ReadString(EquipmentStringStart+EquipEffectPointer);
+            float Scale<name="Scale">;
+            float RotationZ<name="Rotation Z">;
+            float RotationY<name="Rotation Y">;
+            float PositionZ<name="Position Z">;
+            float RotationX<name="Rotation X">;
+            float PositionX<name="Position X">;
+            float PositionY<name="Position Y">;
+            EquipID EquipmentID<name="Equipment">;
+            ubyte Unk;
+			ubyte Unk;
+            ubyte Unk;
+			EffectFlag Flag<name="Effect Flags">;
+			ubyte ModelIndex;
+			ubyte Padding;
+        }EquipmentEffectData[NumOfEquip]<bgcolor=cYellow, read=GetEquipNames, name="Effect Data", optimize=false>;
+		struct EQUIPMENTEFFECTSTRING{
+			for( i = 0; i < NumOfEquip; i++ )
+			struct EQUIPMENTEFFECTNAME{
+				char EffectName[ReadStringLength(FTell())]<bgcolor=cLtGreen>;
+			}EquipmentEffectName<read=GetEquipEffectName, name="Effect Name">;
+		}EquipmentEffectString<name="Effect Strings">;
+    }EquipmentEffects<name="Equipment Effect Table">;
+	
+	    FSeek(Header.WeaponAuraPointer);
+    struct WEAPAURAEFFECTS {
+        uint Unk_Magic<bgcolor=cRed, name="Magic">;
+        uint NumOfAura<bgcolor=cRed, name="Number of Entires">;
+        uint SizeOfAura<bgcolor=cRed, name="Size of Entires">;
+        ubyte Padding[0x34]<bgcolor=cBlue, name="Padding">;
+        struct WEAPAURAEFFECTDATA{
+			local int WeapAuraStringStart<hidden=true> =((Header.WeaponAuraPointer+64) + (NumOfAura*SizeOfAura));
+            uint AuraEffectPointer;
+			local string WeapAuraEffect<name="WeapAura Effect">;
+			WeapAuraEffect = ReadString(WeapAuraStringStart+AuraEffectPointer);
+            float Scale<name="Scale">;
+            float RotationZ<name="Rotation Z">;
+            float RotationY<name="Rotation Y">;
+            float PositionZ<name="Position Z">;
+            float RotationX<name="Rotation X">;
+            float PositionX<name="Position X">;
+            float PositionY<name="Position Y">;
+            WeapID WeaponID<name="Weapon">;
+            ubyte Unk;
+			ubyte Unk;
+            ubyte Unk;
+			EffectFlag Flag<name="Effect Flags">;
+			ubyte ModelIndex;
+			ubyte Padding;
+        }WeapAuraEffectData[NumOfAura]<bgcolor=cYellow, read=GetAuraNames, name="Effect Data", optimize=false>;
+		struct WEAPAURAEFFECTSTRING{
+			for( i = 0; i < NumOfAura; i++ )
+			struct WEAPAURAEFFECTNAME{
+				char EffectName[ReadStringLength(FTell())]<bgcolor=cLtGreen>;
+			}WeapAuraEffectName<read=GetAuraEffectName, name="Effect Name">;
+		}WeapAuraEffectString<name="Effect Strings">;
+    }WeapAuraEffects<name="Weapon Aura Effect Table">;
+	
+	FSeek(Header.WeaponBulletPointer);
+	struct BULLETTABLE {
+		uint Unk_Magic<bgcolor=cRed, name="Magic">;
+        uint NumOfBullet<bgcolor=cRed, name="Number of Entires">;
+        uint SizeOfBullet<bgcolor=cRed, name="Size of Entires">;
+        ubyte Padding[0x34]<bgcolor=cBlue, name="Padding">;
+		struct BULLETDATA {
+			local int WeapBulletStringStart<hidden=true> =((Header.WeaponBulletPointer+64) + (NumOfBullet*SizeOfBullet));
+            uint BulletEffectPointer01;
+			local string WeapBulletEffect01<name="WeapAura Effect">;
+			WeapBulletEffect01 = ReadString(WeapBulletStringStart+BulletEffectPointer01);
+			uint BulletEffectPointer02;
+			local string WeapBulletEffect02<name="WeapAura Effect">;
+			WeapBulletEffect02 = ReadString(WeapBulletStringStart+BulletEffectPointer02);
+			uint BulletEffectPointer03;
+			local string WeapBulletEffect03<name="WeapAura Effect">;
+			WeapBulletEffect03 = ReadString(WeapBulletStringStart+BulletEffectPointer03);
+			uint BulletEffectPointer04;
+			local string WeapBulletEffect04<name="WeapAura Effect">;
+			WeapBulletEffect04 = ReadString(WeapBulletStringStart+BulletEffectPointer04);
+			uint BulletEffectPointer05;
+			local string WeapBulletEffect05<name="WeapAura Effect">;
+			WeapBulletEffect05 = ReadString(WeapBulletStringStart+BulletEffectPointer05);
+			uint BulletEffectPointer06;
+			local string WeapBulletEffect06<name="WeapAura Effect">;
+			WeapBulletEffect06 = ReadString(WeapBulletStringStart+BulletEffectPointer06);
+			uint BulletEffectPointer07;
+			local string WeapBulletEffect07<name="WeapAura Effect">;
+			WeapBulletEffect07 = ReadString(WeapBulletStringStart+BulletEffectPointer07);
+			uint Unk;
+		}BulletData[NumOfBullet]<bgcolor=cYellow, optimize=false>;
+		struct WEAPBULLETSTRINGS{
+			for( i = 0; i < NumOfBullet; i++ )
+			struct WEAPBULLETNAMES01{
+				char EffectName[ReadStringLength(FTell())]<bgcolor=cLtGreen>;
+			}WeapBulletNames01<read=GetBulletEffectName01, name="Effect Name">;
+			for( i = 0; i < NumOfBullet; i++ )
+			struct WEAPBULLETNAMES02{
+				char EffectName[ReadStringLength(FTell())]<bgcolor=cLtGreen>;
+			}WeapBulletNames02<read=GetBulletEffectName02, name="Effect Name">;
+			for( i = 0; i < NumOfBullet; i++ )
+			struct WEAPBULLETNAMES03{
+				char EffectName[ReadStringLength(FTell())]<bgcolor=cLtGreen>;
+			}WeapBulletNames03<read=GetBulletEffectName03, name="Effect Name">;
+			for( i = 0; i < NumOfBullet; i++ )
+			struct WEAPBULLETNAMES04{
+				char EffectName[ReadStringLength(FTell())]<bgcolor=cLtGreen>;
+			}WeapBulletNames04<read=GetBulletEffectName04, name="Effect Name">;
+			for( i = 0; i < NumOfBullet; i++ )
+			struct WEAPBULLETNAMES05{
+				char EffectName[ReadStringLength(FTell())]<bgcolor=cLtGreen>;
+			}WeapBulletNames<read=GetBulletEffectName05, name="Effect Name">;
+			for( i = 0; i < NumOfBullet; i++ )
+			struct WEAPBULLETNAMES06{
+				char EffectName[ReadStringLength(FTell())]<bgcolor=cLtGreen>;
+			}WeapBulletNames06<read=GetBulletEffectName06, name="Effect Name">;
+			for( i = 0; i < NumOfBullet; i++ )
+			struct WEAPBULLETNAMES07{
+				char EffectName[ReadStringLength(FTell())]<bgcolor=cLtGreen>;
+			}WeapBulletNames07<read=GetBulletEffectName07, name="Effect Name">;
+		}WeapBulletStrings05<name="Effect Strings">;
+	}BulletTable;
+
+}File<name="Act_Data File">;
+
+string GetWeapNames(WEAPEFFECTDATA &q)
+{
+	return EnumToString(q.WeaponID);
+}
+string GetWeapEffectName(WEAPEFFECTNAME &q)
+{
+	return StringToWString(q.EffectName, CHARSET_UTF8);
+}
+string GetEquipNames(EQUIPMENTEFFECTDATA &q)
+{
+	return EnumToString(q.EquipmentID);
+}
+string GetEquipEffectName(EQUIPMENTEFFECTNAME &q)
+{
+	return StringToWString(q.EffectName, CHARSET_UTF8);
+}
+string GetAuraNames(WEAPAURAEFFECTDATA &q)
+{
+	return EnumToString(q.WeaponID);
+}
+string GetAuraEffectName(WEAPAURAEFFECTNAME &q)
+{
+	return StringToWString(q.EffectName, CHARSET_UTF8);
+}
+string GetBulletEffectName01(WEAPBULLETNAMES01 &q)
+{
+	return StringToWString(q.EffectName, CHARSET_UTF8);
+}
+string GetBulletEffectName02(WEAPBULLETNAMES02 &q)
+{
+	return StringToWString(q.EffectName, CHARSET_UTF8);
+}
+string GetBulletEffectName03(WEAPBULLETNAMES03 &q)
+{
+	return StringToWString(q.EffectName, CHARSET_UTF8);
+}
+string GetBulletEffectName04(WEAPBULLETNAMES04 &q)
+{
+	return StringToWString(q.EffectName, CHARSET_UTF8);
+}
+string GetBulletEffectName05(WEAPBULLETNAMES05 &q)
+{
+	return StringToWString(q.EffectName, CHARSET_UTF8);
+}
+string GetBulletEffectName06(WEAPBULLETNAMES06 &q)
+{
+	return StringToWString(q.EffectName, CHARSET_UTF8);
+}
+string GetBulletEffectName07(WEAPBULLETNAMES07 &q)
+{
+	return StringToWString(q.EffectName, CHARSET_UTF8);
+}
+string GetClassNamesUni(ClassUniAnimData &i)
+{
+	return EnumToString(i.Class);
+}
+string GetWeaponAnimName(WeapAnimData01 &q)
+{
+    return EnumToString(q.NameOfWeapon);
+}
