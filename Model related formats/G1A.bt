@@ -27,7 +27,7 @@ typedef struct G1AQUANTIZEDDATA {
 typedef struct G1ASPLINECURVE {
     int frame_count<name="Frame Count">;
     int pointer<name="Pointer">;
-    local int datap = thisp + pointer * 0x10;
+    local int datap = thisp + (pointer << 4);
     local int infop = FTell();
     FSeek(datap);
     G1AQuantizedData quantized_data[frame_count]<name="Quantized Data">;
@@ -89,8 +89,7 @@ typedef struct G1ASTRUCTURE {
     short unknown1<name="Unknown 1">;
     short unknown2<name="Unknown 2">;
     float duration<name="Duration in seconds?">;
-    int compressed_pointer<name="Pointer to mystery data", comment="* 16">;
-    local int mystery_pointer = compressed_pointer * 0x10;
+    int pointer<name="Pointer to Spline Data", comment="SHR 4">; // literally unused, even by the games.
     int unknown3<name="Unknown 3">;
     int unknown4<name="Unknown 4">;
     int unknown5<name="Unknown 5", comment="Maybe number of tables?">;
