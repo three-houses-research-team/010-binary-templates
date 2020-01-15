@@ -1,0 +1,17 @@
+//------------------------------------------------
+//--- 010 Editor v9.1.0 Binary Template
+//
+//      File: Koei Tecmo Animation
+//   Authors: HealingBrew, Lukas Cone, Joschka
+//   Version: 0.0
+//   Purpose: Parsing G1A animations
+//  Category: File Format
+// File Mask: *.g1a
+//  ID Bytes: 5F 41 31 47
+//   History:
+//   0.0    2019-11-10 healingbrew: Stub
+//------------------------------------------------
+
+LittleEndian();
+
+#include "G1SharedStructures.bt"

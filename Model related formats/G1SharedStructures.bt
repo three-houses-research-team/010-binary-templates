@@ -77,6 +77,29 @@ string GetSectionName(GRESOURCESECTIONHEADER &section) {
     return tmp;
 }
 
+int G1Helper_GetVersionA(char version[4]) {
+    // actual code
+    // version_10 -= 0x30303030;
+    // version_16 = version_10 & 0xFF +
+    //            ((version_10 >> 8) & 0xFF) * 10 +
+    //            ((version_10 >> 16) & 0xFF) * 100 +
+    //             (version_10 >> 24) * 1000;
+    local int vbase;
+    vbase = (version[3] - 0x30) * 1000;
+    vbase += (version[2] - 0x30) * 100;
+    vbase += (version[1] - 0x30) * 10;
+    vbase += version[0] - 0x30;
+    return vbase;
+}
+
+int G1Helper_GetVersionI(int version) {
+    local int version_10 = version - 0x30303030;
+    return version_10        & 0xFF        +
+         ((version_10 >> 8 ) & 0xFF) * 10  +
+         ((version_10 >> 16) & 0xFF) * 100 +
+          (version_10 >> 24)         * 1000;
+}
+
 void G1Helper_AlignBytes(int n) {
     local int value = FTell() % n;
 

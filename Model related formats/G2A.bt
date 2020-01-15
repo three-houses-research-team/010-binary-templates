@@ -7,7 +7,7 @@
 //   Purpose: Parsing G2A animations
 //  Category: File Format
 // File Mask: *.g2a
-//  ID Bytes: /
+//  ID Bytes: 5F 41 32 47
 //   History:
 //   1.6    2020-01-14 Joschka: Added version distinction
 //   1.5    2020-01-02 Joschka: Updated structures
@@ -56,32 +56,39 @@ typedef struct G2ABONEINFO {
 
     local int locp = FTell();
     local int offset = bone_timing_data_offset;
-    if(header.version != "0500")
+    if(version < 50)
         offset/=4;
-    FSeek(parentof(this).startp + offset + parentof(this).packed_data.bone_info_blob_size);
+    FSeek(parentof(parentof(this)).startp + offset + parentof(parentof(this)).packed_data.bone_info_blob_size);
     G1Helper_AlignBytesReverse(4);
     G2AFrameSpline frame[spline_type_count]<name="splines", optimize=false>;
     FSeek(locp);
 } G2ABoneInfo;
 
+typedef struct G2AQUANTIZEDDATA {
+    uint64 data[4]<name="data">;
+} G2AQuantizedData;
+
 typedef struct G2ASTRUCTURE {
     GResourceSectionHeader header<name="Header", read=GetSectionName>;
-    float fps<name="Framerate", comment="Probably">;
+    local int version = G1Helper_GetVersionA(header.version);
 
-    G2APackedBoneInfo packed_data<name="Packed Data", comment="Divide 1st by framerate = length in sec ?">;
+    float fps<name="Framerate", comment="Probably">;
+    G2APackedBoneInfo packed_data<name="Packed Data", comment="Divide 1st by framerate = length in sec">;
     int timing_section_size<name="Timing section size">;
     int entry_count<name="Entry Count">;
-    if(header.version == "0500")
+    if(version >= 50)
         int unknown1_count<name="Unknown 1">;
 
     local int bone_count = packed_data.bone_info_blob_size / sizeof(int);
 
     local int startp = FTell();
-    G2ABoneInfo bones[bone_count]<name="BoneInfo", optimize=false>;
+
+    struct G2ABONEINFOWRAPPER {
+        G2ABoneInfo bones[bone_count]<name="BoneInfo", optimize=false>;
+    } G2ABoneInfoWrapper<name="Bone Info">;
+
     FSeek(startp + packed_data.bone_info_blob_size + timing_section_size);
-    struct G2AQUANTIZEDDATA {
-        uint64 data[4]<name="data">;
-    }G2AQuantizedData[entry_count]<name="Quantized data">;
+    G2AQuantizedData quantized_data[entry_count]<name="Quantized data">;
 } G2AStructure;
 
 G2AStructure File<name="G2A", open=true>;
