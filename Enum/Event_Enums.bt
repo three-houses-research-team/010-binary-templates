@@ -4,6 +4,7 @@ enum<int> Cube
 {
     Dormitory_Room = 1,   
     Goddess_Tower = 3,
+    Training_Hall = 6,
     Dining_Hall = 7,
     Entrance_Hall = 8,
     Knights_Hall = 10,
@@ -13,6 +14,7 @@ enum<int> Cube
     Stable = 20,
     Marketplace = 22,
     Reception_Hall = 25,
+    Holy_Tomb = 60,
 };
 
 enum<int> Expression
@@ -25,13 +27,27 @@ enum<int> Expression
     Blushing = 5,
 };
 
-enum<int>Scene_Event
+enum<int>Scene_Event_Function
 {
     New_Scene = 0,
     New_Character_Walk_In_From_Right = 1,
     New_Character_Walk_In_From_Left = 2,
-    New_Character_Walk_In_Behind_Character = 3,     // Very Unsure About this
+    New_Character_Walk_In_UNSURE_Behind_Character = 3,     // Very Unsure About this
     New_Character_Run_In_From_Right = 5,
+};
+
+enum<int>Event_Function
+{
+    Character_Walk_Out = 2,     // Left
+    Character_Run_Out = 5,      //Right
+};
+
+enum<int>Conditional
+{
+    If_Byleth_Is_Female = 1,
+    UNUSED_3 = 3,
+    UNUSUED_5 = 5,
+
 };
 
 enum<int> Animation
@@ -49,6 +65,7 @@ enum<int> Animation
     Hand_On_Chin = 17,
     Hand_On_Chin_To_Neutral = 19,
     Hands_Behind_Head = 22,
+    Swaying_Side_To_Side = 27,
 };
 
 enum<int> Head_Move
@@ -60,8 +77,15 @@ enum<int> Head_Move
 
 enum<int> Play_At
 {
-    End = 0,
-    Start = 30,
+//    Next_Dialogue = 0,
+//    Start_Of_Next_Dialogue = 30,
+};
+
+enum<int> Sound_Effect
+{
+    Door_Closes = 33,
+    Door_Knock = 35,
+    Raphael_Screaming = 95,
 };
 
 enum<int> Emote_Effect
@@ -74,6 +98,7 @@ enum<int> Emote_Effect
     Chatter = 10,
     Anger = 11,
     Bubbles = 12,
+    Music_Notes = 13,
 };
 
 enum<int> Card
