@@ -58,7 +58,7 @@ typedef struct G2ABONEINFO {
     local int offset = bone_timing_data_offset;
     if(version < 50)
         offset/=4;
-    FSeek(parentof(parentof(this)).startp + offset + parentof(parentof(this)).packed_data.bone_info_blob_size);
+    FSeek(startp + offset + packed_data.bone_info_blob_size);
     G1Helper_AlignBytesReverse(4);
     G2AFrameSpline frame[spline_type_count]<name="splines", optimize=false>;
     FSeek(locp);
