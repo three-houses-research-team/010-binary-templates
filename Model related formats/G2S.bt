@@ -150,7 +150,7 @@ typedef struct G2SSTRUCTURE {
     if (header.counts.unknown3Count > 0) {
         FSeek(header.pointers.unknownPointer3);
         // I've yet to find a structure file that has this 
-        G2SUnknownStruct4 unknownStructure3[header.counts.unknown3Count]<name="Unknown Structure 3">;
+        G2SUnknownStruct3 unknownStructure3[header.counts.unknown3Count]<name="Unknown Structure 3">;
     }
 
     if (header.counts.unknown4Count > 0) {

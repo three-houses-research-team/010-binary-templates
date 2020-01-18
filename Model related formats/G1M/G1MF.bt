@@ -56,18 +56,18 @@ typedef struct G1MFORMAT20 {
 } G1MFormatV20;
 
 typedef struct G1MFORMAT21 {
-    int unknown1<name="Unknown 0">; // 80, 20
+    int unknown0<name="Unknown 0">; // 80, 20
 } G1MFormatV21;
 
 typedef struct G1MFORMAT22 {
-    int unknown4<name="Unknown 0">; // 84, 21
+    int unknown0<name="Unknown 0">; // 84, 21
     int unknown1<name="Unknown 1">; // 88, 22
     int unknown2<name="Unknown 2">; // 8C, 23
     int unknown3<name="Unknown 3">; // 90, 24
 } G1MFormatV22;
 
 typedef struct G1MFORMAT23 {
-    int unknown11<name="Unknown 0">; // 94, 25
+    int unknown0<name="Unknown 0">; // 94, 25
     int unknown1<name="Unknown 1">; // 98, 26
     int unknown2<name="Unknown 2">; // 9C, 27
     int unknown3<name="Unknown 3">; // A0, 28
@@ -81,7 +81,7 @@ typedef struct G1MFORMAT23 {
 } G1MFormatV23;
 
 typedef struct G1MFORMAT24 {
-    int unknown14<name="Unknown 0">; // C0, 30
+    int unknown0<name="Unknown 0">; // C0, 30
     int unknown1<name="Unknown 1">; // C4, 31
     int unknown2<name="Unknown 2">; // C8, 32
     int unknown3<name="Unknown 3">; // CC, 33
@@ -98,35 +98,38 @@ typedef struct G1MFORMAT24 {
 } G1MFormatV24;
 
 typedef struct G1MFORMAT25 {
-    int unknown1<name="Unknown 0">; // F8, 3F
-    int unknown2<name="Unknown 1">; // FC, 40
+    int unknown0<name="Unknown 0">; // F8, 3F
+    int unknown1<name="Unknown 1">; // FC, 40
 } G1MFormatV25;
 
 typedef struct G1MFORMAT26 {
-    int unknown1<name="Unknown 0">; // 100, 41
-    int unknown2<name="Unknown 1">; // 104, 42
+    int unknown0<name="Unknown 0">; // 100, 41
+    int unknown1<name="Unknown 1">; // 104, 42
 } G1MFormatV26;
 
 typedef struct G1MFORMAT27 {
-    int unknown1<name="Unknown 0">; // 108, 43
-    int unknown2<name="Unknown 1">; // 10C, 44
-    int unknown3<name="Unknown 2">; // 110, 45
-    int unknown4<name="Unknown 3">; // 114, 46
-    int unknown5<name="Unknown 4">; // 118, 47
+    int unknown0<name="Unknown 0">; // 108, 43
+    int unknown1<name="Unknown 1">; // 10C, 44
+    int unknown2<name="Unknown 2">; // 110, 45
+    int unknown3<name="Unknown 3">; // 114, 46
+    int unknown4<name="Unknown 4">; // 118, 47
 } G1MFormatV27;
 
 typedef struct G1MFORMAT28 {
-    int unknown1<name="Unknown 0">; // 11C, 48
+    int unknown0<name="Unknown 0">; // 11C, 48
 } G1MFormatV28;
 
 typedef struct G1MFORMAT29 {
-    int unknown1<name="Unknown 0">; // 120, 49
+    int unknown0<name="Unknown 0">; // 120, 49
 } G1MFormatV29;
 
 typedef struct G1MFORMAT {
     GResourceSectionHeader header<name="Section Header", read=GetSectionName>;
     local int version = G1Helper_GetVersionA(header.version);
 
+    // It must be noted that regardless of version, the game expects the latest supported version.
+    // So for example, Three Houses will always create an array with 74 integers, even if the G1MF chunk has 62.
+    // The missing integers will be zero.
     if(version < 20) {
         int unknowns[(header.size - 0xC) / 0x4]<name="Unknown Version Indices">;
     }
