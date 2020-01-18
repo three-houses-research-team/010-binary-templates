@@ -62,7 +62,7 @@ typedef struct G1ASPLINES {
             count = 4;
             break;
         case G1ASplineType_RotationPosition:
-        case G1ASplineBlockType_RotationScale:
+        case G1ASplineType_RotationScale:
             count = 7;
             break;
         case G1ASplineType_RotationPositionScale:
