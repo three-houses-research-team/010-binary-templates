@@ -4,25 +4,24 @@
 //      File: event/talk_event/script (6341-7437)
 //   Authors: Sloth
 //   Version: Beta
-//   Purpose: Read event scripts (6341-7437), mainly supports (6682-7437)
+//   Purpose: Read event scripts, mainly supports (6682-7437)
 //------------------------------------------------
-#include "include/eventScript_enums.bt"
-#include "include/eventScript_typedefs.bt"
+#include "include/event_script_enums.bt"
+#include "include/event_script_typedefs.bt"
 
 LittleEndian();
 
-struct struct_Header{
-    uint32 NumberOfFunctions<name="Number of Scripts">;
-    uint32 Unknown;
-    uint32 Unknown;
-    uint32 Unknown;
-}header_info<bgcolor=cGreen, name="Header">;
+struct StructHeader{
+    uint32 numberOfScriptBlocks<name="Number of Script Blocks">;
+    uint32 unknown;
+    uint32 unknown;
+    uint32 unknown;
+}refHeader<bgcolor=cGreen, name="Header">;
 
 local int i = 0;
 local int magicFunction = ReadInt();
 
-
-for(i = 0; i < header_info.NumberOfFunctions; i++){
+for(i = 0; i < refHeader.numberOfScriptBlocks; i++){
     switch(magicFunction){
         case(0x0):
         {
@@ -31,7 +30,7 @@ for(i = 0; i < header_info.NumberOfFunctions; i++){
         }
         case(0x1):
         {
-            StructCharacterList characterList<bgcolor=cRed, name="Character List">;
+            StructCharacterList characterList<name="Character List", read=readCharacterList>;
         break;
         }
         case(0x3):
@@ -46,12 +45,12 @@ for(i = 0; i < header_info.NumberOfFunctions; i++){
         }
         case(0x5):
         {
-            StructSceneCharacterEvent sceneCharacterEvent<name="Scene Character Event">;
+            StructSceneCharacterEvent sceneCharacterEvent<name="Scene Character Event", read=readSceneCharacterEvent>;
         break;
         }
         case(0xB):
         {
-            StructAnimation animation<name="Animation", read=readAnimation, comment="Used primarily when character isn't speaking or at start of scene">;
+            StructAnimation animation<name="Animation", read=readAnimation, comment="Used when character isn't speaking">;
         break;
         }
         case(0x10):
@@ -134,7 +133,7 @@ for(i = 0; i < header_info.NumberOfFunctions; i++){
         }
         case(0x19):
         {
-            StructCameraFade cameraFade<name="Camera: Fade", comment="Can fade into new cubeScene scene", read=readCameraFade>;
+            StructCameraFade cameraFade<name="Camera: Fade", comment="Can fade into new cube scene", read=readCameraFade>;
         break;
         }
         default:
@@ -156,13 +155,34 @@ for(i = 0; i < header_info.NumberOfFunctions; i++){
         break;
         }
     }
-    if(i < header_info.NumberOfFunctions - 1){
+    if(i < refHeader.numberOfScriptBlocks - 1){
         magicFunction = ReadInt();
     }
 }
 
-
+local int j = 0;
+local string stringCharacterList;
+local int stringNextCharacter;
 // Read Functions
+
+string readCharacterList(StructCharacterList &p){
+if (stringCharacterList == "")
+    {
+        for(j = 0; j <= 10; j++)
+        {
+            stringCharacterList += EnumToString(p.character[j]);
+            if(j < 10)
+            {
+                stringNextCharacter = p.character[j+1];
+                if(stringNextCharacter != -1)
+                {
+                    stringCharacterList += ", ";
+                }
+            }
+        }
+    }
+    return stringCharacterList;
+}
 
 string readDialogueBox(StructDialogueBox &p){
     return EnumToString(p.character);
@@ -172,18 +192,27 @@ string readBodyMotion(StructBodyMotion &p){
     return EnumToString(p.character);
 }
 
+/*
+string readCameraFocus(struct_CameraFocus &p){
+    return EnumToString(p.Character);
+}
+*/
+
 string readEmoteEffect(StructEmoteEffect &p){
-    return EnumToString(p.character);
+    return (EnumToString(p.character) + ": " + EnumToString(p.emoteEffect));
 }
 
 string readAnimation(StructAnimation &p){
-    return EnumToString(p.character);
+    return (EnumToString(p.character) + ": " + EnumToString(p.animation));
 }
 
 string readSceneEvent(StructSceneEvent &p){
     return EnumToString(p.sceneEvent);
 }
 
+string readSceneCharacterEvent(StructSceneCharacterEvent &p){
+    return EnumToString(p.sceneCharacterEvent);
+}
 string readCubeScene(StructCubeScene &p){
     return EnumToString(p.cubeScene[0]);
 }
@@ -193,8 +222,5 @@ string readCameraFade(StructCameraFade &p){
 }
 
 string readSupportPoints(StructSupportPoints &p){
-    string stringSupportPartner = EnumToString(p.character);
-    string stringSupportPoints = EnumToString(p.supportPoints);
-    string stringReturn = "Support " + stringSupportPoints + " with " + stringSupportPartner;
-    return stringReturn;
+    return ("Support " + EnumToString(p.supportPoints) + " with " + EnumToString(p.character));;
 }
