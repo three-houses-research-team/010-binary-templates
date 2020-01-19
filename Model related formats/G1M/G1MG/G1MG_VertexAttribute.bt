@@ -3,12 +3,13 @@
 //
 //      File: G1MG_VertexAttribute.bt
 //   Authors: HealingBrew
-//   Version: 1.0
+//   Version: 1.1
 //   Purpose: Outlines VertexAttribute format found in G1MG sections
 //  Category: Game File
 // File Mask: 
 //  ID Bytes:
 //   History:
+//  1.1 2020-01-13  HealingBrew: added more formats
 //  1.0 2019-11-06  HealingBrew: Created the file
 //------------------------------------------------
 
@@ -16,9 +17,12 @@
 #define G1M_GEOMETRY_VERTEXATTRIBUTE
 
 typedef enum <ushort> G1MGEOMETRYVERTEXATTRIBUTETYPE {
+    VertexAttributeType_Float32_x1 = 0x0000,
+    VertexAttributeType_Float32_x2 = 0x0001,
     VertexAttributeType_Float32_x3 = 0x0002,
     VertexAttributeType_Float32_x4 = 0x0003,
     VertexAttributeType_Byte_x4 = 0x0005,
+    VertexAttributeType_UInt_x4 = 0x0009, // Normalized?
     VertexAttributeType_Half_x2 = 0x000A,
     VertexAttributeType_Half_x4 = 0x000B,
     VertexAttributeType_NormalizedByte_x4 = 0x000D // divide by 0xFF.
@@ -38,14 +42,16 @@ typedef enum <byte> G1MGEOMETRYVERTEXATTRIBUTESEMANTIC {
     //      I don't know what's going on here.
     VertexAttributeSemantic_BoneIndex,
     VertexAttributeSemantic_Normal,
-    VertexAttributeSemantic_BiNormal,
+    VertexAttributeSemantic_PointSize,
     VertexAttributeSemantic_UV,
     VertexAttributeSemantic_Tangent,
-    VertexAttributeSemantic_BiTangent,
-    VertexAttributeSemantic_Unknown8,
-    VertexAttributeSemantic_Unknown9,
+    VertexAttributeSemantic_BiNormal,
+    VertexAttributeSemantic_TesselationFactor,
+    VertexAttributeSemantic_PositionTransform,
     VertexAttributeSemantic_Color,
-    VertexAttributeSemantic_Fog
+    VertexAttributeSemantic_Fog,
+    VertexAttributeSemantic_Depth,
+    VertexAttributeSemantic_Sample
 } G1MGeometryVertexAttributeSemantic;
 
 typedef struct G1MGEOMETRYVERTEXATTRIBUTE {

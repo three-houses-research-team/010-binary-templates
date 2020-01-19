@@ -3,12 +3,13 @@
 //
 //      File: G1MF.bt
 //   Authors: HealingBrew
-//   Version: 1.0
-//   Purpose: Outlines G1MF (???) format found in G1M files
+//   Version: 1.1
+//   Purpose: Outlines G1MF format found in G1M files
 //  Category: Game File
 // File Mask: 
 //  ID Bytes: 46 4D 31 47
 //   History:
+//   1.1      2020-01-18  HealingBrew: Updated with logic from Ryza.
 //   1.0      2019-11-06  HealingBrew: Created the file
 //------------------------------------------------
 
@@ -19,14 +20,164 @@
 #include "../G1SharedStructures.bt"
 #endif // G1M_SHAREDSTRUCTURES
 
-typedef struct G1MFINDICES {
-    uint32 indices[24];
-} G1MFIndices;
+typedef struct G1MFORMAT20 {
+    int unknown0<name="Unknown 0">; // 0
+    int unknown1<name="Unknown 1">; // 4, multiplied with unknown 2
+    int unknown2<name="Unknown 2">; // 8, multiply with 0x1F
+    int unknown3<name="Unknown 3">; // C, subtract 1, multiply with 0x2, add 5
+    int unknown4<name="Unknown 4">; // 10, subtract 1
+    int unknown5<name="Unknown 5">; // 14, oh god
+    int unknown6<name="Unknown 6">; // 18, what am i doing
+    int unknown7<name="Unknown 7">; // 1C
+    int unknown8<name="Unknown 8">; // 20
+    int unknown9<name="Unknown 9">; // 24
+    int unknown10<name="Unknown A">; // 28
+    int unknown11<name="Unknown B">; // 2C
+    int unknown12<name="Unknown C">; // 30
+    int unknown13<name="Unknown D">; // 34
+    int unknown14<name="Unknown E">; // 38
+    int unknown15<name="Unknown F">; // 3C
+    int unknown16<name="Unknown 10">; // 40
+    int unknown17<name="Unknown 11">; // 44
+    int unknown18<name="Unknown 12">; // 48
+    int unknown19<name="Unknown 13">; // 4C
+    int unknown20<name="Unknown 14">; // 50
+    int unknown21<name="Unknown 15">; // 54
+    int unknown22<name="Unknown 16">; // 58
+    int unknown23<name="Unknown 17">; // 5C
+    int unknown24<name="Unknown 18">; // 60
+    int unknown25<name="Unknown 19">; // 64
+    int unknown26<name="Unknown 1A">; // 68
+    int unknown27<name="Unknown 1B">; // 6C
+    int unknown28<name="Unknown 1C">; // 70
+    int unknown29<name="Unknown 1D">; // 74
+    int unknown30<name="Unknown 1E">; // 78
+    int unknown31<name="Unknown 1F">; // 7C
+} G1MFormatV20;
 
-typedef struct G1MFSET {
-    int32 set_count<name="Count">;
-    G1MFIndices indices[set_count]<name="Indice Sets">;
-} G1MFSet;
+typedef struct G1MFORMAT21 {
+    int unknown0<name="Unknown 0">; // 80, 20
+} G1MFormatV21;
+
+typedef struct G1MFORMAT22 {
+    int unknown0<name="Unknown 0">; // 84, 21
+    int unknown1<name="Unknown 1">; // 88, 22
+    int unknown2<name="Unknown 2">; // 8C, 23
+    int unknown3<name="Unknown 3">; // 90, 24
+} G1MFormatV22;
+
+typedef struct G1MFORMAT23 {
+    int unknown0<name="Unknown 0">; // 94, 25
+    int unknown1<name="Unknown 1">; // 98, 26
+    int unknown2<name="Unknown 2">; // 9C, 27
+    int unknown3<name="Unknown 3">; // A0, 28
+    int unknown4<name="Unknown 4">; // A4, 29
+    int unknown5<name="Unknown 5">; // A8, 2A
+    int unknown6<name="Unknown 6">; // AC, 2B
+    int unknown7<name="Unknown 7">; // B0, 2C
+    int unknown8<name="Unknown 8">; // B4, 2D
+    int unknown9<name="Unknown 9">; // B8, 2E
+    int unknown10<name="Unknown A">; // BC, 2F
+} G1MFormatV23;
+
+typedef struct G1MFORMAT24 {
+    int unknown0<name="Unknown 0">; // C0, 30
+    int unknown1<name="Unknown 1">; // C4, 31
+    int unknown2<name="Unknown 2">; // C8, 32
+    int unknown3<name="Unknown 3">; // CC, 33
+    int unknown4<name="Unknown 4">; // D0, 34
+    int unknown5<name="Unknown 5">; // D4, 35
+    int unknown6<name="Unknown 6">; // D8, 36
+    int unknown7<name="Unknown 7">; // DC, 37
+    int unknown8<name="Unknown 8">; // E0, 38
+    int unknown9<name="Unknown 9">; // E4, 39
+    int unknown10<name="Unknown A">; // E8, 3A
+    int unknown11<name="Unknown B">; // EC, 3B
+    int unknown12<name="Unknown C">; // F0, 3C
+    int unknown13<name="Unknown D">; // F4, 3E
+} G1MFormatV24;
+
+typedef struct G1MFORMAT25 {
+    int unknown0<name="Unknown 0">; // F8, 3F
+    int unknown1<name="Unknown 1">; // FC, 40
+} G1MFormatV25;
+
+typedef struct G1MFORMAT26 {
+    int unknown0<name="Unknown 0">; // 100, 41
+    int unknown1<name="Unknown 1">; // 104, 42
+} G1MFormatV26;
+
+typedef struct G1MFORMAT27 {
+    int unknown0<name="Unknown 0">; // 108, 43
+    int unknown1<name="Unknown 1">; // 10C, 44
+    int unknown2<name="Unknown 2">; // 110, 45
+    int unknown3<name="Unknown 3">; // 114, 46
+    int unknown4<name="Unknown 4">; // 118, 47
+} G1MFormatV27;
+
+typedef struct G1MFORMAT28 {
+    int unknown0<name="Unknown 0">; // 11C, 48
+} G1MFormatV28;
+
+typedef struct G1MFORMAT29 {
+    int unknown0<name="Unknown 0">; // 120, 49
+} G1MFormatV29;
+
+typedef struct G1MFORMAT {
+    GResourceSectionHeader header<name="Section Header", read=GetSectionName>;
+    local int version = G1Helper_GetVersionA(header.version);
+
+    // It must be noted that regardless of version, the game expects the latest supported version.
+    // So for example, Three Houses will always create an array with 74 integers, even if the G1MF chunk has 62.
+    // The missing integers will be zero.
+    if(version < 20) {
+        int unknowns[(header.size - 0xC) / 0x4]<name="Unknown Version Indices">;
+    }
+
+    if(version >= 20) { // 0x80 bytes total
+        G1MFormatV20 version20<name="V20">;
+    }
+    
+    if(version >= 21) { // 0x84 bytes total
+        G1MFormatV21 version21<name="V21">;
+    }
+    
+    if(version >= 22) { // 0x94 bytes total
+        G1MFormatV22 version22<name="V22">;
+    }
+    
+    if(version >= 23) { // 0xC0 bytes total
+        G1MFormatV23 version23<name="V23">;
+    }
+    
+    if(version >= 24) { // 0xF8 bytes total
+        G1MFormatV24 version24<name="V24">;
+    }
+    
+    if(version >= 25) { // 0x100 bytes total
+        G1MFormatV25 version25<name="V25">;
+    }
+    
+    if(version >= 26) { // 0x108 bytes total
+        G1MFormatV26 version26<name="V26">;
+    }
+    
+    if(version >= 27) { // 0x11C bytes total
+        G1MFormatV27 version27<name="V27">;
+    }
+    
+    if(version >= 28) { // 0x120 bytes total
+        G1MFormatV28 version28<name="V28">;
+    }
+    
+    if(version >= 29) { // 0x124 bytes total
+        G1MFormatV29 version29<name="V29">;
+    }
+
+    if(version >= 30) {
+        int unknowns[(header.size - 0xC - 0x124) / 0x4]<name="Unknown Version Indices">;
+    }
+} G1MFormat;
 
 #ifndef G1M_FILELESS
 #define G1M_FILELESS
@@ -34,9 +185,8 @@ typedef struct G1MFSET {
 LittleEndian();
 
 struct FILE {
-    GResourceSectionHeader header<name="Header">;
-    G1MFSET data<name="FData">;
-} File<name="G1MS", open=true>;
+    G1MFormat data<name="Format">;
+} File<name="G1MF", open=true>;
 
 #endif // G1M_FILELESS
 

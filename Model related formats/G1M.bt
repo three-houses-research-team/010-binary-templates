@@ -51,7 +51,8 @@ typedef struct G1MSUBSECTION {
     switch(header.magic)
     {
         case "FM1G":
-            G1MFSet data<name="F">;
+            FSeek(pos);
+            G1MFormat data<name="Format">;
             break;
         case "SM1G":
             G1MSkeleton data<name="Skeleton">;

@@ -1,0 +1,172 @@
+//------------------------------------------------
+//--- 010 Editor v9.1.0 Binary Template
+//
+//      File: Koei Tecmo Shader
+//   Authors: HealingBrew
+//   Version: 0.0
+//   Purpose: Parsing G2S Shader
+//  Category: File Format
+// File Mask: *.g2s
+//  ID Bytes: 47 32 53 5F
+//   History:
+//   0.0    2020-15-01 healingbrew: Stub
+//------------------------------------------------
+
+LittleEndian();
+
+#include "G1SharedStructures.bt"
+
+typedef enum <ushort> G2SSHADERTYPE {
+    ShaderType_DXBC = 0x41,
+    ShaderType_NX = 0x58
+} G2SShaderType;
+
+typedef struct G2SSTRUCTURE_COUNTBLOCK {
+    int unknown1<name="Unknown 1">;
+    int unknown2Count<name="Unknown Structure 2 Count">;
+    int unknown3Count<name="Unknown Structure 3 Count">;
+    int unknown4Count<name="Unknown Structure 4 Count">;
+    int unknown5Count<name="Unknown Structure 5 Count">;
+    int unknown6Count<name="Unknown Structure 6 Count">;
+    int unknown7Count<name="Unknown Structure 7 Count">;
+    int unknown8Count<name="Unknown Structure 8 Count">;
+    int shaderCount<name="Shader Count?">;
+    int unknown9Count<name="Unknown Structure 9 Count">;
+    int unknown10<name="Unknown Structure 10 Count">;
+    int unknown11<name="Unknown Structure 11 Count">;
+} G2SStructureCountBlock;
+
+typedef struct G2SSTRUCTURE_POINTERS {
+    int fullNamePointer<name="Full Name Pointer">;
+    int unknownPointer2<name="Unknown Pointer 2">;
+    int unknownPointer3<name="Unknown Pointer 3">;
+    int unknownPointer4<name="Unknown Pointer 4">;
+    int unknownPointer5<name="Unknown Pointer 5">;
+    int unknownPointer6<name="Unknown Pointer 6">;
+    int unknownPointer7<name="Unknown Pointer 7">;
+    int unknownPointer8<name="Unknown Pointer 8">;
+    int unknownPointer9<name="Unknown Pointer 9">;
+    int unknownPointer10<name="Unknown Pointer 10">;
+    int unknownPointer11<name="Unknown Pointer 11">;
+    int shaderInfoBlockPointer<name="Shader Info Block Pointer">;
+    int unknown1<name="Unknown 1">;
+    int unknown2<name="Unknown 2">;
+    int shaderBunldeInfoPointer<name="Shader Bundle Info Pointer">;
+    int firstShaderPointer<name="First Shader Pointer">;
+} G2SStructurePointerBlock;
+
+typedef struct G2SSHADERINFO {
+    G2SShaderType shader_type<name="Shader Type">;
+    short unknown<name="Unknown">;
+} G2SShaderInfo;
+
+typedef struct G2SUNKNOWNSTRUCTURE2 {
+    int unknown1<name="Unknown 1">;
+    int unknown2<name="Unknown 2">;
+    int unknown3<name="Unknown 3">;
+    int unknown4<name="Unknown 4">;
+    int unknown5<name="Unknown 5">;
+    int unknown6<name="Unknown 6">;
+    int unknown7<name="Unknown 7">;
+    int unknown8<name="Unknown 8">;
+    int unknown9<name="Unknown 9">;
+    int unknown10<name="Unknown 10">;
+    int unknown11<name="Unknown 11">;
+    int unknown12<name="Unknown 12">;
+} G2SUnknownStruct2;
+
+typedef struct G2SUNKNOWNSTRUCTURE3 {
+
+} G2SUnknownStruct3;
+
+typedef struct G2SUNKNOWNSTRUCTURE4 {
+    int unknown1<name="Unknown 1">;
+    int unknown2<name="Unknown 2">;
+    int unknown3<name="Unknown 3">;
+    int unknown4<name="Unknown 4">;
+} G2SUnknownStruct4;
+
+typedef struct G2SUNKNOWNSTRUCTURE5 {
+    int unknown1<name="Unknown 1">;
+    int unknown2<name="Unknown 2">;
+} G2SUnknownStruct5;
+
+typedef struct G2SUNKNOWNSTRUCTURE6 {
+    int unknown1<name="Unknown 1">;
+    int unknown2<name="Unknown 2">;
+    int unknown3<name="Unknown 3">;
+    int unknown4<name="Unknown 4">;
+    int unknown5<name="Unknown 5">;
+    int unknown6<name="Unknown 6">;
+    int unknown7<name="Unknown 7">;
+    int unknown8<name="Unknown 8">;
+    int unknown9<name="Unknown 9">;
+    int unknown10<name="Unknown 10">;
+} G2SUnknownStruct6;
+
+typedef struct G2SHEADER {
+    GResourceSectionHeader header<name="Header", read=GetSectionName>;
+    short unknown1<name="Unknown 1", comment="Always 1">;
+    short unknown2<name="Unknown 2", comment="Always 16">;
+    char shader_name[0x20]<name="Shader Name">;
+    char shader_version[4]<name="Shader Version", comment="Always 0000">;
+    G2SShaderInfo shader_info<name="Shader Type">;
+    G2SShaderInfo shader_info<name="Shader Type">;
+    int unknown3<name="Unknown 3", comment="Always 1">;
+    short unknown4<name="Unknown 4">;
+    short unknown5<name="Unknown 5">;
+    G2SStructureCountBlock counts<name="Counts">;
+    G2SStructurePointerBlock pointers<name="Pointers">;
+    short unknown6<name="Unknown 6">;
+    short unknown7<name="Unknown 7">;
+    G2SShaderInfo shader_info<name="Shader Type">;
+    G2SShaderInfo shader_info<name="Shader Type">;
+    G2SShaderInfo shader_info<name="Shader Type">;
+    int unknown8<name="Unknown 8">;
+    int unknown9<name="Unknown 9">;
+    int unknown10<name="Unknown 10">;
+    int unknownPointer1<name="Unknown Pointer 1">;
+    int unknownPointer2<name="Unknown Pointer 2">;
+    int unknownPointer3<name="Unknown Pointer 3">;
+    G2SShaderInfo shader_info<name="Shader Type">;
+    int unknown11<name="Unknown 11">;
+    int unknownPointer4<name="Unknown Pointer 4">;
+    int ffpadding[5]<name="Big F Padding">;
+} G2SHeader;
+
+typedef struct G2SSTRUCTURE {
+    G2SHeader header<name="Header">;
+
+    if (header.pointers.fullNamePointer > 0) {
+        FSeek(header.pointers.fullNamePointer);
+        string fullName<name="Full Shader Name", comment="Still mangled most of the time, only used if the name is more than 32 bytes">;
+    }
+
+    if (header.counts.unknown2Count > 0) {
+        FSeek(header.pointers.unknownPointer2);
+        G2SUnknownStruct2 unknownStructure2[header.counts.unknown2Count]<name="Unknown Structure 2">;
+    }
+
+    if (header.counts.unknown3Count > 0) {
+        FSeek(header.pointers.unknownPointer3);
+        // I've yet to find a structure file that has this 
+        G2SUnknownStruct3 unknownStructure3[header.counts.unknown3Count]<name="Unknown Structure 3">;
+    }
+
+    if (header.counts.unknown4Count > 0) {
+        FSeek(header.pointers.unknownPointer4);
+        G2SUnknownStruct4 unknownStructure4[header.counts.unknown4Count]<name="Unknown Structure 4">;
+    }
+
+    if (header.counts.unknown5Count > 0) {
+        FSeek(header.pointers.unknownPointer5);
+        G2SUnknownStruct5 unknownStructure5[header.counts.unknown5Count]<name="Unknown Structure 5">;
+    }
+
+    if (header.counts.unknown6Count > 0) {
+        FSeek(header.pointers.unknownPointer6);
+        G2SUnknownStruct6 unknownStructure6[header.counts.unknown6Count]<name="Unknown Structure 6">;
+    }
+} G2SStructure;
+
+G2SStructure File<name="G2S", open=true>;

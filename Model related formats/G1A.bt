@@ -1,0 +1,105 @@
+//------------------------------------------------
+//--- 010 Editor v9.1.0 Binary Template
+//
+//      File: Koei Tecmo Animation
+//   Authors: HealingBrew, delguoqing
+//   Version: 0.0
+//   Purpose: Parsing G1A animations
+//  Category: File Format
+// File Mask: *.g1a
+//  ID Bytes: 5F 41 31 47
+//   History:
+//   1.0    2020-15-01 healingbrew: Initial File.
+//   0.0    2020-15-01 healingbrew: Stub
+//    Attrib:
+//   delguoqing: https://github.com/delguoqing/various/blob/976df8653a9ca484d2fe88f21980df71f1b4dde5/YORUNONAI/g1a.py
+//------------------------------------------------
+
+LittleEndian();
+
+#include "G1SharedStructures.bt"
+
+typedef struct G1AQUANTIZEDDATA {
+    // 4th component = weight? Easing curve midpoint?
+    float data[4]<name="Data">; // the ride never ends xD
+} G1AQuantizedData;
+
+typedef struct G1ASPLINECURVE {
+    int frame_count<name="Frame Count">;
+    int pointer<name="Pointer">;
+    local int datap = thisp + (pointer << 4);
+    local int infop = FTell();
+    FSeek(datap);
+    G1AQuantizedData quantized_data[frame_count]<name="Quantized Data">;
+    float frame_time[frame_count]<name="Frame Time">;
+    FSeek(infop);
+} G1ASplineCurve;
+
+// thank you KTGL, this could be a 3 bit flag but noooo
+typedef enum G1ASPLINETYPE {
+    G1ASplineType_None = 0,
+    G1ASplineType_Scale = 1,
+    G1ASplineType_Rotation = 2,
+    G1ASplineType_Position = 3,
+    G1ASplineType_RotationPosition = 4,
+    G1ASplineType_RotationScale = 5,
+    G1ASplineType_RotationPositionScale = 6
+} G1ASplineType;
+
+typedef struct G1ASPLINES {
+    local int thisp = FTell();
+    G1ASplineType contents<name="Content">;
+    local int count = 0;
+    switch(contents) {
+        case G1ASplineType_None:
+            count = 0;
+            break;
+        case G1ASplineType_Scale:
+        case G1ASplineType_Position:
+            count = 3;
+            break;
+        case G1ASplineType_Rotation:
+            count = 4;
+            break;
+        case G1ASplineType_RotationPosition:
+        case G1ASplineType_RotationScale:
+            count = 7;
+            break;
+        case G1ASplineType_RotationPositionScale:
+            count = 10;
+            break;
+        default:
+            count = -1;
+            break;
+    }
+    G1ASplineCurve info[count]<name="Curves", optimize=false>; // from what I gather this is literally each component in the target, so position has 3 tracks for X, Y, and Z
+} G1ASplines;
+
+typedef struct G1ABONEINFO {
+    int index<name="Index">;
+    int pointer<name="Pointer">;
+    local int bonep = FTell();
+    FSeek(startp + pointer * 0x10);
+    G1ASplines splines<name="Splines">;
+    FSeek(bonep);
+} G1ABoneInfo;
+
+typedef struct G1ASTRUCTURE {
+    GResourceSectionHeader header<name="Header", read=GetSectionName>;
+    short unknown1<name="Unknown 1">;
+    short unknown2<name="Unknown 2">;
+    float duration<name="Duration in seconds?">;
+    int pointer<name="Pointer to Spline Data", comment="SHR 4">; // literally unused, even by the games.
+    int unknown3<name="Unknown 3">;
+    int unknown4<name="Unknown 4">;
+    int unknown5<name="Unknown 5", comment="Maybe number of tables?">;
+    int unknown6<name="Unknown 6">;
+    int unknown7<name="Unknown 7">;
+    int unknown8<name="Unknown 8">;
+    local int startp = FTell();
+    short bone_count<name="Bone Count">;
+    short unknown9<name="Unknown 9">;
+    G1ABoneInfo bone_info[bone_count]<name="Bone Info", optimize=false>;
+} G1AStructure;
+
+G1AStructure File<name="G1A", open=true>;
