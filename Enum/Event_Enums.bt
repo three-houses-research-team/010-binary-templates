@@ -1,7 +1,32 @@
 //Enums for Events
 
-enum<int> Cube
-{
+enum<int> Function{
+    Cube_Scene = 0x0,
+    Character_List = 0x1,
+    Dialogue_Box = 0x3,
+    Scene_Event = 0x4,
+    Scene_Character_Event = 0x5,
+    Animation = 0xB,
+    Camera_Change = 0xD,
+    Camera_Standard = 0xF,
+    BGM_Change = 0x10,
+    Sound_Effect = 0x11,
+    Popup_Card = 0x12,
+    Body_Motion = 0x17,
+    Head_Motion_x_axis = 0x18,
+    Camera_Fade = 0x19,
+    Dialogue_Choices = 0x21,
+    Conditional_Statement = 0x23,
+    End_Conditional = 0x24,
+    Start_Conditional = 0x25,
+    Support_Points = 0x2D,
+    Head_Motion_y_axis = 0x45,
+    Emote_Effect = 0x60,
+    Scene_Card = 0x69,
+};
+
+enum<int> Cube{
+    Classroom = 0,
     Dormitory_Room = 1,   
     Goddess_Tower = 3,
     Training_Hall = 6,
@@ -17,8 +42,7 @@ enum<int> Cube
     Holy_Tomb = 60,
 };
 
-enum<int> Expression
-{
+enum<int> Expression{
     Neutral = 0,
     Happy = 1,
     Angry = 2,
@@ -27,8 +51,7 @@ enum<int> Expression
     Blushing = 5,
 };
 
-enum<int>Scene_Event_Function
-{
+enum<int>Scene_Event{                                      // Might be relative to cube map pos
     New_Scene = 0,
     New_Character_Walk_In_From_Right = 1,
     New_Character_Walk_In_From_Left = 2,
@@ -36,22 +59,20 @@ enum<int>Scene_Event_Function
     New_Character_Run_In_From_Right = 5,
 };
 
-enum<int>Event_Function
-{
+enum<int>Scene_Character_Event{                             // Might be relative to cube map pos
     Character_Walk_Out = 2,     // Left
+    Character_Turn_Around_And_Walk_Out = 3,
     Character_Run_Out = 5,      //Right
 };
 
-enum<int>Conditional
-{
+enum<int>Conditional{
     If_Byleth_Is_Female = 1,
     UNUSED_3 = 3,
     UNUSUED_5 = 5,
 
 };
 
-enum<int> Animation
-{
+enum<int> Animation{
     Neutral_Pose = -1,
     Holding_Hand_Out = 1,
     Hand_On_Left_Hip = 2,
@@ -64,32 +85,29 @@ enum<int> Animation
     Bow = 16,
     Hand_On_Chin = 17,
     Hand_On_Chin_To_Neutral = 19,
+    Stretching_Arms = 21,
     Hands_Behind_Head = 22,
     Swaying_Side_To_Side = 27,
 };
 
-enum<int> Head_Move
-{
+enum<int> Head_Move{
     Return_To_Neutral = 0,        //Return to Neutral Pose
     Head_Down = 3,
     Head_Up = 60
 };
 
-enum<int> Play_At
-{
+enum<int> Play_At{
 //    Next_Dialogue = 0,
 //    Start_Of_Next_Dialogue = 30,
 };
 
-enum<int> Sound_Effect
-{
+enum<int> Sound_Effect{
     Door_Closes = 33,
     Door_Knock = 35,
     Raphael_Screaming = 95,
 };
 
-enum<int> Emote_Effect
-{
+enum<int> Emote_Effect{
     Sparkle = 0,
     Sweat_Drop = 1,
     Sweating = 2,
@@ -101,8 +119,71 @@ enum<int> Emote_Effect
     Music_Notes = 13,
 };
 
-enum<int> Card
-{
+enum<int> Support{
+    Gain = 0,
+    Loss = 1
+};
+enum<int> Card{
+    ring_1 = 20,
+    ring_2 = 21,
+    ring_3 = 22,
+    ring_4 = 23,
+    Crest_Analyzer = 33,
+    Manuela_Attacked = 37,
+    Failnaught = 46,
+    ring_5 = 53,
+    Edelgard_Crest_Of_Flames = 61,
+    Crest_Analyzer_Crest_Of_Flames = 99,
+    Support_Edelgard_M_Byleth = 100,
+    Support_Dimitri = 101,
+    Support_Claude = 102,
+    Support_Hubert = 103,
+    Support_Ferdinand = 104,
+    Support_Linhardt = 105,
+    Support_Caspar_Pre_Timeskip = 106,
+    Support_Bernadetta = 107,
+    Support_Dorothea = 108,
+    Support_Petra_Pre_Timeskip = 109,
+    Support_Dedue = 110,
+    Support_Felix_Pre_Timeskip = 111,
+    Support_Ashe = 112,
+    Support_Sylvain_Pre_Timeskip = 113,
+    Support_Mercedes = 114,
+    Support_Annette = 115,
+    Support_Ingrid = 116,
+    Support_Lorenz = 117,
+    Support_Raphael_Pre_Timeskip = 118,
+    Support_Ignatz = 119,
+    Support_Lysithea = 120,
+    Support_Marianne = 121,
+    Support_Hilda = 122,
+    Support_Leonie = 123,
+    Support_Seteth_Pre_Timeskip = 124,
+    Support_Flayn_Pre_Timeskip = 125,
+    Support_Hanneman_Pre_Timeskip = 126,
+    Support_Manuela_Pre_Timeskip = 127,
+    Support_Gilbert = 128,
+    Support_Alois = 129,
+    Support_Catherine_Pre_Timeskip = 130,
+    Support_Shamir_Pre_Timeskip = 131,
+    Support_Cyril_Pre_Timeskip = 132,
+    Support_Rhea_M_Byleth = 134,
+    Support_Sothis = 135,
+    Support_Edelgard_F_Byleth = 136,
+    Support_Rhea_F_Byleth = 137,
+    Support_Ferdinand_Post_Timeskip = 138,
+    Support_Caspar_Post_Timeskip = 139,
+    Support_Petra_Post_Timeskip = 140,
+    Support_Felix_Post_Timeskip = 141,
+    Support_Sylvain_Post_Timeskip = 142,
+    Support_Raphael_Post_Timeskip = 143,
+    Support_Seteth_Post_Timeskip = 144,
+    Support_Flayn_Post_Timeskip = 145,
+    Support_Hanneman_Post_Timeskip = 146,
+    Support_Manuela_Post_Timeskip = 147,
+    Support_Catherine_Post_Timeskip = 148,
+    Support_Shamir_Post_Timeskip = 149,
+    Support_Cyril_Post_Timeskip = 150,
 };
 
 enum<int> Name
