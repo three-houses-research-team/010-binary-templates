@@ -3,10 +3,10 @@
 //
 //      File: (6163) IN_EventBaseInfo.bin 
 //   Authors: Sloth
-//   Version: 1.1
+//   Version: 1.0
 //   Purpose: Read event entries, mainly support events
 //------------------------------------------------
-#include "Enum/IN_EventBaseInfo_Enums.bt"
+#include "IN_EventBaseInfo_Enums.bt"
 
 
 LittleEndian();
@@ -32,8 +32,8 @@ struct EventStructure{
             Flag Unknown<name="Unknown", format=hex>;
             Flag Unknown<name="Unknown", format=hex>;
             Flag Unknown<name="Unknown", format=hex>;
-            Names Support_Partner1<name="Support Partner", bgcolor=cPurple>;
-            Names Support_Partner2<name="Support Partner", bgcolor=cPurple>;
+            Names Support_Partner1<name="Support Partner", bgcolor=0xb3f7ff>;
+            Names Support_Partner2<name="Support Partner", bgcolor=0xb3f7ff>;
             Support Support_Flag<name="Support Rank", bgcolor=cYellow, format=hex>;
             Byleth_Gender Byleth_Gender_Flag<name="Byleth Gender", bgcolor=cYellow, format=hex>;
             Flag Unknown<bgcolor=cYellow, format=hex, name="Unknown", comment="All events have this toggled but varies among Byleth's supports">;
@@ -42,13 +42,13 @@ struct EventStructure{
             Flag Chapter_Deadline_Flag<name="Chapter Availability (BE)", bgcolor=0x55ff7f, comment="The chapter when this support is available">;
             Flag Chapter_Deadline_Flag<name="Chapter Availability (BL)", bgcolor=0x55ff7f, comment="The chapter when this support is available">;
             Flag Chapter_Deadline_Flag<name="Chapter Availability (GD)", bgcolor=0x55ff7f, comment="The chapter when this support is available">;
-            Flag Chapter_Deadline_Flag<name="Chapter Availability (Church)", bgcolor=0x55ff7f, comment="The chapter when this support is available">;
+            Flag Chapter_Deadline_Flag<name="Chapter Availability (CF)", bgcolor=0x55ff7f, comment="The chapter when this support is available">;
             Flag Chapter_Deadline_Flag<name="Chapter Deadline (BE)", bgcolor=0x55ff7f, comment="The chapter before this support gets locked">;
             Flag Chapter_Deadline_Flag<name="Chapter Deadline (BL)", bgcolor=0x55ff7f, comment="The chapter before this support gets locked">;
             Flag Chapter_Deadline_Flag<name="Chapter Deadline (GD)", bgcolor=0x55ff7f, comment="The chapter before this support gets locked">;
-            Flag Chapter_Deadline_Flag<name="Chapter Deadline (Church)", bgcolor=0x55ff7f, comment="The chapter before this support gets locked">;
-            byte Placeholder<hidden=true>;
-        }eventBlock<bgcolor=cDkGray, name="Event Block", read=ReadEventBlock>;
+            Flag Chapter_Deadline_Flag<name="Chapter Deadline (CF)", bgcolor=0x55ff7f, comment="The chapter before this support gets locked">;
+            Flag Unknown<name="Unknown", format=hex, comment="All events have this toggled to 0x00">;
+        }eventBlock<bgcolor=cDkBlue, name="Event Block", read=ReadEventBlock>;
     }
 }eventStructure<name="Event Block">;
 
@@ -65,4 +65,3 @@ string ReadEventBlock(EventBlock &p)
     }
     return null;
 };
-
