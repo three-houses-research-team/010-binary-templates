@@ -4,7 +4,7 @@
 //      File: event/talk_event/script (6341-7437)
 //   Authors: Sloth
 //   Version: Beta
-//   Purpose: Read event scripts, mainly supports (6682-7437)
+//   Purpose: Read event scripts (6341-7437), mainly supports (6682-7437)
 //------------------------------------------------
 #include "include/eventScript_enums.bt"
 #include "include/eventScript_typedefs.bt"
