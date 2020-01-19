@@ -139,19 +139,19 @@ for(i = 0; i < refHeader.numberOfScriptBlocks; i++){
         default:
         {
             struct StructScript{
-                enumScriptFunction Function_Name<name="Function Name", format=hex>;
+                enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+                int unknown;
+                int unknown;
+                int unknown;
+                int unknown;
+                int unknown;
+                int unknown;
+                int unknown;
                 int Unknown;
-                int Unknown;
-                int Unknown;
-                int Unknown;
-                int Unknown;
-                int Unknown;
-                int Unknown;
-                int Unknown;
-                int Unknown;
-                int Unknown;
-                int Unknown;
-            }Script_info<name="Script Block">;
+                int unknown;
+                int unknown;
+                int unknown;
+            }refScript<name="Script Block">;
         break;
         }
     }
@@ -222,5 +222,5 @@ string readCameraFade(StructCameraFade &p){
 }
 
 string readSupportPoints(StructSupportPoints &p){
-    return ("Support " + EnumToString(p.supportPoints) + " with " + EnumToString(p.character));;
+    return ("Support " + EnumToString(p.supportPoints) + " with " + EnumToString(p.character));
 }
