@@ -48,16 +48,16 @@ typedef struct StructDialogueBox{
 typedef struct StructSceneEvent{
 	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
 	enumSceneEvent sceneEvent<name="Event Function">;
-	enumCharacter Character<bgcolor=cYellow, name="Character">;
-	enumCharacter Character<bgcolor=cYellow, name="Character">;
-	enumCharacter Character<bgcolor=cYellow, name="Character">;
-	enumCharacter Character<bgcolor=cYellow, name="Character">;
-	enumCharacter Character<bgcolor=cYellow, name="Character">;
-	enumCharacter Character<bgcolor=cYellow, name="Character">;
-	enumCharacter Character<bgcolor=cYellow, name="Character">;
-	enumCharacter Character<bgcolor=cYellow, name="Character">;
-	enumCharacter Character<bgcolor=cYellow, name="Character">;
-	enumCharacter Character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
 }refSceneEvent;
 
 typedef struct StructSceneCharacterEvent{
@@ -103,7 +103,7 @@ typedef struct StructBGMChange{
 	int unknown;
 	int unknown;
 	int unknown;
-}refBGMChange_info;
+}refBGMChange;
 
 typedef struct StructSoundEffect{
 	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
@@ -319,7 +319,7 @@ typedef struct StructCameraStandard{
 
 typedef struct StructCameraFade{
 	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
-	enumCubeScene cubeScene<name="Cube Scene">;
+	enumCubeScene cubeScene<bgcolor=cRed, name="Cube Scene">;
 	int unknown;
 	int unknown;
 	int unknown;
