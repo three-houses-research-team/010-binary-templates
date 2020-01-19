@@ -172,12 +172,6 @@ string readBodyMotion(StructBodyMotion &p){
     return EnumToString(p.character);
 }
 
-/*
-string readCameraFocus(struct_CameraFocus &p){
-    return EnumToString(p.Character);
-}
-*/
-
 string readEmoteEffect(StructEmoteEffect &p){
     return EnumToString(p.character);
 }
@@ -204,7 +198,3 @@ string readSupportPoints(StructSupportPoints &p){
     string stringReturn = "Support " + stringSupportPoints + " with " + stringSupportPartner;
     return stringReturn;
 }
-/*
-0D
-    0F Face Zoom In
-    50 Face
