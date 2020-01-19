@@ -1,0 +1,210 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: event/talk_event/script (6341-7437)
+//   Authors: Sloth
+//   Version: Beta
+//   Purpose: Read event scripts, mainly supports (6682-7437)
+//------------------------------------------------
+#include "include/eventScript_enums.bt"
+#include "include/eventScript_typedefs.bt"
+
+LittleEndian();
+
+struct struct_Header{
+    uint32 NumberOfFunctions<name="Number of Scripts">;
+    uint32 Unknown;
+    uint32 Unknown;
+    uint32 Unknown;
+}header_info<bgcolor=cGreen, name="Header">;
+
+local int i = 0;
+local int magicFunction = ReadInt();
+
+
+for(i = 0; i < header_info.NumberOfFunctions; i++){
+    switch(magicFunction){
+        case(0x0):
+        {
+            StructCubeScene cubeScene<name="Cube Scene", read=readCubeScene>;
+        break;
+        }
+        case(0x1):
+        {
+            StructCharacterList characterList<bgcolor=cRed, name="Character List">;
+        break;
+        }
+        case(0x3):
+        {
+            StructDialogueBox dialogueBox<name="Dialogue Box", read=readDialogueBox>;
+        break;
+        }
+        case(0x4):
+        {
+            StructSceneEvent sceneEvent<name="Scene Event", read=readSceneEvent>;
+        break;
+        }
+        case(0x5):
+        {
+            StructSceneCharacterEvent sceneCharacterEvent<name="Scene Character Event">;
+        break;
+        }
+        case(0xB):
+        {
+            StructAnimation animation<name="Animation", read=readAnimation, comment="Used primarily when character isn't speaking or at start of scene">;
+        break;
+        }
+        case(0x10):
+        {
+            StructBGMChange bgmChange<name="BGM Change">;
+        break;
+        }
+        case(0x11):
+        {
+            StructSoundEffect soundEffect<name="Sound Effect">;
+        break;
+        }
+        case(0x17):
+        {
+            StructBodyMotion bodyMotion<name="Body Motion", read=readBodyMotion>;
+        break;
+        }
+        case(0x18):
+        {
+            StructHeadMotionX headMotionX<name="Head Motion: x-axis">;
+        break;
+        }
+        case(0x45):
+        {
+            StructHeadMotionY headMotionY<name="Head Motion: y-axis">;
+        break;
+        }
+        case(0x12):
+        {
+            StructMiniCard miniCard<name="Mini Card">;
+        break;
+        }
+        case(0x69):
+        {
+            StructLargeCard largeCard<name="Large Card">;
+        break;
+        }
+        case(0x21):
+        {
+            StructDialogueChoices dialogueChoices<name="Dialogue Choices", comment="The conditional block of the first choice will be between 'Conditional Statement' and 'Start of Conditional'">;
+        break;
+        }
+        case(0x23):
+        {
+            StructConditional conditional<name="Conditional Statement", comment="Between 'Conditional Statement' and 'Start of Conditional' is the else statement">;
+        break;
+        }
+        case(0x24):
+        {
+            StructEndConditional endConditional<name="End of Conditional">;
+        break;
+        }
+        case(0x25):
+        {
+            StructStartConditional startConditional<name="Start of Conditional">;
+        break;
+        }
+        case(0x2D):
+        {
+            StructSupportPoints supportPoints<name="Support Points", read=readSupportPoints>;
+        break;
+        }
+        case(0x60):
+        {
+            StructEmoteEffect emoteEffect<name="Emote Effect", read=readEmoteEffect>;
+        break;
+        }
+
+// Camera
+
+        case(0xD):
+        {
+            StructCameraChange cameraChange<name="Camera Change">;
+        break;
+        }
+        case(0xF):
+        {
+            StructCameraStandard cameraStandard<name="Camera: Standard">;
+        break;
+        }
+        case(0x19):
+        {
+            StructCameraFade cameraFade<name="Camera: Fade", comment="Can fade into new cubeScene scene", read=readCameraFade>;
+        break;
+        }
+        default:
+        {
+            struct StructScript{
+                enumScriptFunction Function_Name<name="Function Name", format=hex>;
+                int Unknown;
+                int Unknown;
+                int Unknown;
+                int Unknown;
+                int Unknown;
+                int Unknown;
+                int Unknown;
+                int Unknown;
+                int Unknown;
+                int Unknown;
+                int Unknown;
+            }Script_info<name="Script Block">;
+        break;
+        }
+    }
+    if(i < header_info.NumberOfFunctions - 1){
+        magicFunction = ReadInt();
+    }
+}
+
+
+// Read Functions
+
+string readDialogueBox(StructDialogueBox &p){
+    return EnumToString(p.character);
+}
+
+string readBodyMotion(StructBodyMotion &p){
+    return EnumToString(p.character);
+}
+
+/*
+string readCameraFocus(struct_CameraFocus &p){
+    return EnumToString(p.Character);
+}
+*/
+
+string readEmoteEffect(StructEmoteEffect &p){
+    return EnumToString(p.character);
+}
+
+string readAnimation(StructAnimation &p){
+    return EnumToString(p.character);
+}
+
+string readSceneEvent(StructSceneEvent &p){
+    return EnumToString(p.sceneEvent);
+}
+
+string readCubeScene(StructCubeScene &p){
+    return EnumToString(p.cubeScene[0]);
+}
+
+string readCameraFade(StructCameraFade &p){
+    return EnumToString(p.cubeScene[0]);
+}
+
+string readSupportPoints(StructSupportPoints &p){
+    string stringSupportPartner = EnumToString(p.character);
+    string stringSupportPoints = EnumToString(p.supportPoints);
+    string stringReturn = "Support " + stringSupportPoints + " with " + stringSupportPartner;
+    return stringReturn;
+}
+/*
+0D
+    0F Face Zoom In
+    50 Face

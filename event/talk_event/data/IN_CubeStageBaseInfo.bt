@@ -1,0 +1,33 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: 6164
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+LittleEndian();
+
+struct Header{
+    uint32 NumberOfEntries;
+    uint32 Unknown;
+    uint32 Unknown;
+    uint32 Unknown;
+}header<bgcolor=cGreen, name="Header">;
+    
+local int i = 0;
+    
+struct EntryStructure{
+    for(i = 0; i <header.NumberOfEntries; i++){
+        struct EventBlock{
+            uint16 EntryNumber<bgcolor=cRed>;
+            uint16 unk;
+            uint16 unk;
+            uint16 unk<bgcolor=cYellow>;
+        }entry;
+    }
+}entryStructure;
