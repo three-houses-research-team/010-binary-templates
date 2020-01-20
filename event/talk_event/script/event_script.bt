@@ -160,12 +160,16 @@ for(i = 0; i < refHeader.numberOfScriptBlocks; i++){
     }
 }
 
+// Initalization of variables for functions
+
 local int j = 0;
 local string stringCharacterList;
-local int stringNextCharacter;
+local int stringNextCharacter = 0;
+
+
 // Read Functions
 
-string readCharacterList(StructCharacterList &p){
+string readCharacterList(StructCharacterList &p){               // This function is not good for more than one iteration of characterList
 if (stringCharacterList == "")
     {
         for(j = 0; j <= 10; j++)
@@ -192,12 +196,6 @@ string readBodyMotion(StructBodyMotion &p){
     return EnumToString(p.character);
 }
 
-/*
-string readCameraFocus(struct_CameraFocus &p){
-    return EnumToString(p.Character);
-}
-*/
-
 string readEmoteEffect(StructEmoteEffect &p){
     return (EnumToString(p.character) + ": " + EnumToString(p.emoteEffect));
 }
@@ -213,6 +211,7 @@ string readSceneEvent(StructSceneEvent &p){
 string readSceneCharacterEvent(StructSceneCharacterEvent &p){
     return EnumToString(p.sceneCharacterEvent);
 }
+
 string readCubeScene(StructCubeScene &p){
     return EnumToString(p.cubeScene[0]);
 }
