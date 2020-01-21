@@ -1,0 +1,67 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: (6163) IN_EventBaseInfo.bin 
+//   Authors: Sloth
+//   Version: 1.1
+//   Purpose: Read event entries, mainly support events
+//------------------------------------------------
+#include "include/IN_EventBaseInfo_Enums.bt"
+
+LittleEndian();
+
+struct Header{
+    uint32 NumberOfEntries;
+    uint32 Unknown;
+    uint32 Unknown;
+    uint32 Unknown;
+}header<bgcolor=cGreen, name="Header">;
+    
+local int i = 0;
+    
+struct EventStructure{
+    for(i = 0; i <header.NumberOfEntries; i++){
+        struct EventBlock{
+            uint16 Entry_Number<bgcolor=cRed, name="Entry Number">;
+            Flag Unknown<name="Unknown", format=hex>;
+            Flag Unknown<name="Unknown", format=hex>;
+            Flag Unknown<name="Unknown", format=hex>;
+            Flag Unknown<name="Unknown", format=hex>;
+            Flag Unknown<name="Unknown", format=hex>;
+            Flag Unknown<name="Unknown", format=hex>;
+            Flag Unknown<name="Unknown", format=hex>;
+            Flag Unknown<name="Unknown", format=hex>;
+            Names Support_Partner<name="Support Partner", bgcolor=cPurple>;
+            Names Support_Partner<name="Support Partner", bgcolor=cPurple>;
+            Support Support_Flag<name="Support Rank", bgcolor=cYellow, format=hex>;
+            Byleth_Gender Byleth_Gender_Flag<name="Byleth Gender", bgcolor=cYellow, format=hex>;
+            Flag Unknown<bgcolor=cYellow, format=hex, name="Unknown", comment="All events have this toggled but varies among Byleth's supports">;
+            Availability Availability_Flag<name="Availability", bgcolor=cYellow, format=hex>;
+            Flag Unknown<name="Unknown", format=hex>;
+            Flag Chapter_Deadline_Flag<name="Chapter Availability (BE)", bgcolor=0x55ff7f, comment="The chapter when this support is available">;
+            Flag Chapter_Deadline_Flag<name="Chapter Availability (BL)", bgcolor=0x55ff7f, comment="The chapter when this support is available">;
+            Flag Chapter_Deadline_Flag<name="Chapter Availability (GD)", bgcolor=0x55ff7f, comment="The chapter when this support is available">;
+            Flag Chapter_Deadline_Flag<name="Chapter Availability (Church)", bgcolor=0x55ff7f, comment="The chapter when this support is available">;
+            Flag Chapter_Deadline_Flag<name="Chapter Deadline (BE)", bgcolor=0x55ff7f, comment="The chapter before this support gets locked">;
+            Flag Chapter_Deadline_Flag<name="Chapter Deadline (BL)", bgcolor=0x55ff7f, comment="The chapter before this support gets locked">;
+            Flag Chapter_Deadline_Flag<name="Chapter Deadline (GD)", bgcolor=0x55ff7f, comment="The chapter before this support gets locked">;
+            Flag Chapter_Deadline_Flag<name="Chapter Deadline (Church)", bgcolor=0x55ff7f, comment="The chapter before this support gets locked">;
+            byte Placeholder<hidden=true>;
+        }eventBlock<bgcolor=cDkGray, name="Event Block", read=ReadEventBlock>;
+    }
+}eventStructure<name="Event Block">;
+
+string ReadEventBlock(EventBlock &p)
+{
+    string null = "";
+    string supportChar1 = EnumToString(p.Support_Partner[0]);
+    string supportChar2 = EnumToString(p.Support_Partner[1]);
+    string supportRank = EnumToString(p.Support_Flag);
+    string supportPair = "(" + supportRank + ") " + supportChar1 + " + " + supportChar2;
+    if (supportPair != "()  + ")
+    {
+        return supportPair;
+    }
+    return null;
+};
+

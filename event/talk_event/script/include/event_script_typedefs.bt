@@ -1,0 +1,333 @@
+//Typedef struct for 'Events.bt'
+
+typedef struct StructCubeScene{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumCubeScene cubeScene<name="Cube Scene", bgcolor=cRed>;
+	enumCubeScene cubeScene<name="Cube Scene", hidden=true>;
+	enumCubeScene cubeScene<name="Cube Scene", hidden=true>;
+	enumCubeScene cubeScene<name="Cube Scene", hidden=true>;
+	enumCubeScene cubeScene<name="Cube Scene", hidden=true>;
+	enumCubeScene cubeScene<name="Cube Scene", hidden=true>;
+	enumCubeScene cubeScene<name="Cube Scene", hidden=true>;
+	enumCubeScene cubeScene<name="Cube Scene", hidden=true>;
+	enumCubeScene cubeScene<name="Cube Scene", hidden=true>;
+	enumCubeScene cubeScene<name="Cube Scene", hidden=true>;
+	enumCubeScene cubeScene<name="Cube Scene", hidden=true>;
+}refCubeScene;
+
+typedef struct StructCharacterList{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumCharacter character<bgcolor=cYellow, name="Character", comment="If a support event, this is a support partner">;
+	enumCharacter character<bgcolor=cYellow, name="Character", comment="If a support event, this is a support partner">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+}refCharacterList;
+
+typedef struct StructDialogueBox{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	int textLine<name="Text Line">;
+	enumAnimation animation<name="Animation">;
+	enumPortraitExpression portraitExpression<name="Portrait Expression">;
+	int Voice_Line<name="Voice Line">;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refDialogueBox;
+
+typedef struct StructSceneEvent{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumSceneEvent sceneEvent<name="Event Function">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+}refSceneEvent;
+
+typedef struct StructSceneCharacterEvent{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumSceneCharacterEvent sceneCharacterEvent<name="Event Function">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+}refSceneCharacterEvent;
+
+typedef struct StructAnimation{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumAnimation animation<name="Animation">;
+	enumPlayAt playAt<name="Play At:">;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refAnimation;
+
+typedef struct StructBGMChange{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refBGMChange;
+
+typedef struct StructSoundEffect{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refSoundEffect;
+
+typedef struct StructBodyMotion{  // Only X-Axis 
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refBodyMotion;
+
+typedef struct StructHeadMotionX{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refHeadMotionX;
+
+typedef struct StructHeadMotionY{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refHeadMotionY;
+
+typedef struct StructMiniCard{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumCard miniCard<name="Mini Card">;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refMiniCard;
+
+typedef struct StructLargeCard{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumCard largeCard<name="Large Card">;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refLargeCard;
+
+typedef struct StructDialogueChoices{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumCharacter Character<bgcolor=cYellow, name="Character">;
+	int textLine<name="Text Line">;
+	int textLine<name="Text Line">;
+	int textLine<name="Text Line">;
+	int textLine<name="Text Line">;
+	int textLine<name="Text Line">;
+	int textLine<name="Text Line">;
+	int textLine<name="Text Line">;
+	int textLine<name="Text Line">;
+	int textLine<name="Text Line">;
+	int textLine<name="Text Line">;
+}refDialogueChoices;
+
+typedef struct StructConditional{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumConditionalStatement conditionalStatement<name="Conditional Statement">;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refConditional;
+
+typedef struct StructEndConditional{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refEndConditional;
+
+typedef struct StructStartConditional{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refStartConditional;
+
+typedef struct StructSupportPoints{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumCharacter character<name="Support Character">;
+	enumSupportPoints supportPoints<name="Support Points">;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refSupportPoints;
+
+typedef struct StructEmoteEffect{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumCharacter character<bgcolor=cYellow, name="Character">;
+	enumEmoteEffect emoteEffect<name="Emote Effect">;
+	enumPlayAt playAt<name="Play At:">;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refEmoteEffect;
+
+// Camera
+
+typedef struct StructCameraChange{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refCameraChange;
+
+typedef struct StructCameraStandard{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refCameraStandard;
+
+typedef struct StructCameraFade{
+	enumScriptFunction scriptFunction<name="Script Function", format=hex>;
+	enumCubeScene cubeScene<bgcolor=cRed, name="Cube Scene">;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+	int unknown;
+}refCameraFade;
