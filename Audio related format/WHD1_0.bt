@@ -41,7 +41,7 @@ typedef struct WBHHEADER_KWB2 {
     int unknown3<name="Unknown 3">;
     float unknown4<name="Unknown 4">;
     int codec<name="Codec", comment="Assumption, DFFNT uses this in a switch and remaps it.">;
-    int codec_target<name="Codec Target", comment="Assumption? Always zero, DFFNT copies the remapped value to this value">;
+    int hddb_pointer<name="HDDB Pointer">;
 } WBHHeaderKWB2;
 
 typedef struct WBHHEADER {
@@ -122,12 +122,53 @@ typedef struct WBHENTRY {
     WBHKWB2EntryData data[count]<name="Data">;
 } WBHKWB2Entry;
 
+typedef struct HDDBHEADER {
+    char magic[4]<name="Magic">;
+    int unknown1<name="Unknown 1">;
+    int unknown2<name="Unknown 2">;
+    int unknown3<name="Unknown 3">;
+    int unknown4<name="Unknown 4">;
+    int name_table_pointer<name="Name Table Pointer">;
+    int unknown5<name="Unknown 5">;
+    int unknown6<name="Unknown 6">;
+} HDDBHeader;
+
+typedef struct HDDBENTRY {
+    int unknown1<name="Unknown 1">;
+    int unknown2<name="Unknown 2">;
+    int unknown3<name="Unknown 3">;
+    int unknown4<name="Unknown 4">;
+    int unknown5<name="Unknown 5">;
+} HDDBEntry;
+
+typedef struct HDDBNAME {
+    string name<name="Name">;
+} HDDBName;
+
+typedef struct HDDBNAMEPAIR {
+    string name<name="Localized Name (Shift-JIS)">;
+    string file_name<name="File Name">;
+} HDDBNamePair;
+
+typedef struct HDDBSTRUCTURE {
+    local int refptr = FTell();
+    HDDBHeader header<name="Header">;
+    HDDBEntry entries[parentof(this).header.subheader.count]<name="Entries">;
+    FSeek(refptr + header.name_table_pointer);
+    string filename<name="Filename">;
+    HDDBNamePair names[parentof(this).header.subheader.count]<name="Names", optimize=false>;
+} HDDB;
+
 typedef struct WBHSTRUCT {
     local int refptr = FTell() + sizeof(GResourceSectionHeader);
     WBHHeader header<name="Header">;
     switch(header.type) {
         case KWB2: {
             int pointers[header.subheader.count]<name="Pointers">;
+            if(header.subheader.hddb_pointer > 0) {
+                FSeek(refptr + header.subheader.hddb_pointer);
+                HDDB db<name="HDDB">;
+            }
             local int i = 0;
             for(i = 0; i < header.subheader.count; ++i) {
                 if(pointers[i] == 0) continue;
