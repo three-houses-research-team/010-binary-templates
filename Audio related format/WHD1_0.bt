@@ -127,36 +127,39 @@ typedef struct HDDBHEADER {
     int unknown1<name="Unknown 1">;
     int unknown2<name="Unknown 2">;
     int unknown3<name="Unknown 3">;
-    int unknown4<name="Unknown 4">;
+    int size<name="Total Size">;
     int name_table_pointer<name="Name Table Pointer">;
     int unknown5<name="Unknown 5">;
     int unknown6<name="Unknown 6">;
 } HDDBHeader;
 
-typedef struct HDDBENTRY {
-    int unknown1<name="Unknown 1">;
-    int unknown2<name="Unknown 2">;
-    int unknown3<name="Unknown 3">;
-    int unknown4<name="Unknown 4">;
-    int unknown5<name="Unknown 5">;
-} HDDBEntry;
-
 typedef struct HDDBNAME {
-    string name<name="Name">;
+    local int refptr = FTell();
+    int pointer<name="Pointer">;
+    if(pointer > 0) {
+        FSeek(namerefptr + pointer);
+        string name<name="Name">;
+        FSeek(refptr + 4);
+    }
 } HDDBName;
 
-typedef struct HDDBNAMEPAIR {
-    string name<name="Localized Name (Shift-JIS)">;
-    string file_name<name="File Name">;
-} HDDBNamePair;
+string GetHDDBNameText(HDDBName &name) {
+    if(name.pointer == 0) return "";
+    return name.name;
+}
+
+typedef struct HDDBENTRY {
+    local int namerefptr = FTell();
+    HDDBName label<name="Label", read=GetHDDBNameText>;
+    HDDBName tags[4]<name="Tags", read=GetHDDBNameText, optimize=false>;
+} HDDBEntry;
 
 typedef struct HDDBSTRUCTURE {
     local int refptr = FTell();
     HDDBHeader header<name="Header">;
-    HDDBEntry entries[parentof(this).header.subheader.count]<name="Entries">;
+    HDDBEntry entries[parentof(this).header.subheader.count]<name="Entries", optimize=false>;
     FSeek(refptr + header.name_table_pointer);
     string filename<name="Filename">;
-    HDDBNamePair names[parentof(this).header.subheader.count]<name="Names", optimize=false>;
 } HDDB;
 
 typedef struct WBHSTRUCT {
