@@ -33,7 +33,7 @@ typedef struct OPL2_Entry
         Vector3 position <name="Position", comment="X, Y, Z">;
 
         SetBackColor(cYellow);
-        Vector4 rotation <name="Rotation", comment="W, X, Y, Z in pi radians. W is a duplicate of Z.">
+        Vector4 rotation <name="Rotation", comment="X, X, Y, Z in pi radians. W is a duplicate of X.">
 
         SetBackColor(cRed);
         Vector4 scale <name="Scale", comment"X, Y, Z, W (W seems unused.)">; 
