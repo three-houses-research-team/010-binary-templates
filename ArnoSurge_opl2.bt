@@ -1,0 +1,74 @@
+//------------------------------------------------
+//--- 010 Editor Binary Template
+//
+//      File: Ar noSurge's opl2 stored in FIELD archives.
+//   Authors: Silent
+//   Version: 1.00
+//   Purpose: Parse Ar noSurge's opl2 (object placement) files
+//   History
+//   1.00    2020-01-03  Silent - Initial release
+//   1.01    2020-01-22  Silent - Integrated into 3H repo.
+//------------------------------------------------
+
+
+#ifndef G1M_SHAREDSTRUCTURES
+#include "Model related formats/G1SharedStructures.bt"
+#endif // G1M_SHAREDSTRUCTURES
+
+#ifndef ANS_OPL2
+#define ANS_OPL2
+BigEndian();
+#endif
+
+struct OPL2
+{
+    uint entryCount;
+} opl2 <bgcolor=cLtGreen>;
+
+typedef struct OPL2_Entry
+{
+    typedef struct OPL2_Object
+    {
+        SetBackColor(cGreen);
+        Vector3 position <name="Position", comment="X, Y, Z">;
+
+        SetBackColor(cYellow);
+        Vector4 rotation <name="Rotation", comment="X, X, Y, Z in pi radians. W is a duplicate of X.">
+
+        SetBackColor(cRed);
+        Vector4 scale <name="Scale", comment"X, Y, Z, W (W seems unused.)">; 
+        // Unknown. Doesn't look like a float. 
+        SetBackColor(cPurple);
+        uchar unknownA[4];
+        // Unknown. 
+        SetBackColor(cDkPurple);
+        uint unknownCount;
+        SetBackColor(cPurple);
+        if (unknownCount) uchar unknownB [ unknownCount ];
+        // Padding.
+        // 0x20 bytes of 0x00 in each file I checked.
+        SetBackColor(cBlue);
+        Vector4 paddingA;
+        SetBackColor(cDkBlue);
+        Vector4 paddingB;
+    } opl2_object <bgcolor=cDkRed,optimize=false>;
+
+    SetBackColor(cRed);
+    uint objNameLength;
+    SetBackColor(cDkRed);
+    char objName [ objNameLength ];
+
+    // Object number * 5
+    SetBackColor(cAqua);
+    uint index; 
+
+    // 0x10 bytes of 0xFF in each file I checked.
+    SetBackColor(cDkAqua);
+    uchar padding[16];
+
+    SetBackColor(cRed);
+    uint objCount;
+
+    opl2_object objects [ objCount ];
+} opl2_entry <bgcolor=cRed,optimize=false>;
+opl2_entry entries [opl2.entryCount];

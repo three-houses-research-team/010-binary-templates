@@ -33,6 +33,13 @@ typedef struct VECTOR3 {
     float z<name="z">;
 } Vector3;
 
+typedef struct VECTOR4 {
+    float x<name="x">;
+    float y<name="y">;
+    float z<name="z">;
+    float w<name="w">;
+} Vector4;
+
 typedef struct HALFVECTOR3 {
     hfloat x<name="x">;
     hfloat y<name="y">;

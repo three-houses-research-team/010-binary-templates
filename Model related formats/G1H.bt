@@ -1,0 +1,67 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: G1H.bt
+//   Authors: Silent
+//   Version: 1.0
+//   Purpose: Parsing G1H models
+//  Category: Game File
+// File Mask: *.g1h
+//  ID Bytes: 5F 48 31 47
+//   History:
+//   1.0      2020-01-23  Silent: Made file based on G1M.bt 1.2.
+//------------------------------------------------
+
+#ifndef G1H
+#define G1H
+
+#ifndef G1M_FILELESS
+#define G1M_FILELESS
+#define G1H_FILELESS_MASTER
+LittleEndian();
+#endif // G1M_FILELESS
+
+#include "G1M.bt"
+#include "G1M/G1HP.bt"
+
+typedef struct G1HSUBSECTION {
+    local int32 pos = FTell();
+    GResourceSectionHeader header<name="Section Header", read=GetSectionName>;
+    switch(header.magic)
+    {
+        case "PH1G":
+            G1MParts data<name="Parts">;
+            break;
+        default:
+            Printf("*NOTE (%s) Offset 0x%X: Unhandled G1H Resource Section %s\n", GetFileName(), pos, header.magic);
+            byte data[header.size - 0xC]<name="Blob">;
+            break;
+    }
+    FSeek(pos + header.size);
+} G1HSubSection;
+
+typedef struct G1HSTRUCTURE {
+    GResourceSectionHeader header<name="Header", read=GetSectionName>;
+
+    int16 offset_to_offset_table<name="Start of Section Offsets", format=hex>;
+    int16 section_count<name="Section Count", comment="This is typically equal to the number of meshes with shapekeys">;
+    int32 data_start[section_count]<name="Start Offset", format=hex>;
+} G1HStructure <size = 0x18>;
+
+#ifdef G1H_FILELESS_MASTER
+
+struct FILE {
+    G1HStructure header<name="Header">;
+
+    local int i = 0;
+
+    for(i = 0;i < header.section_count;i++)
+    {
+        FSeek(header.data_start[i]);
+        G1HSubSection g1h_sections<name="Section", read=GetSubSectionName, optimize=false>;
+    }
+}File<name="G1H", open=true>;
+
+#endif // G1H_FILELESS_MASTER
+
+#endif //G1H

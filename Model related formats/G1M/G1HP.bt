@@ -1,0 +1,72 @@
+//------------------------------------------------
+//--- 010 Editor Binary Template
+//
+//      File: G1HP.bt
+//   Authors: Silent
+//   Version: 1.0
+//   Purpose: Outlines G1HP (Parts) format found in G1H files
+//  Category: Game File
+// File Mask: 
+//  ID Bytes: 53 4D 31 47
+//   History:
+//   1.0      2020-01-22  Silent: Created the file
+//------------------------------------------------
+
+#ifndef G1M_PARTS
+#define G1M_PARTS
+
+#ifndef G1M_SHAREDSTRUCTURES
+#include "../G1SharedStructures.bt"
+#endif // G1M_SHAREDSTRUCTURES
+
+typedef struct G1HPSUBSECTION {
+    local int32 pos = FTell();
+    GResourceSectionHeader header<name="Section Header", read=GetSectionName>;
+    switch(header.magic)
+    {
+        case "_M1G":
+            FSeek(pos);
+            G1MStructure data<name="Models">;
+            FSeek(pos + data.data_start);
+            G1MSubSection sections[data.section_count]<name="Section", read=GetSubSectionName, optimize=false>;
+            break;
+        default:
+            Printf("*NOTE (%s) Offset 0x%X: Unhandled G1HP Resource Section %s\n", GetFileName(), pos, header.magic);
+            byte data[header.size - 0xC]<name="Blob">;
+            break;
+    }
+    FSeek(pos + header.size);
+} G1HPSubSection;
+
+typedef struct G1MPARTS {
+    local int32 pos = FTell() - 0x0C;
+	int16 offset_to_offset_table;
+	int16 mesh_id<name="Mesh ID", comment="Mesh which the shapekey is applied to.">;
+	int16 num_parts<name="Parts Count", comment="Number of shapekeys in the file">;
+    FSeek(pos + offset_to_offset_table);
+
+    local int i = 0;
+    
+    int32 data_start[num_parts];
+
+    for(i = 0;i < num_parts;i++)
+    {
+        FSeek(pos + data_start[i]);
+        G1HPSubSection parts_sections<name="Section", read=GetSubSectionName, optimize=false>;
+    }
+
+} G1MParts <optimize=false>;
+
+#ifndef G1M_FILELESS
+#define G1M_FILELESS
+
+LittleEndian();
+
+struct FILE {
+    GResourceSectionHeader header<name="Header">;
+    G1MParts data<name="Parts">;
+} File<name="G1HP", open=true>;
+
+#endif // G1M_FILELESS
+
+#endif // G1M_PARTS
