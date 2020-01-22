@@ -22,7 +22,7 @@ LittleEndian();
 #endif // G1M_FILELESS
 
 #include "G1M.bt"
-#include "G1M/G1HP.bt"
+#include "G1H/G1HP.bt"
 
 typedef struct G1HSUBSECTION {
     local int32 pos = FTell();
@@ -30,7 +30,7 @@ typedef struct G1HSUBSECTION {
     switch(header.magic)
     {
         case "PH1G":
-            G1MParts data<name="Parts">;
+            G1HParts data<name="Parts">;
             break;
         default:
             Printf("*NOTE (%s) Offset 0x%X: Unhandled G1H Resource Section %s\n", GetFileName(), pos, header.magic);

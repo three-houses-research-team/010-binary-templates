@@ -12,8 +12,8 @@
 //   1.0      2020-01-22  Silent: Created the file
 //------------------------------------------------
 
-#ifndef G1M_PARTS
-#define G1M_PARTS
+#ifndef G1H_PARTS
+#define G1H_PARTS
 
 #ifndef G1M_SHAREDSTRUCTURES
 #include "../G1SharedStructures.bt"
@@ -38,7 +38,7 @@ typedef struct G1HPSUBSECTION {
     FSeek(pos + header.size);
 } G1HPSubSection;
 
-typedef struct G1MPARTS {
+typedef struct G1HPARTS {
     local int32 pos = FTell() - 0x0C;
 	int16 offset_to_offset_table;
 	int16 mesh_id<name="Mesh ID", comment="Mesh which the shapekey is applied to.">;
@@ -55,7 +55,7 @@ typedef struct G1MPARTS {
         G1HPSubSection parts_sections<name="Section", read=GetSubSectionName, optimize=false>;
     }
 
-} G1MParts <optimize=false>;
+} G1HParts <optimize=false>;
 
 #ifndef G1M_FILELESS
 #define G1M_FILELESS
@@ -64,9 +64,9 @@ LittleEndian();
 
 struct FILE {
     GResourceSectionHeader header<name="Header">;
-    G1MParts data<name="Parts">;
+    G1HParts data<name="Parts">;
 } File<name="G1HP", open=true>;
 
 #endif // G1M_FILELESS
 
-#endif // G1M_PARTS
+#endif // G1H_PARTS
