@@ -87,16 +87,16 @@ typedef struct G1ABONEINFO {
 
 typedef struct G1ASTRUCTURE {
     GResourceSectionHeader header<name="Header", read=GetSectionName>;
-    short unknown1<name="Unknown 1">;
-    short unknown2<name="Unknown 2">;
+    short animationType<name="Animation Type", comment="Probably">;
+    short unknown1<name="Unknown 1", comment="Seems to often be equal to 1">;
     float duration<name="Duration in seconds?">;
     int pointer<name="Pointer to Spline Data", comment="SHR 4">; // literally unused, even by the games.
-    int unknown3<name="Unknown 3">;
-    int unknown4<name="Unknown 4">;
-    int unknown5<name="Unknown 5", comment="Maybe number of tables?">;
-    int unknown6<name="Unknown 6">;
-    int unknown7<name="Unknown 7">;
-    int unknown8<name="Unknown 8">;
+    int reserved1<name="Reserved 1">;
+    int reserved2<name="Reserved 2">;
+    int reserved3<name="Reserved 3">;
+    int reserved4<name="Reserved 4">;
+    int reserved5<name="Reserved 5">;
+    int reserved6<name="Reserved 6">;
     local int startp = FTell();
     short bone_count<name="Bone ID Count">;
     short max_bone_ID<name="Max Bone ID">;
