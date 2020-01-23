@@ -1,0 +1,94 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: KTSR.bt
+//   Authors: DeathChaos, 0Liam, HealingBrew
+//   Version: 1.05
+//   Purpose: Koei Tecmo File Container
+//   Category: 
+//   File Mask: *.ktsl2stbin, *.bin
+//   ID Bytes: KTSR
+//   History
+//   1.00    2019-10-10  DeathChaos - started this
+//   1.02    2020-01-23  DeathChaos, Raytwo - KT Why
+//   1.03    2020-01-23  HealingBrew - Support for multiple channels
+//   1.04    2020-01-23  HealingBrew - Support for multiple files
+//   1.05    2020-01-23  HealingBrew - Support for Cethleann's Stripped GCADPCMs
+//------------------------------------------------
+
+LittleEndian();
+
+struct KTGCADPCM
+{
+    typedef struct GCADPCMSTREAM
+	{
+        local int locptr = FTell();
+		uint sectionMagic<name="Magic", format=hex>;
+		uint sizeof_AudioFile<name="Audio Data size (Total File Size - 0x20)",format=hex>;
+		uint fileLinkID<name="File Link ID",format=hex>;
+		uint channels<name="Number of Channels">;
+		uint unk_0x30;
+		uint sample_rate<name="Sample Rate">;
+		uint sound_duration<name="Duration = numOfSamples - (numOfSamples/0x8)">; // thanks KT
+		uint unk_0x3c;
+		int alwaysFF<name="Always 0xFFFFFFFF">;
+		uint unk_0x44;
+		uint dsp_info_pointer;
+		uint dsp_info_size;
+		uint stream_pointer_table_pointer;
+		uint stream_size_table_pointer;
+        FSeek(dsp_info_pointer);
+        struct DSP_Info
+        {
+		    uint sound_duration<name="Duration = numOfSamples - (numOfSamples/0x8)">; // thanks KT
+		    uint sampleCount;
+		    uint sample_rate<name="Sample Rate">;
+		    uint unk_0x10;
+		    uint unk_0x14;
+		    uint clippedSampleCount;
+		    uint unk_0x1c;
+		    struct DSP_Coeff
+		    {
+			    ushort coeff[8];
+		    }dsp_coeff[2]<name="DSP Coefficient">;
+		    byte KTPadding[0x24]<name="Padding">;
+        }dsp_info[channels];
+        FSeek(locptr + stream_pointer_table_pointer);
+        int stream_pointers[channels];
+        FSeek(locptr + stream_size_table_pointer);
+        int stream_sizes[channels];
+        local int j = 0;
+        for(j = 0; j < channels; ++j) {
+            FSeek(stream_pointers[j] + locptr);
+            struct Stream_Data {
+                byte stream[stream_sizes[j]];
+            } stream<optimize=false>;
+        }
+	} GCADPCMStream;
+
+	struct FileHader
+	{
+        local uint magic = ReadUInt(0);
+        if(magic == 0x70CBCCC5) {
+		    uint fileMagic<name="File Magic",format=hex>; //should be 70CBCCC5
+		    uint fileSize<name="Total File size",format=hex>;
+		    uint linkID<name="Section Header Link ID",format=hex>;
+		    uint unk_0xC;
+		    uint streamCount<name="Stream count">;
+		    uint pointer_table_pointer<name="Pointer table",format=hex>;
+            struct {
+                string name;
+            } names[streamCount]<optimize=false>;
+            FSeek(pointer_table_pointer);
+            uint pointers[streamCount];
+            local int i = 0;
+            for(i = 0; i < streamCount; ++i)
+            {
+                FSeek(pointers[i]);
+	            GCADPCMStream stream<name="Audio Data">;
+            }
+        } else {
+	        GCADPCMStream stream<name="Audio Data">;
+        }
+	}fileheader<name="Standard header">;
+}Kktgcadpcm<name="Combat Voice File">;
