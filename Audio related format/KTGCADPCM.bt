@@ -48,10 +48,7 @@ struct KTGCADPCM
 		    uint unk_0x14;
 		    uint clippedSampleCount;
 		    uint unk_0x1c;
-		    struct DSP_Coeff
-		    {
-			    ushort coeff[8];
-		    }dsp_coeff[2]<name="DSP Coefficient">;
+		    ushort coef[8 * 2]<name="DSP Coefficient">;
 		    byte KTPadding[0x24]<name="Padding">;
         }dsp_info[channels];
         FSeek(locptr + stream_pointer_table_pointer);
