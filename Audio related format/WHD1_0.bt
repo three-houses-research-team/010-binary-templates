@@ -55,13 +55,14 @@ typedef struct WBHHEADER {
 } WBHHeader;
 
 typedef struct WBHKWB2ENTRYDATA {
-    int unknown1<name="Unknown 1">;
-    short unknown2<name="Unknown 2">;
+    ushort sample_rate<name="Sample Rate">;
+    short unknown1<name="Unknown 1">;
+    short frame_size<name="Frame Size">;
     short unknown3<name="Unknown 3">;
     int unknown4<name="Unknown 4">;
-    int unknown5<name="Unknown 5">;
-    int unknown6<name="Unknown 6">;
-    int unknown7<name="Unknown 7">;
+    int sample_count<name="Sample Count">;
+    int offset<name="Offset">;
+    int size<name="Size">;
     int unknown8<name="Unknown 8">;
     int unknown9<name="Unknown 9">;
     float unknown10<name="Unknown 10">;
@@ -114,19 +115,19 @@ typedef struct WBHENTRY {
     int unknown9<name="Unknown 9">;
     int unknown10<name="Unknown 10">;
     int unknown11<name="Unknown 11">;
-    int unknown12<name="Unknown 8">;
-    int unknown13<name="Unknown 9">;
-    short unknown14<name="Unknown 10">;
-    short unknown15<name="Unknown 11">;
-    int unknown16<name="Unknown 11">;
+    int unknown12<name="Unknown 12">;
+    int unknown13<name="Unknown 13">;
+    short unknown14<name="Unknown 14">;
+    short unknown15<name="Unknown 15">;
+    int unknown16<name="Unknown 16">;
     WBHKWB2EntryData data[count]<name="Data">;
 } WBHKWB2Entry;
 
 typedef struct HDDBHEADER {
     char magic[4]<name="Magic">;
     int unknown1<name="Unknown 1">;
-    int unknown2<name="Unknown 2">;
-    int unknown3<name="Unknown 3">;
+    int entry_table_pointer<name="Pointer to Entry Table">;
+    int entry_size<name="Size of each Entry">;
     int size<name="Total Size">;
     int name_table_pointer<name="Name Table Pointer">;
     int unknown5<name="Unknown 5">;
@@ -150,13 +151,13 @@ string GetHDDBNameText(HDDBName &name) {
 
 typedef struct HDDBENTRY {
     local int namerefptr = FTell();
-    HDDBName label<name="Label", read=GetHDDBNameText>;
-    HDDBName tags[4]<name="Tags", read=GetHDDBNameText, optimize=false>;
+    HDDBName tags[parentof(this).header.entry_size / 0x4]<name="Tags", read=GetHDDBNameText, optimize=false>;
 } HDDBEntry;
 
 typedef struct HDDBSTRUCTURE {
     local int refptr = FTell();
     HDDBHeader header<name="Header">;
+    FSeek(refptr + header.entry_table_pointer);
     HDDBEntry entries[parentof(this).header.subheader.count]<name="Entries", optimize=false>;
     FSeek(refptr + header.name_table_pointer);
     string filename<name="Filename">;

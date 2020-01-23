@@ -2,7 +2,7 @@
 //--- 010 Editor v9.0.2 Binary Template
 //
 //      File: KTSR.bt
-//   Authors: DeathChaos, 0Liam, HealingBrew
+//   Authors: DeathChaos, Raytwo, 0Liam, HealingBrew
 //   Version: 1.05
 //   Purpose: Koei Tecmo File Container
 //   Category: 
@@ -14,6 +14,7 @@
 //   1.03    2020-01-23  HealingBrew - Support for multiple channels
 //   1.04    2020-01-23  HealingBrew - Support for multiple files
 //   1.05    2020-01-23  HealingBrew - Support for Cethleann's Stripped GCADPCMs
+//   1.06   2020-01-23  HealingBrew - DSP Offset Error
 //------------------------------------------------
 
 LittleEndian();
@@ -37,7 +38,7 @@ struct KTGCADPCM
 		uint dsp_info_size;
 		uint stream_pointer_table_pointer;
 		uint stream_size_table_pointer;
-        FSeek(dsp_info_pointer);
+        FSeek(locptr + dsp_info_pointer);
         struct DSP_Info
         {
 		    uint sound_duration<name="Duration = numOfSamples - (numOfSamples/0x8)">; // thanks KT
@@ -59,7 +60,7 @@ struct KTGCADPCM
         int stream_sizes[channels];
         local int j = 0;
         for(j = 0; j < channels; ++j) {
-            FSeek(stream_pointers[j] + locptr);
+            FSeek(locptr + stream_pointers[j]);
             struct Stream_Data {
                 byte stream[stream_sizes[j]];
             } stream<optimize=false>;
