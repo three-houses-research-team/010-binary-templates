@@ -1,0 +1,179 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: KTSR.bt
+//   Authors: DeathChaos, 0Liam, Raytwo
+//   Version: 1.04
+//   Purpose: Parse KTSR files
+//   Category: File Format
+//   File Mask: *.ktsl2stbin, *.bin
+//   ID Bytes: KTSR
+//   History:
+//   1.00    2019-08-05  DeathChaos - started this
+//   1.01    2019-08-06  DeathChaos - Minor Code Cleanup
+//   1.02    2019-08-19  0Liam      - Added support for other KTSR types and refactored code
+//   1.03    2019-11-23  Raytwo     - Added information about some sections
+//   1.04    2020-01-08  0Liam      - Updated for consistency
+//------------------------------------------------
+
+LittleEndian();
+DisplayFormatHex();
+
+struct {
+	char magic[0x4] <name="Magic">;
+	uint32 type_id <name="Type ID">;
+	uint16 flags <name="Flags">; // If the value is not 1, the file will not load
+	uint16 console_type <name="Console Type">; // 0x400 = Switch
+	uint32 game_id <name="Game ID">;
+	uint64 padding_1;
+	uint32 decompressed_size <name="Decompressed Size">; // Assumed
+	uint32 compressed_size <name="Compressed Size">; // Assumed
+} ktsr <bgcolor=cYellow, size=0x40>;
+
+typedef struct GCADPCMSTREAM
+	{
+        local int locptr = FTell();
+		uint sectionMagic<name="Magic", format=hex>;
+		uint sizeof_AudioFile<name="Audio Data size (Total File Size - 0x20)",format=hex>;
+		uint fileLinkID<name="File Link ID",format=hex>;
+		uint channels<name="Number of Channels">;
+		uint unk_0x30;
+		uint sample_rate<name="Sample Rate">;
+		uint sound_duration<name="Duration = numOfSamples - (numOfSamples/0x8)">; // thanks KT
+		uint unk_0x3c;
+		int alwaysFF<name="Always 0xFFFFFFFF">;
+		uint unk_0x44;
+		uint dsp_info_pointer;
+		uint dsp_info_size;
+		uint stream_pointer_table_pointer;
+		uint stream_size_table_pointer;
+        FSeek(locptr + dsp_info_pointer);
+        struct DSP_Info
+        {
+		    uint sound_duration<name="Duration = numOfSamples - (numOfSamples/0x8)">; // thanks KT
+		    uint sampleCount;
+		    uint sample_rate<name="Sample Rate">;
+		    uint unk_0x10;
+		    uint unk_0x14;
+		    uint clippedSampleCount;
+		    uint unk_0x1c;
+		    ushort coef[8 * 2]<name="DSP Coefficient">;
+		    byte KTPadding[0x24]<name="Padding">;
+        }dsp_info[channels];
+        FSeek(locptr + stream_pointer_table_pointer);
+        int stream_pointers[channels];
+        FSeek(locptr + stream_size_table_pointer);
+        int stream_sizes[channels];
+        local int j = 0;
+        for(j = 0; j < channels; ++j) {
+            FSeek(locptr + stream_pointers[j]);
+            struct Stream_Data {
+                byte stream[stream_sizes[j]];
+            } stream<optimize=false>;
+        }
+	} GCADPCMStream;
+
+struct SECTION {
+	uint32 type_id <name="Type ID">;
+	uint32 section_size <name="Section Size">;
+	if (type_id == 0x15F4D409) { // // ktss_section (inside ktsl2stbin)
+		uint32 link_id <name="Link ID">;
+		uint32 unknown_1;
+		uint32 kns_size <name="KNS Size">;
+		ubyte padding_1[0x2C];
+	} else if (type_id == 0x368C88BD) { // info_section (inside ktsl2asbin)
+		uint32 link_id <name="Link ID">;
+		uint16 channel_count <name="Channel Count">;
+		uint16 layer_count <name="Layer Count">;
+		uint32 padding_1;
+		uint32 cancel <name="Cancel">;
+		ubyte unknown_1[section_size - 0x18];
+	} else if (type_id == 0xA8DB7261) { // padding_section (inside ktsl2asbin)
+		ubyte padding_1[section_size - 0x8];
+	} else if (type_id == 0x70CBCCC5 && section_size == 0x60) // info2_section (inside ktsl2asbin, linked to ktsl2stbin)
+	{
+		uint32 link_id <name="Link ID">;
+		ubyte unknown_1[0x10];
+		uint32 header_size <name="Header Size">;
+		uint32 type_id_2 <name="Type ID 2">;
+		uint32 section_size_2 <name="Section Size 2">;
+		uint32 unknown_2;
+		uint32 channel_count <name="Channel Count">;
+		uint32 transition_related <name="Transition Related">;
+		uint32 unknown_3;
+		uint32 sample_rate <name="Sample Rate">;
+		uint32 sample_count <name="Sample Count">;
+		uint32 unknown_4;
+		uint32 loop_start <name="Loop Start">;
+		ubyte unknown_5[0xC];
+		uint32 ktss_offset <name="KTSS Offset">;
+		uint32 ktss_size <name="KTSS Size">;
+		uint32 unknown_6;
+	} else { // unknown (type ID not seen before)
+		uint32 link_id <name="Link ID">;
+		ubyte unknown_1[section_size - 0xC];
+	};
+};
+
+if (ktsr.type_id == 0xFCDD9402) { // ktsl2stbin
+	local TFindResults ktss = FindAll("KTSS");
+	struct {
+		SECTION ktss_section <name="KTSS Section", bgcolor=cRed>;
+		char magic[0x4] <name="Magic">;
+		uint32 section_size <name="Section Size">;
+		ubyte padding_1[0x20 - FTell() % 0x20];
+		ubyte codec_id <name="Codec ID">;
+		ubyte unknown_1;
+		ubyte unknown_2;
+		ubyte unknown_3;
+		uint32 codec_start_offset <name="Codec Start Offset">;
+		ubyte layer_count <name="Layer Count">;
+		ubyte channel_count <name="Channel Count">;
+		uint16 unknown_4;
+		uint32 sample_rate <name="Sample Rate", comment="The frequency at which the KTSS is read">;
+		uint32 sample_count <name="Sample Count">;
+		uint32 loop_start_sample <name="Loop Start Sample", comment="In sample block">;
+		uint32 loop_length <name="Loop Length", comment="In sample block">;
+		uint32 padding_2;
+		uint32 audio_offset <name="Audio Offset">;
+		uint32 audio_size <name="Audio Size">;
+		uint32 unknown_5;
+		uint32 packet_count <name="Packet Count">;
+		uint16 packet_size <name="Packet Size">;
+		uint16 unknown_6 <comment="Always 0x3C0 so far">;
+		uint32 input_sample_rate <name="Input Sample Rate", comment="The frequency the original file was using">;
+		uint16 skip <name="Skip", comment="Initial delay for complicated audio shit">;
+		ubyte stream_count <name="Stream Count">;
+		ubyte coupled_count <name="Coupled Count">;
+		ubyte channel_mapping_family[channelCount] <name="Channel Mapping Family">;
+		ubyte padding_3[0x70 - FTell() % 0x70];
+		struct {
+			BigEndian();
+			uint32 size <name="Size">;
+			LittleEndian();
+			uint32 unknown_1;
+			ubyte content[size] <name="Content">;
+		} packet[packet_count] <name="Packet", optimize=false>;
+	} ktss[ktss.count] <name="KTSS", optimize=false>;
+} else if (ktsr.type_id == 0x1A487B77) { // ktsl2asbin
+	local TFindResults info = FindAll(0x368C88BD);
+	local TFindResults padding = FindAll(0xA8DB7261);
+	local TFindResults info2 = FindAll(0x70CBCCC5);
+	SECTION info_section[info.count] <name="Info Section", optimize=false, bgcolor=cRed>;
+	SECTION padding_section[padding.count] <name="Padding Section", optimize=false, bgcolor=cBlue>;
+	SECTION info2_section[info2.count] <name="Info2 Section", optimize=false, bgcolor=cGreen>;
+} else if (ktsr.type_id == 0x9EE638C6) { // ktsl2gcbin - only tested on GlobalConfig.ktsl2gcbin, there may be more sections
+	local TFindResults unknown1 = FindAll(0xE0736214);
+	local TFindResults unknown2 = FindAll(0x009E4D89);
+	local TFindResults unknown3 = FindAll(0x3CC43F64);
+	local TFindResults unknown4 = FindAll(0xFDBC6FE2);
+	local TFindResults unknown5 = FindAll(0x6D8C8F46);
+	local TFindResults unknown6 = FindAll(0xBFC43B5D);
+	SECTION unknown1_section[unknown1.count] <name="Unknown1 Section", optimize=false, bgcolor=cRed>;
+	SECTION unknown2_section[unknown2.count] <name="Unknown2 Section", optimize=false, bgcolor=cBlue>;
+	SECTION unknown3_section[unknown3.count] <name="Unknown3 Section", optimize=false, bgcolor=cGreen>;
+	SECTION unknown4_section[unknown4.count] <name="Unknown4 Section", optimize=false, bgcolor=cPurple>;
+	SECTION unknown5_section[unknown5.count] <name="Unknown5 Section", optimize=false, bgcolor=cLtRed>;
+	SECTION unknown6_section[unknown6.count] <name="Unknown6 Section", optimize=false, bgcolor=cLtBlue>;
+	ubyte padding_1[0x10 - FTell() % 0x10] <bgcolor=cLtGreen>;
+};
