@@ -34,7 +34,16 @@ enum<byte> G1TG_SUBSYSTEM
     Xbox
 };
 
+enum<short> G1TG_FLAGS 
+{
+    G1TG_FLAGS_EXTRA = 0x1000
+};
+
 struct FILE {
+    if(ReadUInt() == 0x47543147) {
+        BigEndian();
+    }
+
     struct HEADER {
         char magic[4]<name="Magic", fgcolor=cLtBlue>;
         char version[4]<name="Version", fgcolor=cLtBlue>;
@@ -59,11 +68,14 @@ struct FILE {
             local ubyte MipCount = mipmapAndSubsystem >> 4;
             local G1TG_SUBSYSTEM SubSystem = mipmapAndSubsystem & 0xF;
             DXT_TYPE type<name="DXT Type", format=hex>;
-            short dimensions<name="Texture dimensions", comment="Width = Pow(2, (value & 0xF)), Height = Pow(2, (value >> 4))", format=decimal>;
+            byte dimensions<name="Texture dimensions", comment="Width = Pow(2, (value & 0xF)), Height = Pow(2, (value >> 4))", format=decimal>;
+            byte unknown1<name="Unknown 1">;
             
-            uint32 flags<name="Flags", comment="If the last byte is 0x10, the extra header is used", format=hex, fgcolor=cLtYellow>;
+            byte unknown2<name="Unknown 2">;
+            byte unknown3<name="Unknown 3">;
+            G1TG_FLAGS flags<name="Flags", comment="If the last byte is 0x10, the extra header is used", format=hex, fgcolor=cLtYellow>;
             
-            if((flags >> 24) == 0x10)
+            if((flags & G1TG_FLAGS_EXTRA) == G1TG_FLAGS_EXTRA)
             {
                 struct EXTRATEXHEADER {
                     uint32 size<name="Extra Texture Header size", format=hex>;
