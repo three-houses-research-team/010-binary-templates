@@ -64,11 +64,12 @@ struct FILE {
         FSeek(Header.tableOffset + OffsetTable[i]);
 
         struct TEXHEADER {
-            ubyte mipmapAndSubsystem<name="Mip count and subsystem", comment="Right-shift by 4 to obtain the mips", format=hex>;
-            local ubyte MipCount = mipmapAndSubsystem >> 4;
-            local G1TG_SUBSYSTEM SubSystem = mipmapAndSubsystem & 0xF;
+            byte subsystem_id : 4<name="Subsystem">,
+                 mip_count : 4<name="Mip Count", comment="SHR 4">;
+            local G1TG_SUBSYSTEM subsystem = (G1TG_SUBSYSTEM) subsystem_id;
             DXT_TYPE type<name="DXT Type", format=hex>;
-            byte dimensions<name="Texture dimensions", comment="Width = Pow(2, (value & 0xF)), Height = Pow(2, (value >> 4))", format=decimal>;
+            byte packed_width : 4<name="Width">,
+                 packed_height : 4<name = "Height", comment="SHR 4">;
             byte unknown1<name="Unknown 1">;
             
             byte unknown2<name="Unknown 2">;
@@ -84,8 +85,9 @@ struct FILE {
                 }ExtraTexHeader<name="Extra Texture Header", comment="Width and Height values for non-powers of two and large textures", bgcolor=cDkGray>;
             }
             
-            local uint32 Width = 1 << (dimensions & 0xF);
-            local uint32 Height = 1 << (dimensions >> 4 & 0xF);
+            local uint32 Width = 1 << packed_width;
+            local uint32 Height = 1 << packed_height;
+
             local uint64 Size = 0;
 
             if(type == 0x1 || type == 0x2) //RGBA8 and BGRA8
@@ -105,7 +107,7 @@ struct FILE {
             local int j = 0;
             local int originalSize = Size;
 
-            for(j = 1;j < MipCount; j++) //Skip the first entry which is the full-sized texture
+            for(j = 1;j < mip_count; j++) //Skip the first entry which is the full-sized texture
             {
                 originalSize = originalSize/4;
                 Size += originalSize;
