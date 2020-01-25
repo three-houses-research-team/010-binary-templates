@@ -43,8 +43,8 @@ typedef enum G1ASPLINETYPE {
     G1ASplineType_Rotation = 2,
     G1ASplineType_Position = 3,
     G1ASplineType_RotationPosition = 4,
-    G1ASplineType_RotationScale = 5,
-    G1ASplineType_RotationPositionScale = 6
+    G1ASplineType_RotationPositionScale = 6,
+	G1ASplineType_RotationScale = 8
 } G1ASplineType;
 
 typedef struct G1ASPLINES {
