@@ -50,16 +50,24 @@ typedef struct G2AFRAMESPLINE {
 } G2AFrameSpline;
 
 typedef struct G2ABONEINFO {
-    int spline_type_count : 2, //number of channels
-        bone_ID : 10, //divide by 4 to get the actual ID
-        bone_timing_data_offset : 20; //may need to divide by 4 in some G2A versions
-
+    if(version < 50) {
+        int spline_type_count : 4,
+            bone_ID : 10,
+            bone_timing_data_offset : 18;
+    } else { // this fixes the bug, thanks koei
+        int spline_type_count : 2,
+            bone_ID : 10,
+            bone_timing_data_offset : 20;
+    }
     local int locp = FTell();
-    local int offset = bone_timing_data_offset;
-    if(version < 50)
-        offset/=4;
-    FSeek(startp + offset + packed_data.bone_info_blob_size);
-    G1Helper_AlignBytesReverse(4);
+    if(version < 50) {
+        if(lastId > bone_ID) { // this is how v30 fixes the bug.
+            globalOffset += 1;
+        }
+        lastId = bone_ID;
+        local int actual_Bone_ID = bone_ID + globalOffset * 1024;
+    }
+    FSeek(startp + bone_timing_data_offset + packed_data.bone_info_blob_size - globalOffset);
     G2AFrameSpline frame[spline_type_count]<name="splines", optimize=false>;
     FSeek(locp);
 } G2ABoneInfo;
@@ -84,7 +92,12 @@ typedef struct G2ASTRUCTURE {
     local int startp = FTell();
 
     struct G2ABONEINFOWRAPPER {
-        G2ABoneInfo bones[bone_count]<name="BoneInfo", optimize=false>;
+        local int i = 0;
+        local int lastId = 0;
+        local int globalOffset = 0;
+        for(i = 0; i < bone_count; ++i) {
+            G2ABoneInfo bones<name="BoneInfo", optimize=false>;
+        }
     } G2ABoneInfoWrapper<name="Bone Info">;
 
     FSeek(startp + packed_data.bone_info_blob_size + timing_section_size);
