@@ -1,0 +1,47 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: person_monitor.bt
+//   Authors: DeathChaos
+//   Version: 1.00
+//   Purpose: Unknown
+//   Category: File Format
+//   File Mask: *.bin
+//   ID Bytes: 00191216
+//   History:
+//   1.00    2020-25-01  DeathChaos - started this
+//------------------------------------------------
+
+LittleEndian();
+
+struct File
+{
+	struct Header
+	{
+		int numOfFiles<name="Number of files">;
+		int sizeofHeader<name="Total Size of Header">;
+		struct FileHeaders
+		{
+			int totalFileSize<name="Total Size of File">;
+		}fileheaders[numOfFiles]<name="File Headers">;;
+	}header<name="Header">;
+	struct PersonMonitor
+	{
+		int magic<name="File Magic",format=hex>; // 00191216
+		int numOfEntries<name="Number of Entries">;
+		int sizeofEntries<name="Size of each entry">;
+		byte padding[((0x40 - FTell() % 0x40) % 0x40) + 0xC];
+		struct MonitorEntry
+		{
+			short unk;
+			short unk;
+			int unk;
+			int padding<name="Padding">;
+			int bitflags;
+			int FF<name="-1",format=hex>;
+			int unk;
+			int bitflags2;
+			int unk;
+		}monitorentry[numOfEntries]<name="Section">;
+	}personmonitor[header.numOfFiles]<name="Files",optimize=false>;
+}file<name="person_monitor">;
