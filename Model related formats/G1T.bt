@@ -36,7 +36,9 @@ enum<byte> G1TG_SUBSYSTEM
 
 enum<short> G1TG_FLAGS 
 {
-    G1TG_FLAGS_EXTRA = 0x1000
+    G1TG_FLAGS_MODERN = 0x1,
+    G1TG_FLAGS_HAS_EXTRA = 0x1000,
+    G1TG_FLAGS_EXTRA = G1TG_FLAGS_HAS_EXTRA | G1TG_FLAGS_MODERN
 };
 
 struct FILE {
@@ -75,18 +77,25 @@ struct FILE {
             byte unknown2<name="Unknown 2">;
             byte unknown3<name="Unknown 3">;
             G1TG_FLAGS flags<name="Flags", comment="If the last byte is 0x10, the extra header is used", format=hex, fgcolor=cLtYellow>;
-            
+            Printf("%d\n", (flags & G1TG_FLAGS_EXTRA));
             if((flags & G1TG_FLAGS_EXTRA) == G1TG_FLAGS_EXTRA)
             {
                 struct EXTRATEXHEADER {
                     uint32 size<name="Extra Texture Header size", format=hex>;
-                    uint32 width;
-                    uint32 height;
+                    float unknown1;
+                    uint16 unknown2;
+                    uint16 unknown3;
+                    if(size >= 0x10) {
+                        int width;
+                    }
+                    if(size >= 0x14) {
+                        int height;
+                    }
                 }ExtraTexHeader<name="Extra Texture Header", comment="Width and Height values for non-powers of two and large textures", bgcolor=cDkGray>;
             }
             
-            local uint32 Width = 1 << packed_width;
-            local uint32 Height = 1 << packed_height;
+            local uint32 Width = packed_width > 0 ? 1 << packed_width : ExtraTexHeader.width;
+            local uint32 Height = packed_height > 0 ? 1 << packed_height : ExtraTexHeader.height;
 
             local uint64 Size = 0;
 
