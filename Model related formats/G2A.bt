@@ -55,18 +55,16 @@ typedef struct G2ABONEINFO {
             bone_ID : 10,
             bone_timing_data_offset : 18;
     } else { // this fixes the bug, thanks koei
-        int spline_type_count : 2,
-            bone_ID : 10,
+        int spline_type_count : 4,
+            bone_ID : 8,
             bone_timing_data_offset : 20;
     }
     local int locp = FTell();
-    if(version < 50) {
-        if(lastId > bone_ID) { // this is how v30 fixes the bug.
-            globalOffset += 1;
-        }
-        lastId = bone_ID;
-        local int actual_Bone_ID = bone_ID + globalOffset * 1024;
+    if(lastId > bone_ID) { // this is how v30 fixes the bug.
+        globalOffset += 1;
     }
+    lastId = bone_ID;
+    local int actual_Bone_ID = bone_ID + globalOffset * (version < 50 ? 1024 : 256);
     FSeek(startp + bone_timing_data_offset + packed_data.bone_info_blob_size - globalOffset);
     G2AFrameSpline frame[spline_type_count]<name="splines", optimize=false>;
     FSeek(locp);
