@@ -77,7 +77,6 @@ struct FILE {
             byte unknown2<name="Unknown 2">;
             byte unknown3<name="Unknown 3">;
             G1TG_FLAGS flags<name="Flags", comment="If the last byte is 0x10, the extra header is used", format=hex, fgcolor=cLtYellow>;
-            Printf("%d\n", (flags & G1TG_FLAGS_EXTRA));
             if((flags & G1TG_FLAGS_EXTRA) == G1TG_FLAGS_EXTRA)
             {
                 struct EXTRATEXHEADER {
