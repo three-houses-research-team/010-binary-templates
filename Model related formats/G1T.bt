@@ -34,13 +34,6 @@ enum<byte> G1TG_SUBSYSTEM
     Xbox
 };
 
-enum<short> G1TG_FLAGS 
-{
-    G1TG_FLAGS_MODERN = 0x1,
-    G1TG_FLAGS_HAS_EXTRA = 0x1000,
-    G1TG_FLAGS_EXTRA = G1TG_FLAGS_HAS_EXTRA | G1TG_FLAGS_MODERN
-};
-
 struct FILE {
     if(ReadUInt() == 0x47543147) {
         BigEndian();
@@ -76,8 +69,10 @@ struct FILE {
             
             byte unknown2<name="Unknown 2">;
             byte unknown3<name="Unknown 3">;
-            G1TG_FLAGS flags<name="Flags", comment="If the last byte is 0x10, the extra header is used", format=hex, fgcolor=cLtYellow>;
-            if((flags & G1TG_FLAGS_EXTRA) == G1TG_FLAGS_EXTRA)
+            byte unknown3<name="Unknown 4">;
+            byte extra_version<name="Extra Version">;
+
+            if(extra_version > 0)
             {
                 struct EXTRATEXHEADER {
                     uint32 size<name="Extra Texture Header size", format=hex>;
@@ -91,6 +86,15 @@ struct FILE {
                         int height;
                     }
                 }ExtraTexHeader<name="Extra Texture Header", comment="Width and Height values for non-powers of two and large textures", bgcolor=cDkGray>;
+                
+                if(ExtraTexHeader.size != 0xC && ExtraTexHeader.size != 0x14) {
+                    Printf("extra tex version is not zero but data might be missing\n");
+                }
+            } else {
+                local uint test = ReadUInt();
+                if(test == 0xC || test == 0x14) {
+                    Printf("extra tex version is zero but data might be present\n");
+                }
             }
             
             local uint32 Width = packed_width > 0 ? 1 << packed_width : ExtraTexHeader.width;
