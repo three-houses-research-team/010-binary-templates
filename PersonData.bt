@@ -49,8 +49,8 @@ struct File{
 		uint32 UnkTotalSize01<bgcolor=cYellow>;
 		uint32 UnkPointer01<bgcolor=cYellow>;
 		uint32 UnkTotalSize01<bgcolor=cYellow>;
-		uint32 UnkPointer01<bgcolor=cYellow>;
-		uint32 UnkTotalSize01<bgcolor=cYellow>;
+		uint32 SupportListPointer<bgcolor=cYellow>;
+		uint32 SupportListSize<bgcolor=cYellow>;
 		uint32 PointerToHiddenTalent<bgcolor=cYellow>;
 		uint32 HiddenTalentStructSize<bgcolor=cYellow>;
 		uint32 UnkPointer01<bgcolor=cYellow>;
@@ -445,6 +445,21 @@ struct File{
         }artlearnset<name="Combat Art Learnset", bgcolor=cYellow>;
     }artlearnsetstruct<name="Combat Art Learnset Table">;
 
+    FSeek(sectionpointers.SupportListPointer);
+    struct SupportListTableStruct{
+        uint Magic<bgcolor=cRed>;
+        uint numSupportPairs<bgcolor=cRed>;
+        uint SizeOfSupportPairs<bgcolor=cRed>;
+        ubyte Padding[0x34]<bgcolor=cBlue>;
+                struct SupportPairs{
+                    byte Padding[0x2]<hidden=true>;
+                    Names NameOfChar<name="Character">;
+                    Names NameOfChar<name="Character">;
+                    ushort Unk;
+                    ushort Unk;
+                }supportpairs[numSupportPairs]<name="Support Pair", read=GetSupportPairs>;
+    }supportlisttablestruct<bgcolor=0x70c009, name="Support Pair Table">;
+
     FSeek(sectionpointers.PointerToHiddenTalent);
     struct HiddenTalentStruct {
         uint Magic<bgcolor=cRed>;
@@ -491,4 +506,11 @@ string GetTalentNames(HiddenTalentData &i)
 string GetCharNames4(WpnRankData &i)
 {
     return EnumToString(i.NameOfChar);
+}
+string GetSupportPairs(SupportPairs &i)
+{
+    string supportPairs = EnumToString(i.NameOfChar[0]) + EnumToString(i.NameOfChar[1]);
+    if (supportPairs == "")
+        return "";
+    return EnumToString(i.NameOfChar[0]) + " + " + EnumToString(i.NameOfChar[1]);
 }
