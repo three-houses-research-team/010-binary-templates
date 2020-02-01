@@ -458,7 +458,7 @@ struct File{
                     ushort Unk;
                     ushort Unk;
                 }supportpairs[numSupportPairs]<name="Support Pair", read=GetSupportPairs>;
-    }supportlisttablestruct<bgcolor=0x70c009, name="Support List Table">;
+    }supportlisttablestruct<bgcolor=0x70c009, name="Support Pair Table">;
 
     FSeek(sectionpointers.PointerToHiddenTalent);
     struct HiddenTalentStruct {
