@@ -22,22 +22,22 @@
 
 typedef struct G1MFORMAT20 {
     int unknown0<name="Unknown 0">; // 0
-    int unknown1<name="Unknown 1">; // 4, multiplied with unknown 2
-    int unknown2<name="Unknown 2">; // 8, multiply with 0x1F
-    int unknown3<name="Unknown 3">; // C, subtract 1, multiply with 0x2, add 5
-    int unknown4<name="Unknown 4">; // 10, subtract 1
-    int unknown5<name="Unknown 5">; // 14, oh god
-    int unknown6<name="Unknown 6">; // 18, what am i doing
+    int total_bone_count<name="Total bone count">; // 4, multiplied with unknown 2
+    int g1ms_section_count<name="G1MS section count">; // 8, multiply with 0x1F
+    int unknown3<name="Total matrices count">; // C, subtract 1, multiply with 0x2, add 5
+    int unknown4<name="Socket count">; // 10, subtract 1
+    int unknown5<name="Materials count">; // 14, oh god
+    int unknown6<name="Shaders count">; // 18, what am i doing
     int unknown7<name="Unknown 7">; // 1C
     int unknown8<name="Unknown 8">; // 20
     int unknown9<name="Unknown 9">; // 24
-    int unknown10<name="Unknown A">; // 28
-    int unknown11<name="Unknown B">; // 2C
-    int unknown12<name="Unknown C">; // 30
-    int unknown13<name="Unknown D">; // 34
-    int unknown14<name="Unknown E">; // 38
+    int unknown10<name="Vertex buffer count">; // 28
+    int unknown11<name="Vertex attributes count">; // 2C
+    int unknown12<name="Index buffer count">; // 30
+    int unknown13<name="Bone bind count">; // 34
+    int unknown14<name="Individual bone maps">; // 38
     int unknown15<name="Unknown F">; // 3C
-    int unknown16<name="Unknown 10">; // 40
+    int unknown16<name="Submeshes count">; // 40
     int unknown17<name="Unknown 11">; // 44
     int unknown18<name="Unknown 12">; // 48
     int unknown19<name="Unknown 13">; // 4C
@@ -52,7 +52,7 @@ typedef struct G1MFORMAT20 {
     int unknown28<name="Unknown 1C">; // 70
     int unknown29<name="Unknown 1D">; // 74
     int unknown30<name="Unknown 1E">; // 78
-    int unknown31<name="Unknown 1F">; // 7C
+    int unknown31<name="Bone table count">; // 7C
 } G1MFormatV20;
 
 typedef struct G1MFORMAT21 {
@@ -80,6 +80,7 @@ typedef struct G1MFORMAT23 {
     int unknown10<name="Unknown A">; // BC, 2F
 } G1MFormatV23;
 
+// SOFT related
 typedef struct G1MFORMAT24 {
     int unknown0<name="Unknown 0">; // C0, 30
     int unknown1<name="Unknown 1">; // C4, 31
@@ -97,6 +98,7 @@ typedef struct G1MFORMAT24 {
     int unknown13<name="Unknown D">; // F4, 3E
 } G1MFormatV24;
 
+// SOFT related, it seems
 typedef struct G1MFORMAT25 {
     int unknown0<name="Unknown 0">; // F8, 3F
     int unknown1<name="Unknown 1">; // FC, 40
