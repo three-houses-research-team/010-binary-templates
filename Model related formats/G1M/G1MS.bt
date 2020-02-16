@@ -38,7 +38,7 @@ typedef struct G1MSKELETONBONESET {
 typedef struct G1MSKELETON {
     local int32 start = FTell() - 0x0C;
     uint32 data_offset<name="Data region offset", format=hex>;
-    uint32 unknown<name="Unknown 1">;
+    uint32 uses_internal_boneset<name="Uses internal boneset">;
     uint16 total_bone_count<name="Total Bone Count">;
     uint16 bone_table_count<name="Bone Table Count">;
     uint32 bone_set_count<name="Bone Set Count">;

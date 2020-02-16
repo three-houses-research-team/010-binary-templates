@@ -21,7 +21,7 @@
 #endif // G1M_SHAREDSTRUCTURES
 
 typedef struct G1MFORMAT20 {
-    int unknown0<name="Unknown 0">; // 0
+    int unknown0<name="Boneset count">; // 0
     int total_bone_count<name="Total bone count">; // 4, multiplied with unknown 2
     int g1ms_section_count<name="G1MS section count">; // 8, multiply with 0x1F
     int unknown3<name="Total matrices count">; // C, subtract 1, multiply with 0x2, add 5
@@ -29,7 +29,7 @@ typedef struct G1MFORMAT20 {
     int unknown5<name="Materials count">; // 14, oh god
     int unknown6<name="Shaders entry count">; // 18, what am i doing
     int unknown7<name="Total shader count">; // 1C
-    int unknown8<name="Unknown 8">; // 20
+    int unknown8<name="Shader buffer count?">; // 20
     int unknown9<name="Unknown 9">; // 24
     int unknown10<name="Vertex buffer count">; // 28
     int unknown11<name="Vertex attributes count">; // 2C
@@ -38,21 +38,21 @@ typedef struct G1MFORMAT20 {
     int unknown14<name="Total bone bind count">; // 38
     int unknown15<name="Unknown F">; // 3C
     int unknown16<name="Submeshes count">; // 40
-    int unknown17<name="Unknown 11">; // 44
+    int unknown17<name="Total submesh count?">; // 44
     int unknown18<name="Meshes count">; // 48
     int unknown19<name="Total meshes submesh count">; // 4C
     int unknown20<name="Total meshes count">; // 50
-    int unknown21<name="Unknown 15">; // 54
-    int unknown22<name="Unknown 16">; // 58
+    int unknown21<name="COLL entry count?">; // 54
+    int unknown22<name="COLL total something count">; // 58
     int unknown23<name="Unknown 17">; // 5C
     int unknown24<name="Unknown 18">; // 60
     int unknown25<name="Unknown 19">; // 64
     int unknown26<name="Unknown 1A">; // 68
     int unknown27<name="Unknown 1B">; // 6C
-    int unknown28<name="Unknown 1C">; // 70
-    int unknown29<name="Unknown 1D">; // 74
+    int unknown28<name="NUNO total control point count">; // 70
+    int unknown29<name="NUNO Unknown section count">; // 74
     int unknown30<name="Unknown 1E">; // 78
-    int unknown31<name="Bone table count">; // 7C
+    int unknown31<name="Bone indices count">; // 7C
 } G1MFormatV20;
 
 typedef struct G1MFORMAT21 {
@@ -60,10 +60,10 @@ typedef struct G1MFORMAT21 {
 } G1MFormatV21;
 
 typedef struct G1MFORMAT22 {
-    int unknown0<name="Unknown 0">; // 84, 21
-    int unknown1<name="Unknown 1">; // 88, 22
-    int unknown2<name="Unknown 2">; // 8C, 23
-    int unknown3<name="Unknown 3">; // 90, 24
+    int unknown0<name="NUNV entry count?">; // 84, 21
+    int unknown1<name="NUNV unk1 total?">; // 88, 22
+    int unknown2<name="NUNV control point count">; // 8C, 23
+    int unknown3<name="NUNV unknown section count">; // 90, 24
 } G1MFormatV22;
 
 typedef struct G1MFORMAT23 {
@@ -122,7 +122,7 @@ typedef struct G1MFORMAT28 {
 } G1MFormatV28;
 
 typedef struct G1MFORMAT29 {
-    int unknown0<name="Unknown 0">; // 120, 49
+    int unknown0<name="SOFT entry count?">; // 120, 49
 } G1MFormatV29;
 
 typedef struct G1MFORMAT {
@@ -137,7 +137,7 @@ typedef struct G1MFORMAT {
     }
 
     if(version >= 20) { // 0x80 bytes total
-        G1MFormatV20 version20<name="V20">;
+        G1MFormatV20 version20<name="G1MS/G1MM/G1MG/COLL/NUNO">;
     }
     
     if(version >= 21) { // 0x84 bytes total
@@ -145,7 +145,7 @@ typedef struct G1MFORMAT {
     }
     
     if(version >= 22) { // 0x94 bytes total
-        G1MFormatV22 version22<name="V22">;
+        G1MFormatV22 version22<name="NUNV section">;
     }
     
     if(version >= 23) { // 0xC0 bytes total
@@ -173,7 +173,7 @@ typedef struct G1MFORMAT {
     }
     
     if(version >= 29) { // 0x124 bytes total
-        G1MFormatV29 version29<name="V29">;
+        G1MFormatV29 version29<name="SOFT?">;
     }
 
     if(version >= 30) {
