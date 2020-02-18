@@ -145,8 +145,8 @@ enum<byte> AllegianceID
 
 enum<uint16> Names
 {
-	Byleth_0 = 0,
-	Byleth_1 = 1,
+	MaleByleth = 0,
+	FemaleByleth = 1,
 	Edelgard_2 = 2,
 	Dimitri_3 = 3,
 	Claude_4 = 4,
@@ -695,10 +695,10 @@ enum<uint16> Names
 	_547 = 547,
 	_548 = 548,
 	_549 = 549,
-	_550 = 550,
-	_551 = 551,
-	_552 = 552,
-	_553 = 553,
+	Yuri_ = 550,
+	Balthus_ = 551,
+	Constance_ = 552,
+	Hapi_ = 553,
 	_554 = 554,
 	_555 = 555,
 	_556 = 556,
@@ -2278,6 +2278,7 @@ enum<ubyte> Battalion
 	Pirate_Marksmen,
 	West_Church_Archers,
 	Flame_Emperor_Co,
+	NoBattalion = 200,
 };
 
 enum<ubyte> PaletteID
