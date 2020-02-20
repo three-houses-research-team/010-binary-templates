@@ -139,10 +139,11 @@ enum<uint16> CharID
 	Balthus = 1042,
 	Constance = 1043,
 	Hapi = 1044,
-	ChurchOfSeirosDudeWithMinorCrest = 1045,
+	Aelfric = 1045,
 	Jeritza_Playable = 1046,
 	Anna_Playable = 1047,
 	Jeritza_Playable_NPC_Copy = 1049,
+	Abysskeeper = 1056,
 	};
 	
 	enum<ubyte> AbilityID
