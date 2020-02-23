@@ -15,6 +15,7 @@
 //   1.06    ----------  DeathChaos - Added Starting Weapon Ranks and Proficiencies
 //   1.07    ----------  Moonling - Added Spell List and Skills
 //   1.08    2019-09-04  DeathChaos - Added Enemy Personal Skills
+//   1.09    2020-02-18  DeathCha0s - Fix AID blocks from 1.1.0, add base Battalion
 //------------------------------------------------
 
 //---------------------------------------------
@@ -47,14 +48,14 @@ struct File{
 		uint32 ArtLearnsetStructSize<bgcolor=cYellow>;
 		uint32 UnkPointer01<bgcolor=cYellow>;
 		uint32 UnkTotalSize01<bgcolor=cYellow>;
-		uint32 UnkPointer01<bgcolor=cYellow>;
-		uint32 UnkTotalSize01<bgcolor=cYellow>;
-		uint32 SupportListPointer<bgcolor=cYellow>;
-		uint32 SupportListSize<bgcolor=cYellow>;
+		uint32 UnkPointer02<bgcolor=cYellow>;
+		uint32 UnkTotalSize02<bgcolor=cYellow>;
+		uint32 UnkPointer03<bgcolor=cYellow>;
+		uint32 UnkTotalSize03<bgcolor=cYellow>;
 		uint32 PointerToHiddenTalent<bgcolor=cYellow>;
 		uint32 HiddenTalentStructSize<bgcolor=cYellow>;
-		uint32 UnkPointer01<bgcolor=cYellow>;
-		uint32 UnkTotalSize01<bgcolor=cYellow>;
+		uint32 UnkPointer04<bgcolor=cYellow>;
+		uint32 UnkTotalSize04<bgcolor=cYellow>;
 		uint32 PointerToFacultyTraining<bgcolor=cBlack>;
 		uint32 FacultyTrainingStructSize<bgcolor=cBlack>;
 		uint32 PointerToSeminar<bgcolor=cGreen>;
@@ -83,9 +84,9 @@ struct File{
 				float Scale01<name="Model Size Scale">;
 				float Scale03<name="Female Chest Size modifier (post time skip)">;
 			}modelscale<name="Model Scale Values">;
-			uint16 UnknownValue;
-			Names NameID<name="Name ID">;
-			uint16 unknown<name="Unknown Value">;
+			int16 UnknownValue;
+			Names NameID<name="First Name ID">;
+			int16 unknown<name="Unknown Value">;
 			uint16 CharacterID<name="Voice ID">;
 			uint16 AssetsID<name="Asset ID">;
 			ClassName Class<name="Class">;
@@ -94,15 +95,15 @@ struct File{
 			byte BirthdayFlag;
 			byte Birthday<name="Birth Day">;
 			byte unk;
-			byte unknown<name="Unknown Value">;
-			byte unknown<name="Unknown Value">;
+			byte MiddleName<name="Middle Name ID">;
+			byte LastName<name="LastName ID">;
 			byte HPCap<name="Max HP">;
 			byte unknown<name="School Related">;
 			AllegianceID Allegiance<name="Allegiance">;
 			byte unk;
 			GenderFlag Gender<name="Gender">;
 			byte BodyType<name="Body Type">;
-			byte unk;
+			Battalion BaseBattalion<name="Base Battalion">;
 			byte HPGrowth<name="HP Growth">;
 			byte AnimSet<name="Non Combat Animation Set">;
 			byte BaseHP<name="Base HP">;
@@ -160,14 +161,15 @@ struct File{
 			byte Padding[0x34];
 		}aidheaderpadding<name="Padding">;
 		struct AssetID{
-			uint16 PreTimeSkipPortrait;
-			uint16 TimeSkipHeadModel;
-			uint16 NGPlusHair;
-			uint16 PreTimeSkipHead;
-			uint16 DLCOutfit;
-			uint16 BodyModelTimeSkip;
-			uint16 TimeSkipPortrait;
-			uint16 BodyModelPreTimeSkip;
+			int16 NGPlusHair<name="NG+ Hair?">;
+			int16 TimeSkipHeadModel<name="Part 2 Head Model">;
+			int16 TimeSkipPortrait<name="Part 2 Portraits">;
+			int16 PreTimeSkipHead<name="Part 1 Head Model">;
+			int16 PreTimeSkipPortrait<name="Part 1 Portrait">;
+			int16 BodyModelTimeSkip<name="Part 2 Model">;
+			int16 DLCOutfit<name="Post Sothis Fusion Asset ID (Flag Set)">;
+			int16 BodyModelPreTimeSkip<name="Part 1 Model">;
+			int16 AlternateStatePortrait<name="Alternate State Portrait (Constance)">;
 		}assetid[numAID]<bgcolor=cGreen>;
 	}assetidstructure<bgcolor=cBlue, name="Asset IDs">;
 	
@@ -445,21 +447,6 @@ struct File{
         }artlearnset<name="Combat Art Learnset", bgcolor=cYellow>;
     }artlearnsetstruct<name="Combat Art Learnset Table">;
 
-    FSeek(sectionpointers.SupportListPointer);
-    struct SupportListTableStruct{
-        uint Magic<bgcolor=cRed>;
-        uint numSupportPairs<bgcolor=cRed>;
-        uint SizeOfSupportPairs<bgcolor=cRed>;
-        ubyte Padding[0x34]<bgcolor=cBlue>;
-                struct SupportPairs{
-                    byte Padding[0x2]<hidden=true>;
-                    Names NameOfChar<name="Character">;
-                    Names NameOfChar<name="Character">;
-                    ushort Unk;
-                    ushort Unk;
-                }supportpairs[numSupportPairs]<name="Support Pair", read=GetSupportPairs>;
-    }supportlisttablestruct<bgcolor=0x70c009, name="Support Pair Table">;
-
     FSeek(sectionpointers.PointerToHiddenTalent);
     struct HiddenTalentStruct {
         uint Magic<bgcolor=cRed>;
@@ -475,6 +462,63 @@ struct File{
                 AbilityID Skill<name="Skill Learnt">;
             }hiddentalentdata[numHdnTal]<name="Hidden Talent Data", read=GetTalentNames>;
     }hiddentalentstruct<name="Hidden Talent Table", bgcolor=cYellow>;
+	
+	FSeek(sectionpointers.UnkPointer01);
+	struct UnkSect1{
+		uint32 UnkSect1Magic;
+		uint32 numUnkSect1;
+		uint32 SizeOfUnkSect1;
+		struct UnkSect1HeaderPadding{
+			byte Padding[0x34];
+		}UnkSect1headerpadding<name="Padding">;
+		struct UnkSect1ID{
+			byte unk[SizeOfUnkSect1];
+		}unksect1id[numUnkSect1]<name="Unk Sect 1",optimize=false>;
+	}unksect1<name="Unknown Section 1", bgcolor=cDkGreen>;
+	
+	FSeek(sectionpointers.UnkPointer02);
+	struct UnkSect2{
+		uint32 UnkSect2Magic;
+		uint32 numUnkSect2;
+		uint32 SizeOfUnkSect2;
+		struct UnkSect2HeaderPadding{
+			byte Padding[0x34];
+		}UnkSect2headerpadding<name="Padding">;
+		struct UnkSect2ID{
+			byte unk[SizeOfUnkSect2];
+		}unksect2id[numUnkSect2]<name="Unk Sect 2",optimize=false>;
+	}unksect2<name="Unknown Section 2", bgcolor=cDkGreen>;
+	
+	FSeek(sectionpointers.UnkPointer03);
+	struct UnkSect3{
+		uint32 UnkSect3Magic;
+		uint32 numUnkSect3;
+		uint32 SizeOfUnkSect3;
+		struct UnkSect3HeaderPadding{
+			byte Padding[0x34];
+		}UnkSect3headerpadding<name="Padding">;
+		struct UnkSect3ID{
+			ushort unk;
+			ushort unk;
+			ushort unk;
+			ushort unk;
+			ushort unk;
+			ushort unk;
+		}UnkSect3id[numUnkSect3]<name="Unk Sect 3",optimize=false>;
+	}unksect3<name="Unknown Section 3", bgcolor=cDkGreen>;
+	
+	FSeek(sectionpointers.UnkPointer04);
+	struct UnkSect4{
+		uint32 UnkSect4Magic;
+		uint32 numUnkSect4;
+		uint32 SizeOfUnkSect4;
+		struct UnkSect4HeaderPadding{
+			byte Padding[0x34];
+		}UnkSect4headerpadding<name="Padding">;
+		struct UnkSect4ID{
+			byte unk[SizeOfUnkSect4];
+		}unksect4id[numUnkSect4]<name="Unk Sect 4",optimize=false>;
+	}unksect4<name="Unknown Section 4", bgcolor=cDkGreen>;
 	
 }file;
 
@@ -506,11 +550,4 @@ string GetTalentNames(HiddenTalentData &i)
 string GetCharNames4(WpnRankData &i)
 {
     return EnumToString(i.NameOfChar);
-}
-string GetSupportPairs(SupportPairs &i)
-{
-    string supportPairs = EnumToString(i.NameOfChar[0]) + EnumToString(i.NameOfChar[1]);
-    if (supportPairs == "")
-        return "";
-    return EnumToString(i.NameOfChar[0]) + " + " + EnumToString(i.NameOfChar[1]);
 }
