@@ -16,7 +16,7 @@
 #define G1M_GEOMETRY_BONEBIND
 
 typedef struct G1MGEOMETRYBONEBIND {
-    int index<name="Index">;
+    int matrix_id<name="Matrix Id?">;
     int cloth_id<name="Cloth Id">;
     int bone_id<name="Bone Id">;
 } G1MGeometryBoneBind;
