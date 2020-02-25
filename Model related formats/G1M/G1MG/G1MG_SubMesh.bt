@@ -16,18 +16,19 @@
 #define G1M_GEOMETRY_SUBMESH
 
 typedef enum G1MGEOMETRYSUBMESHFACETYPE {
-    Triangle = 1,
+    Quad = 1,
+    Triangle = 3,
     TriangleStrip = 4
 } G1MGeometrySubMeshFaceType;
 
 typedef struct G1MGEOMETRYSUBMESH {
     int unknown1<name="Unknown 1">;
-    int unknown2<name="Unknown 2">;
+    int VBOindex<name="VBO index", comment="Not 100% sure">;
     int bone_table_index<name="BoneBinds Table Index">;
     int bone_index<name="Bone Index">;
     int unknown3<name="Unknown 3">;
-    int unknown4<name="Unknown 4">;
     int material_index<name="Material Index">;
+    int texture_index<name="Texture Index">;
     int buffer_index<name="Buffer Index", comment="Lines up with a VBO, VBA, and IBO index">;
     int unknown5<name="Unknown 5">;
     G1MGeometrySubMeshFaceType face_type<name="Face Type">;

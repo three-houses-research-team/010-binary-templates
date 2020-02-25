@@ -22,6 +22,7 @@ typedef enum <ushort> G1MGEOMETRYVERTEXATTRIBUTETYPE {
     VertexAttributeType_Float32_x3 = 0x0002,
     VertexAttributeType_Float32_x4 = 0x0003,
     VertexAttributeType_Byte_x4 = 0x0005,
+    VertexAttributeType_HalfCloth_x2 = 0x0007 //for cloth
     VertexAttributeType_UInt_x4 = 0x0009, // Normalized?
     VertexAttributeType_Half_x2 = 0x000A,
     VertexAttributeType_Half_x4 = 0x000B,

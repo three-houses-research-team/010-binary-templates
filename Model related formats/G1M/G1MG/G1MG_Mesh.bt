@@ -19,8 +19,8 @@ typedef struct G1MGEOMETRYMESH {
     local int pos = FTell();
     string name<name="Name">;
     FSeek(pos + 16);
-    int id_a<name="ID (A)">;
-    int id_b<name="ID (B)">;
+    int cloth_type_ID<name="Cloth ID", comment="ID & 0xF">;
+    int nun_section_ID<name="NUN ID", comment="Between 0 and 10000 for NUNO0301, then NUNV0501 then NUNO0303">;
     int count<name="Count">;
     int indices[count]<name="Indices">;
 } G1MGeometryMesh;
