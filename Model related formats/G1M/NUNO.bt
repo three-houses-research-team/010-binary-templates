@@ -3,12 +3,13 @@
 //
 //      File: NUNO.bt
 //   Authors: Raytwo, Joschka
-//   Version: 1.1
+//   Version: 1.2
 //   Purpose: 
 //  Category: 
 // File Mask: 
 //  ID Bytes: 
 //   History:
+//  1.2 2020-02-25  Joschka : Updated with more accurate structure
 //  1.1 2020-01-01  Joschka : Changed structures, added 0301 and 0302 entries
 //  1.0 2019-09-09  Raytwo: Created the file
 //------------------------------------------------
@@ -40,18 +41,19 @@ typedef struct UNKSECTION {
     }UnkSection<name="Unknown Section",size=0x30>;
 
 typedef struct {
-    uint32 parentBoneId<name="Parent Bone ID">; //Not 100% sure, need to implement 0301 cloth to make sure
+    uint16 parentBoneIDLE<name="Parent Bone ID LE">;
+    uint16 parentBoneIDBE<name="Parent Bone ID BE">;
     uint32 controlPointsCount<name="Control points count">;
     uint32 unknownSectionCount<name="Unknown section count">;
-    uint32 unk1;
-    uint32 unk3;
-    uint32 unk2;
-    FSkip(0x4C); //Unknown
+    uint32 skip1;
+    uint32 skip2;
+    uint32 skip3;
+    FSkip(0x4C); 
     FSkip(0x10); //if(header.version>=0x30303235)        
     ControlPoint controlPoints[controlPointsCount]<name="Control Point">;
     Influence influences[controlPointsCount]<name="Influence">;
     UnkSection unknownSections[unknownSectionCount]<name="Unknown Section">;
-    FSkip((unk1+unk2+unk3) * 4);    
+    FSkip((skip1+skip2+skip3) * 4);    
 } nunoentry_00030001<name="Entry (0x00030001)", optimize=false>;
 
 //No idea what the entry is for but it's not necessary to rebuild meshes or bones.
@@ -60,19 +62,28 @@ typedef struct {
 } nunoentry_00030002<name="Entry (0x00030002)", optimize=false>;
 
 typedef struct {
-    uint32 unk1;
+    uint16 parentBoneIDLE<name="Parent Bone ID LE">;
+    uint16 parentBoneIDBE<name="Parent Bone ID BE">;
     uint32 controlPointsCount<name="Control points count">;
     uint32 unknownSectionCount<name="Unknown section count">;
-    uint32 unk2;
-    uint32 parentBoneId<name="Parent Bone ID">;
-    uint32 unk3;
-    FSkip(0xC0); //Unknown
+    uint32 skip1;
+    uint32 unk1;
+    uint32 skip2;
+    uint32 skip3;
+    FSkip(0xAC); //Unknown
+    FSkip(0x10); //if(header.version>=0x30303235)
     ControlPoint controlPoints[controlPointsCount]<name="Control Point">;
     Influence influences[controlPointsCount]<name="Influence">;
     UnkSection unknownSections[unknownSectionCount]<name="Unknown Sections">;
-    FSkip(unk2 * 4);
-    FSkip(unk3 * 8);    
+    FSkip(skip1 * 4);
+    FSkip(skip2 * 8);
+    FSkip(skip3 *12); 
 } nunoentry_00030003<name="Entry (0x00030003)", optimize=false>;
+
+//No idea what the entry is for but it's not necessary to rebuild meshes or bones.
+typedef struct {
+
+} nunoentry_00030004<name="Entry (0x00030004)", optimize=false>;
 
 typedef struct G1MNUNOSECTION {
     uint32 subSectionCount<name="Subsection count">;
@@ -95,6 +106,9 @@ typedef struct G1MNUNOSECTION {
                     break;
                 case 0x00030003:
                     nunoentry_00030003 entries[entry_count];
+                    break;
+                case 0x00030004:
+                    nunoentry_00030004 entries[entry_count];
                     break;
             }
         }NunoSubSection<name="SubSection",optimize=false>; 

@@ -3,12 +3,13 @@
 //
 //      File: NUNV.bt
 //   Authors: Joschka
-//   Version: 1.0
+//   Version: 1.1
 //   Purpose: 
 //  Category: 
 // File Mask: 
 //  ID Bytes: 
 //   History:
+//  1.1 2020-02-25  Joschka : Updated with more accurate structure
 //  1.0 2020-01-01  Joschka: Created the file
 //------------------------------------------------
 #ifndef G1M_NUNV
@@ -22,18 +23,19 @@
 #include "NUNO.bt"
 #endif // G1M_NUNO
 
-//only one see
+//only one seen
 typedef struct {
-    uint32 parentBoneId<name="Parent Bone ID">; //to be confirmed with implementation
+    uint16 parentBoneIDLE<name="Parent Bone ID LE">; //Only if LE, otherwise it's the next one
+    uint16 parentBoneIDBE<name="Parent Bone ID BE">;
     uint32 controlPointsCount<name="Control points count">;
     uint32 unknownSectionCount<name="Unknown section count">;
-    uint32 unk1;     
+    uint32 skip1;     
     FSkip(0x54); //Unknown
     FSkip(0x10); //if version > 0x30303131
     ControlPoint controlPoints[controlPointsCount]<name="Control Point">;
     Influence influences[controlPointsCount]<name="Influence">;
     UnkSection unknownSections[unknownSectionCount]<name="Unknown Section">;
-    FSkip(unk1 * 4);    
+    FSkip(skip1 * 4);    
 } nunventry_00050001<name="Entry (0x00050001)", optimize=false>;
 
 typedef struct G1MNUNVSECTION {

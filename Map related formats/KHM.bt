@@ -1,0 +1,57 @@
+//------------------------------------------------
+//--- 010 Editor v9.1.0 Binary Template
+//
+//      File: KHM.bt
+//   Authors: HealingBrew
+//   Version: 1.1
+//   Purpose: Koei Height Map
+//  Category: Game File
+// File Mask: 
+//  ID Bytes: 5F 4D 48 4B
+//   History:
+//   1.0      2020-02-13 HealingBrew: Created the file
+//------------------------------------------------
+
+
+
+typedef struct KHMHEADER {
+    GResourceSectionHeader header<name="Section Header", read=GetSectionName>;
+    int size<name="Size">;
+    short points<name="Points">;
+    short reference_points<name="Reference Points">;
+    float mid<name="Mid Level">;
+    float floor<name="Floor Level">;
+    float ceiling<name="Ceiling Level">;
+    uint reference<name="Reference Height">;
+} KHMHeader;
+
+typedef struct KHMPOINT {
+    uint value;
+    if (value == header.reference) {
+        local float height = header.mid;
+    } else if(value == 0) {
+        local float height = header.floor;
+    } else if(value == 0xFFFFFFFF) {
+        local float height = header.ceiling;
+    } else if (value < header.reference){
+        local float height = header.floor + (header.mid - header.floor) * value / header.reference;
+    } else {
+        local float height = header.mid + (header.ceiling - header.mid) * value / 0xFFFFFFFF;
+    }
+} KHMPoint;
+
+string GetPointText(KHMPoint &point) {
+    string s = "0000000.00000000000000";
+    SPrintf(s, "%f", point.height);
+    return s;
+}
+
+LittleEndian();
+
+struct FILE {
+    KHMHeader header<name="Header">;
+    KHMPoint data[header.points * header.points]<name="Data", optimize=false, read=GetPointText>;
+    uint reference_floor[header.reference_points]<name="Reference Floor">;
+    uint reference_ceiling[header.reference_points]<name="Reference Ceiling">;
+} File<name="Koei Height Map", open=true>;
+
