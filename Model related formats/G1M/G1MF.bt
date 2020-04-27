@@ -49,8 +49,8 @@ typedef struct G1MFORMAT20 {
     int unknown25<name="Unknown 19">; // 64
     int unknown26<name="Unknown 1A">; // 68
     int unknown27<name="Unknown 1B">; // 6C
-    int unknown28<name="NUNO total control point count">; // 70
-    int unknown29<name="NUNO Unknown section count">; // 74
+    int unknown28<name="Unknown 1C">; // 70
+    int unknown29<name="Unknown 1D">; // 74
     int unknown30<name="Unknown 1E">; // 78
     int unknown31<name="Bone indices count">; // 7C
 } G1MFormatV20;
@@ -80,9 +80,9 @@ typedef struct G1MFORMAT23 {
     int unknown10<name="Unknown A">; // BC, 2F
 } G1MFormatV23;
 
-// SOFT related
+// NUNO
 typedef struct G1MFORMAT24 {
-    int unknown0<name="SOFT entry count?">; // C0, 30
+    int unknown0<name="Unknown 0">; // C0, 30
     int unknown1<name="Unknown 1">; // C4, 31
     int unknown2<name="Unknown 2">; // C8, 32
     int unknown3<name="Unknown 3">; // CC, 33
@@ -92,9 +92,9 @@ typedef struct G1MFORMAT24 {
     int unknown7<name="Unknown 7">; // DC, 37
     int unknown8<name="Unknown 8">; // E0, 38
     int unknown9<name="Unknown 9">; // E4, 39
-    int unknown10<name="Unknown A">; // E8, 3A
-    int unknown11<name="Unknown B">; // EC, 3B
-    int unknown12<name="Unknown C">; // F0, 3C
+    int unknown10<name="NUNO entry count">; // E8, 3A
+    int unknown11<name="NUNO control points total count">; // EC, 3B
+    int unknown12<name="NUNO unknown section total count">; // F0, 3C
     int unknown13<name="Unknown D">; // F4, 3E
 } G1MFormatV24;
 
