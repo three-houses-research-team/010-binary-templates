@@ -9,6 +9,7 @@
 // File Mask: 
 //  ID Bytes: 46 4D 31 47
 //   History:
+//   1.2      2020-04-30       Raytwo: Found the significance of all values related to G1MG
 //   1.1      2020-01-18  HealingBrew: Updated with logic from Ryza.
 //   1.0      2019-11-06  HealingBrew: Created the file
 //------------------------------------------------
@@ -27,19 +28,19 @@ typedef struct G1MFORMAT20 {
     int unknown3<name="Total matrices count">; // C, subtract 1, multiply with 0x2, add 5
     int unknown4<name="Socket count">; // 10, subtract 1
     int unknown5<name="Materials count">; // 14, oh god
-    int unknown6<name="Shaders entry count">; // 18, what am i doing
+    int unknown6<name="Shader set count">; // 18, what am i doing
     int unknown7<name="Total shader count">; // 1C
     int unknown8<name="Shader buffer count?">; // 20
-    int unknown9<name="Unknown 9">; // 24
+    int unknown9<name="Total shader entry size", comment="Add the size of every Shader Param together">; // 24
     int unknown10<name="Vertex buffer count">; // 28
     int unknown11<name="Vertex attributes count">; // 2C
     int unknown12<name="Index buffer count">; // 30
     int unknown13<name="Bone bind count">; // 34
     int unknown14<name="Total bone bind count">; // 38
-    int unknown15<name="Unknown F">; // 3C
-    int unknown16<name="Submeshes count">; // 40
+    int unknown15<name="Mesh count">; // 3C
+    int unknown16<name="Submesh count">; // 40
     int unknown17<name="Total submesh count?">; // 44
-    int unknown18<name="Meshes count">; // 48
+    int unknown18<name="MeshGroup count">; // 48
     int unknown19<name="Total meshes submesh count">; // 4C
     int unknown20<name="Total meshes count">; // 50
     int unknown21<name="COLL entry count?">; // 54
