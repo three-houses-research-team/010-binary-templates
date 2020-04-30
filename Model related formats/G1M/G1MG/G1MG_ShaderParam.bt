@@ -1,3 +1,4 @@
+
 //------------------------------------------------
 //--- 010 Editor v9.0.2 Binary Template
 //
@@ -17,26 +18,38 @@
 
 typedef enum <ushort> G1MGEOMETRYSHADERPARAMBUFFERTYPE {
     ShaderParamBufferType_Float32 = 1,
-    ShaderParamBufferType_Matrix4x4_2 = 0x20
+    ShaderParamBufferType_Vector2 = 2,
+    ShaderParamBufferType_Vector3 = 3,
+    ShaderParamBufferType_Vector4 = 4,
+    ShaderParamBufferType_Int32   = 5
 } G1MGeometryShaderParamBufferType;
 
 typedef struct G1MGEOMETRYSHADERPARAM {
     local int pos = FTell();
     int size<name="Size">;
-    int unknown1<name="Unknown 1">;
+    int unknown1<name="Padded name length">;
     int unknown2<name="Unknown 2">;
-    short buffer_count<name="Buffer Count">;
-    G1MGeometryShaderParamBufferType buffer_type<name="Buffer Type">;
+    G1MGeometryShaderParamBufferType buffer_type<name="Parameter Type">;
+    short buffer_count<name="Parameter Count">;
     string param_name<name="Name">;
     G1Helper_AlignBytes(4);
     local int header_size = FTell() - pos;
     switch(buffer_type)
     {
         case ShaderParamBufferType_Float32:
-            float data[buffer_count]<name="Data">;
+            float data[buffer_count]<name="Params">;
             break;
-        case ShaderParamBufferType_Matrix4x4_2:
-            Matrix44 data[buffer_count * 2]<name="Data">;
+        case ShaderParamBufferType_Vector2:
+            Vector2 data[buffer_count]<name="Params">; 
+            break;
+        case ShaderParamBufferType_Vector3:
+            Vector3 data[buffer_count]<name="Params">;
+            break;
+        case ShaderParamBufferType_Vector4:
+            Vector4 data[buffer_count]<name="Params">;
+            break;
+        case ShaderParamBufferType_Int32:
+            int data[buffer_count]<name="Params">;
             break;
         default:
             if(header.size > 0xC) {

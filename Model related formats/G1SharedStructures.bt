@@ -27,6 +27,11 @@ typedef struct G1MARRAYRESOURCESECTIONHEADER {
     int count<name="Count">;
 } G1MArrayResourceSectionHeader;
 
+typedef struct VECTOR2 {
+    float x<name="x">;
+    float y<name="y">;
+} Vector2;
+
 typedef struct VECTOR3 {
     float x<name="x">;
     float y<name="y">;
