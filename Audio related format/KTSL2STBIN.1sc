@@ -1,0 +1,33 @@
+//------------------------------------------------
+//--- 010 Editor v10.0.2 Script File
+//
+//      File: ktsl2stbin to ktss converter
+//   Authors: DracoFiredragon
+//   Version: 1.0
+//   Purpose: convert  ktsl2stbin to ktss using the ktsl2stbin.bt template
+//  Category: 
+//   History: 
+//------------------------------------------------
+
+//Run the ktsl2stbin.bt template first 
+//Then change <NUMENTRY> for the number of entries of the Ktsl2stbin variable shown in the Template Results
+//Have in mind NUMENTRY should be the number of the last Entry plus 1, given that the Entry counter starts at 0
+//Change <"PATH"> for the directory you want the files to be created in
+//If you don´t especify a <"PATH"> files will be created in the 010 Editor directory
+//Take into account Windows PATHs should have double backslash (C:\\data\\)
+
+int i = 0;
+    int archivo = GetFileNum();
+    string s;
+  for( i = 0; i < <NUMENTRY>; i++ )
+    {
+       
+     
+     SPrintf( s, "%d", (int)i );
+     
+           FileSaveRange(<"PATH">+s+".ktss" ,startof(Ktsl2stbin.Entry[i].Ktss), Ktsl2stbin.Entry[i].sectionSize -0x40);
+            FileSelect(archivo);
+
+    }
+
+// SetCursorPos( startof( Flags[0] ) );
