@@ -5,7 +5,8 @@
 //   Authors: Moonling
 //   Version: 1.0
 //   Purpose: Three Houses Item Mapping
-//   History: 
+//   History: 1.0 - Moonling: Created this
+//            1.1 - Raytwo: Added StatIncreaseType for items + typo fixf
 //------------------------------------------------
 #include "3H_WepEnums.bt"
 
@@ -405,8 +406,9 @@ struct FILE {
 					local ItemID NameOfItem<hidden=true>;
 					NameOfItem = i;                
                     byte UnknownByte01;
-                    byte UnknownBytes01[4];
-                    WeaponTypes WeaponType<name="Waepon Type">;
+                    byte UnknownBytes01[3];
+                    byte StatIncreaseType<name="Stat increase type", comment="1 is for healing calculation, 0x15 for bonus stats">;
+                    WeaponTypes WeaponType<name="Weapon Type">;
                     WeaponRanks WeaponRank<name="Weapon Rank">;
                     ubyte MaximumRange<name="Maximum Range">;
                     WeaponModel ModelID<name="Weapon Model">;
