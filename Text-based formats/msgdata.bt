@@ -47,7 +47,7 @@ struct FILE {
                         ushort Unk;
                         ushort NumOfPTRs;
                         ushort PTRSize;
-                        uint TablePTR;
+                        uint TableHeaderSize;
                         uint Unk;
                     }tableHeader<name="Header", bgcolor=cLtBlue>;
     
