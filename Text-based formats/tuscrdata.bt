@@ -1,0 +1,93 @@
+//------------------------------------------------
+//--- 010 Editor v10.0.2 Binary Template
+//
+//      File: tuscrdata.bt
+//   Authors: bqio
+//   Version: 1.0
+//   Purpose: 
+//  Category: Text
+// File Mask: tuscrdata.bin
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+local int i;
+local int j;
+local int languageRelativePos;
+local int tableRelativePos;
+
+struct FILE {
+  struct FILE_HEADER {
+    uint numOfLanguages <name="Number of Languages">;
+    struct LANGUAGE_PTRS {
+      uint ptr <name="Pointer">;
+      uint size <name="Size">;
+    } LanguagePtrs [numOfLanguages] <name="Language Pointers">;
+  } FileHeader <name="Header">;
+  
+  for (i = 0; i < FileHeader.numOfLanguages; i++) {
+    FSeek(FileHeader.LanguagePtrs[i].ptr);
+    languageRelativePos = FTell();
+    
+    struct LANGUAGE {
+      struct LANGUAGE_HEADER {
+        uint numOfTables <name="Number of Tables">;
+        struct TABLE_PTRS {
+          uint ptr <name="Pointer">;
+          uint size <name="Size">;
+        } TablePtrs [numOfTables] <name="Table Pointers">;
+      } LanguageHeader <name="Header">;
+
+      tableRelativePos = FTell();
+            
+      struct FIRST_TABLE {
+        struct FIRST_TABLE_HEADER {
+          uint magic <name="Magic">;
+          ushort tableSize <name="Table Size">;
+          ushort unk;
+          ushort numOfMessages <name="Number of Messages">;
+          ushort ptrSize <name="Pointer Size">;
+          ushort headerSize <name="Header Size", comment="Maybe uint">;
+          ushort unk;
+          uint unk;
+          uint unk;
+          struct FIRST_TABLE_TEXT_PTRS {
+            uint ptr <name="Pointer">;
+            uint unk;
+            uint unk;
+            uint unk;
+            uint unk;
+          } FirstTableTextPtrs [numOfMessages] <name="Text Pointers">;
+        } FirstTableHeader <name="Header">;
+        for (j = 0; j < FirstTableHeader.numOfMessages; j++) {
+          FSeek(tableRelativePos + FirstTableHeader.headerSize + FirstTableHeader.FirstTableTextPtrs[j].ptr);
+          struct FIRST_TABLE_TEXT {
+            char line[ReadStringLength(FTell())] <name="Value">;
+          } FirstTableText <name="Text">;
+        }
+      } FirstTable <name="First Table", comment="Header size = 0x18">;
+
+      tableRelativePos = LanguageHeader.TablePtrs[1].ptr + languageRelativePos;
+      FSeek(tableRelativePos);
+        
+      struct SECOND_TABLE {
+        struct SECOND_TABLE_HEADER {
+          uint magic <name="Magic">;
+          ushort tableSize <name="Table Size">;
+          ushort unk;
+          ushort numOfMessages <name="Number of Messages">;
+          ushort ptrSize <name="Pointer Size">;
+          uint headerSize <name="Header Size">;
+          uint unk;
+          uint secondTableTextPtrs [numOfMessages] <name="Text Pointers">;
+        } SecondTableHeader <name="Header">;
+        for (j = 0; j < SecondTableHeader.numOfMessages; j++) {
+          FSeek(tableRelativePos + SecondTableHeader.headerSize + SecondTableHeader.secondTableTextPtrs[j]);
+          struct SECOND_TABLE_TEXT {
+            char line[ReadStringLength(FTell())] <name="Value">;
+          } SecondTableText <name="Text">;
+        }
+      } SecondTable <name="Second Table">;
+    } Language <name="Language">;
+  }
+} File <name="File">;

@@ -1,0 +1,30 @@
+//--------------------------------------
+//--- 010 Editor v5.0 Binary Template
+//
+// File: Credit.bt
+// Author: bqio
+// Category: Captions
+// File Mask: *.bin
+// ID Bytes: 63 29
+//--------------------------------------
+
+LittleEndian();
+
+struct HEADER {
+    uint magic <name="Magic">;
+    uint numOfPtrs <name="Number of pointers">;
+    uint ptrs[numOfPtrs] <name="Pointers">;
+} Header <name="Header">;
+
+local int i = 0;
+local int length;
+for (i = 0; i < Header.numOfPtrs; i++) {
+    if (i == Header.numOfPtrs - 1) {
+        length = FileSize() - Header.ptrs[i];
+    } else {
+        length = Header.ptrs[i+1] - Header.ptrs[i];
+    }
+    struct TEXT {
+        char line[length] <name="Line">;
+    } Text <name="Text">;
+}
