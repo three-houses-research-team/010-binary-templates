@@ -1,32 +1,121 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: Starts at 22.bin/ fixed_scenario.bin
+//   Authors: NellsRelo
+//   Version: 0.75
+//   Purpose: Mapping of fixed_scenario.bin.
+//   History
+//   0.75    2020-08-12  NellsRelo - Start
+//------------------------------------------------
+#include "3H_ScenarioEnums.bt"
+
 LittleEndian();
-struct File{
-	uint32 unkheader;
-	uint32 unkentrynum;
-	uint32 totalsize1;
-	uint32 totalsize2;
-	uint32 unknum;
-	uint32 unkmagic;
-	uint32 entrynum;
-	uint32 unknum2;
-	uint64 padding;
-	uint64 padding;
-	uint64 padding;
-	uint64 padding;
-	uint64 padding;
-	uint64 padding;
-	uint32 padding;
-	uint32 unkval;
-	uint64 padding;
-	struct Scenario{
-		uint32 unk1;
-		uint32 unk2;
-		uint32 unk3;
-		uint32 unk4;
-		uint32 unk5;
-		uint32 unk6;
-		uint32 unk7;
-		uint32 unk8;
-		uint32 unk9;
-		uint32 unk10;
-	}scenario[entrynum];
+local int i<hidden=true>;
+
+struct CharacterSettings{
+    short unavailableCharIDA<bgcolor=cDkGreen>;
+    short unavailableCharIDB<bgcolor=cDkGreen>;
+    short unavailableCharIDC<bgcolor=cDkGreen>;
+    // Relates to Character IDs in Paralogues
+    short unkParalogueCharIDA<bgcolor=cYellow>;
+    short unkParalogueCharIDB<bgcolor=cYellow>;
+};
+
+struct ParalogueExpiration{
+    ubyte expirationChapterSS<bgcolor=cDkGreen,name="Silver Snow Expiration Month">;
+    ubyte expirationChapterAM<bgcolor=cDkGreen,name="Azure Moon Expiration Month">;
+    ubyte expirationChapterVW<bgcolor=cDkGreen,name="Verdant Wind Expiration Month">;
+    ubyte expirationChapterCF<bgcolor=cDkGreen,name="Crimson Flower Expiration Month">;
+    ubyte expirationDateSS<bgcolor=cDkGreen,name="Silver Snow Expiration Day">;
+    ubyte expirationDateAM<bgcolor=cDkGreen,name="Azure Moon Expiration Day">;
+    ubyte expirationDateVW<bgcolor=cDkGreen,name="Verdant Wind Expiration Day">;
+    ubyte expirationDateCF<bgcolor=cDkGreen,name="Crimson Flower Expiration Day">;
+};
+
+struct ScenarioData{
+    uint32 scenarioMagic<bgcolor=cBlue>;
+    uint32 numberOfScenarios<bgcolor=cDkGreen>;
+    uint32 sizeOfScenario<bgcolor=cDkGreen>;
+	struct scenarioHeaderPadding{
+		byte Padding[0x34]<bgcolor=cDkYellow>;
+	}classdataheaderpadding<name="Padding">;
+    for( i = 0; i < numberOfScenarios; i++ ) {
+        struct Scenario {
+            local ScenarioName scenarioName;
+            scenarioName = i;
+
+            uint32 unk1<bgcolor=cRed>;
+            CharacterSettings characterSettings<bgcolor=cDkGreen,name="Character Settings">;
+            ubyte unkTernary<bgcolor=cRed>; // Only ever 0, 1, or 2
+            ubyte chapter<bgcolor=cDkGreen,name="Chapter ID">; // 23 = Paralogue, 24 = Aux battle, 25 = DLC Para/Aux
+            ubyte uncAuxiliaryAvailable<bgcolor=cYellow,name="Availability Chapter (Auxiliary)">;
+        
+            // Functionality unknown. Seem to correlate with story progress.
+            ubyte unkProgressA<bgcolor=cYellow>;
+            ubyte unkProgressB<bgcolor=cYellow>;
+            ubyte unkProgressC<bgcolor=cYellow>;
+        
+            ParalogueExpiration paralogueExpiration<name="Paralogue Expiration Date">;
+            ubyte recruitLevel<bgcolor=cDkGreen,name="Recruit/Recommended Level">;
+            ubyte auxillaryBGM<bgcolor=cDkGreen,name="Auxillary BGM">;
+            ubyte hiddenTurnLimit<bgcolor=cDkGreen,name="Hidden Turn Limit">;
+            Conditions victoryConditionLabel<bgcolor=cDkGreen,name="Victory Condition Label">;
+            MapList map<bgcolor=cDkGreen,name="Map ID">;
+        
+            // These will match with Enemy Commander's levels. Subcommanders will be value - 1,
+            // regular units will be value - 2. May be affected by BAI scripts.
+            ubyte enemyLevelScalingNorm<bgcolor=cDkGreen,name="Normal Level Scaling">;
+            ubyte enemyLevelScaleHard<bgcolor=cDkGreen,name="Hard Level Scaling">;
+            ubyte enemyLevelScaleMad<bgcolor=cDkGreen,name="Maddening Level Scaling">;
+        
+            // Capable of moving, removing, and changing allegiance of units.
+            ubyte unkTeamModifier<bgcolor=cYellow>;
+
+            ubyte unk3<bgcolor=cRed>;
+        
+            // Applies after compelting a mission. Negative numbers work, but will become 99 if player's total is under 0.
+            byte unkDivinePulseIncrease<bgcolor=cDkGreen,name="Divine Pulse Increase Reward">;
+            ubyte unkDivinePulseIncreaseMaddening<bgcolor=cDkGreen,name="Divine Pulse Increase Reward (Maddening)">;
+        
+            // Don't affect gameplay itself.
+            Conditions casualDefeatConditionLabel<bgcolor=cDkGreen,name="Casual Defeat Conditions">;
+            Conditions defeatConditionLabelSS<bgcolor=cDkGreen,name="Default Defeat Conditions">;
+            Conditions defeatConditionLabelAM<bgcolor=cDkGreen,name="Azure Moon Defeat Conditions">;
+            Conditions defeatConditionLabelVW<bgcolor=cDkGreen,name="Verdant Wind Defeat Conditions">;
+            Conditions defeatConditionLabelCF<bgcolor=cDkGreen,name="Crimson Flower Defeat Conditions">;
+            ubyte Padding<bgcolor=cDkYellow>;
+        }scenario<name="Scenario",read=getScenarioName>;
+    };
+};
+
+//Requires fleshing out
+struct UnknownData {
+    uint32 unkMagic<bgcolor=cBlue>;
+    uint32 unkDataNum<bgcolor=cPurple>;
+    uint32 unkSize<bgcolor=cPurple>;
+	struct unkHeaderPadding{
+		byte Padding[0x34]<bgcolor=cDkYellow>;
+	} classdataheaderpadding<name="Padding">;
+    struct Unknown{    
+        ubyte unkA;
+        ubyte unkB;
+        ubyte unkC;
+    } unknown[unkDataNum]<bgcolor=cPurple>;
+};
+
+struct File {
+    struct SectionPointer {
+        uint32 header<bgcolor=cBlue>;
+        uint32 scenarioDataPointer<bgcolor=cDkGreen>;
+        uint32 scenarioDataSize<bgcolor=cDkGreen>;
+        uint32 unkDataPointer<bgcolor=cPurple>;
+        uint32 unkDataSize<bgcolor=cPurple>;
+    }sectionPointer<name="Section Pointers">;
+    ScenarioData scenarioData<name="Scenario Data">;
+    UnknownData unknownData<name="Unknown Data">;
 }file;
+
+string getScenarioName(Scenario & q) {
+    return EnumToString(q.scenarioName);
+}

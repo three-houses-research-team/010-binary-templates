@@ -1,0 +1,318 @@
+enum<ubyte> MapList {
+    RemireOutskirts = 0,
+    MonasteryOutskirts = 1,
+    Zanado = 2,
+    MagdredWay = 3,
+    SaintsTomb = 4,
+    ConandTower = 5,
+    UndergroundLabyrinth = 6,
+    GronderField = 7,
+    RemireVillage = 8,
+    AbandonedChapel = 9,
+    SealedForest = 10,
+    HolyTomb = 11,
+    Monastery = 12,
+    ReunionAtDawn = 13,
+    MonasteryRuined = 14,
+    Ailell = 15,
+    Myrdin = 16,
+    FortMerceus = 17,
+    Enbarr = 18,
+    ImperialPalace = 19,
+    Shambhala = 20,
+    CaledonianPlateau = 21,
+    Deirdru = 22,
+    Arianrhod = 23,
+    TailteanPlains = 24,
+    FirdhiadAlfame = 25,
+    Firdhiad = 26,
+    FodlansThroat = 27,
+    Desert = 28,
+    RhodosCoast = 29,
+    BrionacPlateau = 30,
+    LakeTeutates = 31,
+    Empire = 32,
+    Kingdom = 33,
+    ForestRuins = 34,
+    Alliance = 35,
+    Mountains = 36,
+    DMapOfFodlan = 37,
+    CSMonasteryChapel = 38,
+    CSAbyss = 39,
+    CSAbyssArena = 40,
+    CSBoundChasm = 41
+};
+
+enum<ubyte> Conditions{
+    // Victory Conditions
+    Route = 0, // Route the Enemy
+    DefeatCommander = 1, // Defeat the Enemy Commander
+    RouteJeraltDestination = 2, //Route the Enemy, or Jeralt reaches the target destination
+    DefeatCommanderAll = 3, // Defeat all Enemy Commanders
+    RouteRheaDefend = 4, // Route the Enemy, or Defend Rhea for 10 turns
+    RouteIngridDestination = 5, // Route the Enemy, or Ingrid reaches the target destination
+    RoutePetraDestination = 6, // Route the Enemy, or Petra reaches the target destination
+    RouteExceptDeathKnight = 7, // Route all enemies except the Death Knight
+    DefeatCommanderTen = 8, // Defeat the Enemy Commander, or 10 turns pass
+    RouteDeathKnight = 9, // Defeat the Death Knight, or route all Enemies
+    Chalice = 10, // Find the Chalice
+    TargetDestination = 11, // Get all your units to the Target Destination
+    RouteTen = 12, // Route the Enemy, or 10 turns pass
+    // Defeat Conditions
+    TotalDefeat = 20, // All of your units fall in battle
+    TotalDefeatJeralt = 28, // All your units fall in battle, or Jeralt is defeated
+    TotalDefeatRhea = 32, // All your units are defeated, or Rhea is defeated
+    TotalDefeatJudith = 122, // All your units fall in battle, or Judith is defeated
+    TotalDefeatRodrigue = 123, // All your units fall in battle, or Rodrigue is defeated
+    TotalDefeatClaude = 146 , // All your units fall in battle, or Claude is defeated
+    TotalDefeatAelfric = 184, // All of your units are defeated, or Aelfric falls in battle
+    FallAny = 132, // Any of your units fall in battle
+    FallByleth = 21, // Byleth falls in battle
+    FallBylethDmitriClaude = 147, // Byleth, Dmitri, or Claude falls in battle
+    FallBylethAlly = 133, // Byleth or allied units are defeated
+    FallBylethCF = 22, // Byleth or Edelgard falls in battle
+    FallBylethAllyCF = 134, // Byleth, Edelgard, or allied units are defeated
+    FallBylethAM = 23, // Byleth or Dmitri falls in battle
+    FallBylethAllyAM = 135, // Byleth, Dmitri, or allied units are defeated
+    FallBylethVW = 24, // Byleth or Claude falls in battle
+    FallBylethAllyVW = 136, // Byleth, Claude, or allied units are defeated
+    FallBylethJeraltCF = 25, // Byleth, Edelgard, or Jeralt falls in battle
+    FallBylethJeraltAM = 26, // Byleth, Dmitri, or Jeralt falls in battle
+    FallBylethJeraltVW = 27, // Byleth, Claude, or Jeralt falls in battle
+    FallDmitri = 37, // Dmitri falls in battle
+    FallDmitriAlly = 137, // Dmitri or ally units are defeated
+    FallEdelgard = 38, // Edelgard is defeated
+    FallEdelgardyAlly = 138, // Edelgard or ally units are defeated
+    FallClaude = 39, // Claude falls in battle
+    FallClaudAlly = 139, // Claude or ally units are defeated
+    FallFelixRodrigue = 41, // Felix or Rodrigue falls in battle
+    FallFelixRodrigueCF = 62, // Byleth, Edelgard, Felix, or Rodrigue falls in battle
+    FallFelixRodrigueAM = 63, // Byleth, Dmitri, Felix, or Rodrigue falls in battle
+    FallFelixRodrigueVW = 64, // Byleth, Claude, Felix, or Rodrigue falls in battle
+    FallAsheCatherineRhea = 42, // Ashe, Catherine, or Rhea falls in battle
+    FallAsheCatherineRheaCF = 65, // Byleth, Edelgard, Ashe, Catherine, or Rhea falls in battle
+    FallAsheCatherineRheaAM = 66, // Byleth, Dmitri, Ashe, Catherine, or Rhea falls in battle
+    FallAsheCatherineRheaVW = 67, // Byleth, Claude, Ashe, Catherine, or Rhea falls in battle
+    FallSylvain = 43, // Sylvain falls in battle
+    FallSylvainCF = 68, // Byleth, Edelgard, or Sylvain falls in battle
+    FallSylvainAM = 69, // Byleth, Dmitri, or Sylvain falls in battle
+    FallSylvainVW = 70, // Byleth, Claude, or Sylvain falls in battle
+    FallMercieCaspar = 44, // Mercedes or Caspar fall in battle
+    FallMercieCasparSS = 71, // Byleth, Mercedes or Caspar fall in battle
+    FallMercieCasparCW = 72, // Byleth, Mercedes or Caspar fall in battle
+    FallMercieCasparAM = 73, // Byleth, Mercedes or Caspar fall in battle
+    FallMercieCasparVW = 74, // Byleth, Mercedes or Caspar fall in battle
+    FallAnnetteGilbert = 45, // Annette or Gilbert fall in battle
+    FallAnnetteGilbertSS = 75, // Byleth, Annette or Gilbert fall in battle
+    FallAnnetteGilbertCF = 76, // Byleth, Edelgard, Annette or Gilbert fall in battle
+    FallAnnetteGilbertAM = 77, // Byleth, Dmitri, Annette or Gilbert fall in battle
+    FallAnnetteGilbertVW = 78, // Byleth, Claude, Annette or Gilbert fall in battle
+    FallIngridDorothea = 46, // Ingrid or Dorothea fall in battle
+    FallIngridDorotheaSS = 79, // Byleth, Ingrid, or Dorothea fall in battle
+    FallIngridDorotheaCF = 80, // Byleth, Edelgard, Ingrid or Dorothea fall in battle
+    FallIngridDorotheaAM = 81, // Byleth, Dmitri, Ingrid or Dorothea fall in battle
+    FallIngridDorotheaVW = 82, // Byleth, Claude, Ingrid or Dorothea fall in battle
+    FallHubert = 47, // Hubert falls in battle
+    FallHubertCF = 83, // Byleth, Edelgard, or Hubert falls in battle
+    FallLysitheaFerdie = 48, // Lysithea or Ferdinand falls in battle
+    FallLysitheaFerdieSS = 84, // Byleth, Lysithea or Ferdinand falls in battle
+    FallLysitheaFerdieCF = 85, // Byleth, Edelgard, Lysithea or Ferdinand falls in battle
+    FallLysitheaFerdieAM = 86, // Byleth, Dmitri, Lysithea or Ferdinand falls in battle
+    FallLysitheaFerdieVW = 87, // Byleth, Claude, Lysithea or Ferdinand falls in battle
+    FallLinhardtLeonie = 49, // Linhardt or Leonie fall in battle
+    FallLinhardtLeonieSS = 88, // Byleth, Linhardt or Leonie fall in battle
+    FallLinhardtLeonieCF = 148, // Byleth, Edelgard, Linhardt or Leonie fall in battle
+    FallLinhardtLeonieAM = 89, // Byleth, Dmitri, Linhardt or Leonie fall in battle
+    FallLinhardtLeonieVW = 90, // Byleth, Claude, Linhardt or Leonie fall in battle
+    FallRaphaelIgnatz = 52, // Raphael or Ignatz fall in battle
+    FallRaphaelIgnatzCF = 98, // Byleth, Edelgard, Raphael or Ignatz fall in battle
+    FallRaphaelIgnatzAM = 99, // Byleth, Dmitri, Raphael or Ignatz fall in battle
+    FallRaphaelIgnatzVW = 100, // Byleth, Claude, Raphael or Ignatz fall in battle
+    FallMarianne = 53, // Marianne falls in battle
+    FallMarianneSS = 101, // Byleth or Marianne falls in battle
+    FallMarianneCF = 102, // Byleth, Edelgard, or Marianne falls in battle
+    FallMarianneAM = 103, // Byleth, Dmitri, or Marianne falls in battle
+    FallMarianneVW = 104, // Byleth, Claude, or Marianne falls in battle
+    FallSetethFlayn = 55, // Seteth or Flayn fall in battle
+    FallSetethFlaynCF = 109, // Seteth or Flayn fall in battle
+    FallSetethFlaynAM = 110, // Seteth or Flayn fall in battle
+    FallSetethFlaynVW = 111, // Seteth or Flayn fall in battle
+    FallHannemanManuela = 56, // Hanneman or Manuala fall in battle
+    FallHannemanManuelaCF = 112, // Byleth, Edelgard, Hanneman or Manuala fall in battle
+    FallHannemanManuelaAM = 113, // Byleth, Dmitri, Hanneman or Manuala fall in battle
+    FallHannemanManuelaVW = 114, // Byleth, Claude. Hanneman or Manuala fall in battle
+    FallShamirAlois = 57, // Shamir or Alois fall in battle
+    FallShamirAloisCF = 115, // Byleth, Edelgard, Shamir or Alois fall in battle
+    FallShamirAloisAM = 116, // Byleth, Dmitri, Shamir or Alois fall in battle
+    FallShamirAloisVW = 117, // Byleth, Claude, Shamir or Alois fall in battle
+    FallJudithVW = 124, // Byleth, Claude, or Judith fall in battle
+    FallJudithAM = 125, // Byleth, Dmitri, or Rodrigue fall in battle
+    FallJudithSS = 126, // Byleth or Judith fall in battle
+    FallPetraBernie = 127, // Petra or Bernadetta falls in battle
+    FallPetraBernieSS = 128, // Byleth, Petra or Bernadetta falls in battle
+    FallPetraBernieCF = 129, // Byleth, Edelgard, Petra or Bernadetta falls in battle
+    FallPetraBernieAM = 130, // Byleth, Dmitri, Petra or Bernadetta falls in battle
+    FallPetraBernieVW = 131, // Byleth, Claude, Petra or Bernadetta falls in battle
+    FallJeritza = 160, // Jeritza falls in battle
+    FallJeritzaByleth = 161, // Byleth or Jeritza falls in battle
+    FallAnna = 162, // Anna falls in battle
+    FallAnnaCF = 183, // Byleth, Edelgard, or Anna falls in battle
+    FallAnnaAM = 163, // Byleth, Dmitri, or Anna falls in battle
+    FallAnnaVW = 176, // Byleth, Claude, or Anna falls in battle
+    FallAnnaJeritza = 164, // Anna or Jeritza falls in battle
+    FallAnnaJeritzaCF = 165, // Byleth, Edelgard, Anna, or Jeritza falls in battle
+    FallYuriConstanceDuke = 168, // Yuri, Constance, or Duke Gerth fall in battle
+    FallYuriConstanceDukeCF = 169, // Byleth, Edelgard, Yuri, Constance, or Duke Gerth fall in battle
+    FallYuriConstanceDukeAM = 177, // Byleth, Dmitri, Yuri, Constance, or Duke Gerth fall in battle
+    FallYuriConstanceDukeVW = 178, // Byleth, Claude, Yuri, Constance, or Duke Gerth fall in battle
+    FallBalthusHapi = 170, // Balthus or Hapi fall in battle
+    FallBalthusHapiSS = 171, // Byleth, Edelgard, Balthus or Hapi fall in battle
+    FallBalthusHapiCF = 181, // Byleth, Edelgard, Balthus or Hapi fall in battle
+    FallBalthusHapiAM = 179, // Byleth, Dmitri, Balthus or Hapi fall in battle
+    FallBalthusHapiVW = 180, // Byleth, Claude, Balthus or Hapi fall in battle
+    FallAshen = 182, // Byleth or one of the Ashen Wolves falls in battle
+    FallAshenAelfricByleth = 185, // Byleth, Aelfric, or one of the Ashen Wolves falls in battle
+    CapByleth = 58, // Byleth falls in battle, or either defended location is captured
+    CapEdelgard = 60, // Edelgard falls in battle, or the defended location is Captured
+    CapBylethEdelgard = 33, // Byleth or Edelgard falls in battle, or a defended location is captured
+    CapBylethDmitri = 34, // Byleth or Dmitri falls in battle, or either defended location is captured
+    CapBylethClaude = 35, // Byleth or Claude falls in battle, or either defended location is captured
+    CapBylethRhea = 29, // Byleth or Rhea falls in battle, or the defended location is captured
+    CapBylethRheaAM = 30, // Byleth, Dmitri, or Rhea falls in battle, or the defended location is captured
+    CapBylethRheaVW = 31, // Byleth, Claude, or Rhea falls in battle, or the defended location is captured
+    CapTotalRhea = 149, // All of your units fall in battle, Rhea falls in battle, or the defended location is captured
+    CapHildaCyrilAlly = 54, // Hilda or Cyril falls in battle, all ally units are defeated, or the defended location is captured
+    CapHildaCyrilAllySS = 105, // Byleth, Hilda or Cyril falls in battle, all ally units are defeated, or the defended location is captured
+    CapHildaCyrilAllyCF = 106, // Byleth, Edelgard, Hilda or Cyril falls in battle, all ally units are defeated, or the defended location is captured
+    CapHildaCyrilAllyAM = 107, // Byleth, Dmitri, Hilda or Cyril falls in battle, all ally units are defeated, or the defended location is captured
+    CapHildaCyrilAllyVW = 108, // Byleth, Claude, Hilda or Cyril falls in battle, all ally units are defeated, or the defended location is captured
+    CapLorenz = 51, // Lorenz falls in battle, or the defended location is captured
+    CapLorenzCF = 95, // Byleth, Edelgard, or Lorenz falls in battle, or the defended location is captured
+    CapLorenzAM = 96, // Byleth, Dmitri, or Lorenz falls in battle, or the defended location is captured
+    CapLorenzVW = 97, // Byleth, Claude, or Lorenz falls in battle, or the defended location is captured
+    CapPetraBernie = 50, // Petra or Bernadetta falls in battle, or an enemy commander reaches the target destination
+    CapPetraBernieSS = 91, // Byleth, Petra or Bernadetta falls in battle, or an enemy commander reaches the target destination
+    CapPetraBernieCF = 92, // Byleth, Edelgard, Petra or Bernadetta falls in battle, or an enemy commander reaches the target destination
+    CapPetraBernieAM = 93, // Byleth, Dmitri, Petra or Bernadetta falls in battle, or an enemy commander reaches the target destination
+    CapPetraBernieVW = 94, // Byleth, Claude, Petra or Bernadetta falls in battle, or an enemy commander reaches the target destination
+    CapAllUnits = 36, // All your units fall in battle, or a defended location is captured
+    CapCommanderAllUnits = 118, // All your units fall in battle, or an enemy commander reaches the target destination
+    CapCommanderSS = 119, // Byleth falls in battle, or an enemy commander reaches the target destination
+    CapCommanderCF = 140, // Byleth or Edelgard falls in battle, or an enemy commander reaches the target destination
+    CapCommanderAM = 141, // Byleth or Dmitri falls in battle, or an enemy commander reaches the target destination
+    CapCommanderVW = 142, // Byleth or Claude falls in battle, or an enemy commander reaches the target destination
+    PallardoAM = 120, // Byleth or Dmitri falls in batle, or Pallardo reaches either target destination
+    PallardoVW = 120, // Byleth or Claude falls in batle, or Pallardo reaches either target destination
+    TimerDuscur = 40, // Dedue falls in battle, ally units defeat the enemy commander, or 15 turns pass
+    TimerDuscurPlus = 59, // Byleth, Dmitri, or Dedue fall in battle, ally units defeat the enemy commander, or 15 turns pass
+    TimerAM = 143, // Blyeth or Dmitri falls in battle, or 25 turns pass
+    TimerVW = 144, // Blyeth or Claude falls in battle, or 25 turns pass
+    TimerByleth = 145, // Blyeth falls in battle, or 25 turns pass
+    TimerAshen = 166, // One of the Ashen Wolves falls in battle, or 20 turns pass
+    TimerAshenByleth = 167, // Byleth or one of the Ashen Wolves falls in battle, or 20 turns pass
+    TimerVariableA = 172, // Any of your units fall in battle, or %d turns pass
+    TimerVariableB = 173, // Any of your units fall in battle, or %d turns pass
+};
+
+enum<ubyte> ScenarioName{
+    Prologue,
+    Chapter1,
+    Chapter2,
+    Chapter3,
+    Chapter4,
+    Chapter5,
+    Chapter6,
+    Chapter7,
+    Chapter8,
+    Chapter9,
+    Chapter10,
+    Chapter11,
+    Chapter12,
+    Chapter13,
+    Chapter14,
+    Chapter15,
+    Chapter16,
+    Chapter17,
+    Chapter17_Unused,
+    VWChapter18_Unused,
+    VWChapter18,
+    AMChapter18,
+    VWChapter19,
+    AMChapter19,
+    VWChapter20,
+    AMChapter20,
+    VWChapter21,
+    AMChapter21,
+    SSChapter21, // Referenced as Ch. 22
+    VWChapter22,
+    AMChapter22,
+    CFChapter12,
+    CFChapter13,
+    CFChapter14,
+    CFChapter15,
+    CFChapter16,
+    CFChapter17,
+    CFChapter18,
+    RheaParalogue,
+    DmitriParalogue,
+    EdelgardParalogue,
+    ClaudeParalogue,
+    SothisParalogue,
+    DedueParalogue,
+    FelixParalogue,
+    AsheParalogue,
+    SylvainParalogue,
+    MercedesParalogue,
+    AnnetteParalogue,
+    IngridParalogue,
+    HubertParalogue,
+    LysitheaParalogue,
+    LeonieParalogue,
+    PetraParalogue,
+    LorenzParalogue,
+    IgnatzParalogue,
+    MarianneParalogue,
+    HildaParalogue,
+    SetethParalogue,
+    ManuelaParalogue,
+    AloisParalogue,
+    AuxOutskirts,
+    AuxMountains,
+    AuxEmpire,
+    AuxKingdom,
+    AuxDesert,
+    AuxMagred,
+    AuxAlmyra,
+    AuxPlateau,
+    AuxMagred2,
+    AuxMountain2,
+    AuxDesert2,
+    AuxGronder,
+    AuxGronder2,
+    AuxChapel,
+    AuxChapel2,
+    AuxCanyon,
+    AuxCoast,
+    AuxPlateau2,
+    AuxAillel,
+    AuxPlains,
+    AuxLake,
+    AuxForest,
+    AuxAlliance,
+    AuxForest2,
+    AuxTower,
+    CSChapter1,
+    CSChapter2,
+    CSChapter3,
+    CSChapter4,
+    CSChapter5,
+    CSChapter6,
+    CSChapter7,
+    HapiParalogue,
+    YuriParalogue,
+    Dummy,
+    Dummy2,
+    AnnaParalogue,
+    JeritzaSemilogue,
+    Dummy3,
+};
