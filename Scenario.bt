@@ -8,6 +8,7 @@
 //   History
 //   0.75    2020-08-12  NellsRelo - Start
 //------------------------------------------------
+#include "3H_Enums.bt"
 #include "3H_ScenarioEnums.bt"
 
 LittleEndian();
@@ -58,7 +59,7 @@ struct ScenarioData{
         
             ParalogueExpiration paralogueExpiration<name="Paralogue Expiration Date">;
             ubyte recruitLevel<bgcolor=cDkGreen,name="Recruit/Recommended Level">;
-            ubyte auxillaryBGM<bgcolor=cDkGreen,name="Auxillary BGM">;
+            BGM auxillaryBGM<bgcolor=cDkGreen,name="Auxillary BGM">;
             ubyte hiddenTurnLimit<bgcolor=cDkGreen,name="Hidden Turn Limit">;
             Conditions victoryConditionLabel<bgcolor=cDkGreen,name="Victory Condition Label">;
             MapList map<bgcolor=cDkGreen,name="Map ID">;
