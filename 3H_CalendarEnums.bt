@@ -1,0 +1,178 @@
+enum<ubyte> Month {
+    GuardianMoon,
+    PegasusMoon,
+    LoneMoon,
+    GreatTreeMoon,
+    HarpstringMoon,
+    GarlandMoon,
+    BlueSeaMoon,
+    VerdantRainMoon,
+    HorsebowMoon,
+    WyvernMoon,
+    RedWolfMoon,
+    EtherealMoon
+};
+
+enum<ubyte> CelebrationType {
+    NoCelebration,
+    Holiday,
+    Birthday,
+    Unknown
+};
+
+enum<ubyte> CelebrationActivity {
+    Skip,
+    HymnRecital,
+    Feast,
+    HymnRecital2,
+    Skip2
+};
+
+enum<byte> FoodEvents {
+    NoFoodEvent = -1,
+    RegularMenu = 0,
+    EmpireFoundingCelebration = 1,
+    KingdomFoundingCelebration = 2,
+    AllianceFoundingCelebration = 3,
+    BondingBites = 4,
+    InterHouseReception = 5,
+    FacultyKnightMixer = 6,
+    HeadChefChallenge = 7,
+    SweetToothWeek = 8,
+    HuntingFestival = 9,
+    HarvestFestival = 10,
+    FishBountyFestival = 11,
+    SpiceFestival = 12,
+    BitterEats = 13,
+    MoraleMeals = 14,
+};
+
+enum<byte> FishEvents {
+    NoFishEvent = -1,
+    FishingTournament = 0,
+    HookTheBigOne = 1,
+    FishOfMystery = 2,
+    FistfulsOfFish = 3,
+    GoldenFish = 4,
+    LotsOfLargeFish = 5
+};
+
+enum<byte> GardenEvents {
+    NoGardenEvent = -1,
+    BlessingOfTheLand = 0
+};
+
+enum<byte> ChoirEvents {
+    NoChoirEvent = -1,
+    ChoirPractice = 0,
+    ChoirFestival = 1
+};
+
+enum<ubyte> DayType {
+    FirstDay = 1,
+    FreeDay = 2,
+    Mission = 3
+};
+
+// Don't like having this, but should help sort out the
+// displayCircumstances weirdness
+enum<byte> DisplayCircumstances {
+    NeverShow = 0,
+    ShowOnHoliday = 1,
+    ShowOnSpecialCircumstances = 2, // GarregMachEstablishment, Jeritza's Birthday, and Type-3 events
+    ShowOnBirthday = 3
+};
+
+enum<byte> TournamentType {
+    NoTournament = -1,
+    FirstTournamentSteelSwordPlus,
+    HouseLanceIntermediateSeal,
+    BowTournamentSteelShield,
+    AxeTournamentSteelAxePlus,
+    HouseSwordIntermediateSeal,
+    BrawlingTournamentSteelGauntletsPlus,
+    BlackMagicTournamentSilverShield,
+    HouseBowAdvancedSeal,
+    LanceTournamentSilverLance,
+    HouseMagicAdvancedSeal,
+    SwordTournamentSilverSwordPlus = 10,
+    LanceTournamentSilverLancePlus,
+    BowTournamentSilverBowPlus,
+    BlackMagicTournamentMagicStaff,
+    AxeTournamentSilverAxePlus,
+    BrawlingTournamentSilverGauntletsPlus,
+    SwordTournamentMasterSeal,
+    HouseLanceIntermediateSealB,
+    HouseSwordIntermediateSealB,
+    HouseBowAdvancedSealB,
+    HouseMagicAdvancedSealB = 20,
+    HouseLanceIntermediateSealC,
+    HouseSwordIntermediateSealC,
+    HouseBowAdvancedSealC,
+    HouseMagicAdvancedSealC,
+    SwordTournamentSilverSwordPlusB,
+    LanceTournamentSilverLancePlusB,
+    BowTournamentSilverBowPlusB,
+    AxeTournamentSilverAxePlusB,
+    SwordTournamentMasterSealB,
+    BlankBraveSword = 30,
+    BlankBraveLance,
+    
+};
+
+enum<ubyte> CalendarEvent {
+    EmpireFoundersDay,
+    StMacuilsDay,
+    StCethleannesDay,
+    RiteOfRebirth,
+    AllianceFoundersDay,
+    BattleOfEagleAndLion,
+    KingdomFoundersDay,
+    WhiteHeronCup,
+    GarregMachEstablishmentDayA,
+    GarregMachEstablishmentDayB,
+    StCicholDay,
+    StSeirosDay,
+    StIndechDay,
+    FirstDayOff,
+    EdelgardsBirthday,
+    DmitrisBirthday,
+    ClaudesBirthday,
+    HubertsBirthday,
+    FerdinandsBirthday,
+    LinhardtsBirthday,
+    CasparsBirthday,
+    BernadettasBirthday,
+    DorotheasBirthday,
+    PetrasBirthday,
+    DeduesBirthday,
+    FelixBirthday,
+    AshesBirthday,
+    SylvainsBirthday,
+    MercedesBirthday,
+    AnnettesBirthday,
+    IngridsBirthday,
+    LorenzBirthday,
+    RaphaelsBirthday,
+    IgnatzBirthday,
+    LysitheasBirthday,
+    MariannesBirthday,
+    HildasBirthday,
+    LeoniesBirthday,
+    SetethsBirthday,
+    FlaynsBirthday,
+    HannemansBirthday,
+    ManuelasBirthday,
+    GilbertsBirthday,
+    AloisBirthday,
+    CatherinesBirthday,
+    ShamirsBirthday,
+    CyrilsBirthday,
+    RheasBirthday,
+    AnnasBirthday = 136,
+    JeritzasBirthday,
+    YurisBirthday = 1040,
+    BalthusBirthday,
+    ConstancesBirthday,
+    HapisBirthday
+};
