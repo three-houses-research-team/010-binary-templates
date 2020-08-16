@@ -1,0 +1,257 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: 35.bin/ fixed_calendar.bin (patch3)
+//   Authors: NellsRelo
+//   Version: 0.80
+//   Purpose: Mapping of fixed_calendar.bin.
+//   History
+//   0.80    2020-08-14  NellsRelo - Start
+//------------------------------------------------
+#include "3H_Enums.bt";
+#include "3H_CalendarEnums.bt";
+
+LittleEndian();
+local int i<hidden=true>;
+struct HeaderPadding {
+    byte Padding[0x34]<bgcolor=cDkYellow>;
+};
+
+// Birthdays and Holidays (and something else)
+struct CelebrationData {
+    int celebrationMagic<bgcolor=cLtGreen>;
+    int celebrationCount<bgcolor=cLtGreen>;
+    int celebrationSize<bgcolor=cLtGreen>;
+	HeaderPadding eventHeaderPadding<name="Padding">;
+    for( i = 0; i < celebrationCount; i++ ) {
+        struct Celebration {
+            local CalendarEvent celebrationName;
+            celebrationName = i;
+
+            //Determines who's birthday on Birthdays, unknown use on Type-3 events
+            CharID relatedCharID<bgcolor=cDkGreen,name="Related Unit">;
+            CharID relatedCharID2<bgcolor=cYellow,name="Related Unit (2)">;
+            CharID relatedCharID3<bgcolor=cYellow,name="Related Unit (3)">;
+
+            ubyte eventDay<bgcolor=cDkGreen,name="Day of the Month">;
+
+            // Note that these will be ordered by Celebration, not Character ID
+            CelebrationType eventType<bgcolor=cDkGreen,name="Type of Event">;
+            Month eventMonth<bgcolor=cDkGreen,name="Month">;
+            CelebrationActivity eventActivity<bgcolor=cDkGreen,name="Activity (Holidays)">;
+            ubyte unk1<bgcolor=cRed>;
+
+            // Celebration is visible on odd numbers, hidden on even ones
+            // Outlier is Jeritza's birthday, which uses a 2. Hidden outside
+            // of Crimson Flower?
+            DisplayCircumstances uncDisplayCircumstances<bgcolor=cYellow>;
+        } celebration<name="Celebration",read=getCelebrationName>;
+    };
+};
+
+// Covers Free days, missions, and beginning of the month
+struct Schedule {
+    // Only ever -1, 10, 11, or 12 - Likely Bird/Crawler/Wolf
+    byte rareMonsterSighting<name="Rare Monster Sighting">;
+
+    // When enabling Battle during Chapter 1, the Battles list will
+    // be empty. During Chapter 2, even by enabling a map to show up
+    // in Chapter 2 in fixed_scenario.bin, it will be a Practice Battle,
+    // and attempting to load it will crash the game.
+    struct FreeDayOptions {
+		ubyte bit0 : 1<name="Disable Explore">;
+        ubyte bit1 : 1<name="Disable Battle">;
+        ubyte bit2 : 1<name="Disable Seminar">;
+        ubyte bit3 : 1<name="Disable Rest">;
+    } freeDayOptions<name="Free Day Options">;
+    Month month<name="Month">;
+    byte day<name="Day">;
+
+    // Sets the chosen day to be a specific day of the week (0-6)
+    // Uncertain which schedule's offset will take precedence with
+    // multiple Schedules in a month touching this.
+    byte weekDay<name="Weekday">;
+
+    FoodEvents foodEvent<name="Food Event">;
+    DayType dayType<name="Day Type">;
+    ChoirEvents choirEvent<name="Choir Event">;
+    byte unk1<bgcolor=cBlack>;
+    byte unk2<bgcolor=cBlack>;
+    GardenEvents gardenEvent<name="Gardening Event">;
+    FishEvents fishingEvent<name="Fishing Event">;
+
+    // Four distinct bytes makes sense in White Clouds, but not in
+    // other routes when they have their own section. Possible
+    // artifact from prior development?
+    TournamentType churchTournament<name="Tournament (Silver Snow)">;
+    TournamentType lionsTournament<name="Tournament (Azure Wind)">;
+    TournamentType deerTournament<name="Tournament (Verdant Wind)">;
+    TournamentType eaglesTournament<name="Tournament (Crimson Flower)">;
+
+    local string scheduleName = EnumToString(month);
+};
+
+struct AcademyScheduleData {
+    int scheduleMagic<bgcolor=cLtGreen>;
+    int scheduleCount<bgcolor=cLtGreen>;
+    int scheduleSize<bgcolor=cLtGreen>;
+	HeaderPadding scheduleHeaderPadding<name="Padding">;
+    Schedule schedule[scheduleCount]<read=getScheduleName,optimize=false,bgcolor=cPurple>;
+};
+
+struct ChurchScheduleData {
+    int scheduleMagic<bgcolor=cLtGreen>;
+    int scheduleCount<bgcolor=cLtGreen>;
+    int scheduleSize<bgcolor=cLtGreen>;
+	HeaderPadding scheduleHeaderPadding<name="Padding">;
+    Schedule schedule[scheduleCount]<read=getScheduleName,optimize=false,bgcolor=cSilver>;
+};
+
+struct LionsScheduleData {
+    int scheduleMagic<bgcolor=cLtGreen>;
+    int scheduleCount<bgcolor=cLtGreen>;
+    int scheduleSize<bgcolor=cLtGreen>;
+	HeaderPadding scheduleHeaderPadding<name="Padding">;
+    Schedule schedule[scheduleCount]<read=getScheduleName,optimize=false,bgcolor=cBlue>;
+};
+
+struct DeerScheduleData {
+    int scheduleMagic<bgcolor=cLtGreen>;
+    int scheduleCount<bgcolor=cLtGreen>;
+    int scheduleSize<bgcolor=cLtGreen>;
+	HeaderPadding scheduleHeaderPadding<name="Padding">;
+    Schedule schedule[scheduleCount]<read=getScheduleName,optimize=false,bgcolor=cDkGreen>;
+};
+
+struct EaglesScheduleData {
+    int scheduleMagic<bgcolor=cLtGreen>;
+    int scheduleCount<bgcolor=cLtGreen>;
+    int scheduleSize<bgcolor=cLtGreen>;
+	HeaderPadding scheduleHeaderPadding<name="Padding">;
+    Schedule schedule[scheduleCount]<read=getScheduleName,optimize=false,bgcolor=cRed>;
+};
+
+struct Unknown10Byte {
+    byte unk1;
+    byte unk2;
+    byte unk3;
+    byte unk4;
+    short unused1<bgcolor=cSilver>;
+    short unused2<bgcolor=cSilver>;
+    short unused3<bgcolor=cSilver>;
+};
+
+struct UnknownData1 {
+    int unkMagic<bgcolor=cLtGreen>;
+    int unkCount<bgcolor=cLtGreen>;
+    int unkSize<bgcolor=cLtGreen>;
+	HeaderPadding classdataheaderpadding<name="Padding">;
+    Unknown10Byte unknown[unkCount];
+};
+
+struct UnknownData2 {
+    int unkMagic<bgcolor=cLtGreen>;
+    int unkCount<bgcolor=cLtGreen>;
+    int unkSize<bgcolor=cLtGreen>;
+	HeaderPadding classdataheaderpadding<name="Padding">;
+    Unknown10Byte unknown[unkCount];
+};
+
+struct UnknownData3 {
+    int unkMagic<bgcolor=cLtGreen>;
+    int unkCount<bgcolor=cLtGreen>;
+    int unkSize<bgcolor=cLtGreen>;
+	HeaderPadding classdataheaderpadding<name="Padding">;
+    Unknown10Byte unknown[unkCount];
+};
+
+struct UnknownData4 {
+    int unkMagic<bgcolor=cLtGreen>;
+    int unkCount<bgcolor=cLtGreen>;
+    int unkSize<bgcolor=cLtGreen>;
+	HeaderPadding classdataheaderpadding<name="Padding">;
+    Unknown10Byte unknown[unkCount];
+};
+
+struct Unknown30Byte {
+    short padding<bgcolor=cBlue>;
+    short unk1;
+    short unk2;
+    short unk3;
+    short unk4;
+    short unk5;
+    short unk6;
+    byte unk7;
+    byte unk8;
+    byte unk9;
+    byte unk10;
+    byte unk11;
+    byte unk12;
+    byte unk13;
+    byte unk14;
+    byte unk15;
+    byte unk16;
+    byte unk17;
+    byte unk18;
+    byte unk19;
+    byte unk20;
+    byte unk21;
+    byte padding<bgcolor=cBlue>;
+};
+
+struct UnknownData5 {
+    int unkMagic<bgcolor=cLtGreen>;
+    int unkCount<bgcolor=cLtGreen>;
+    int unkSize<bgcolor=cLtGreen>;
+	HeaderPadding classdataheaderpadding<name="Padding">;
+    Unknown30Byte unknown[unkCount];
+};
+
+struct File {
+    struct SectionPointer {
+        int header<bgcolor=cBlue>;
+        int celebrationDataPointer<bgcolor=cAqua>;
+        int celebrationDataSize<bgcolor=cAqua>;
+        int academyScheduleDataPointer<bgcolor=cPurple>;
+        int academyScheduleDataSize<bgcolor=cPurple>;
+        int churchScheduleDataPointer<bgcolor=cSilver>;
+        int churchScheduleDataSize<bgcolor=cSilver>;
+        int lionsScheduleDataPointer<bgcolor=cBlue>;
+        int lionsScheduleDataSize<bgcolor=cBlue>;
+        int deerScheduleDataPointer<bgcolor=cDkGreen>;
+        int deerScheduleDataSize<bgcolor=cDkGreen>;
+        int eaglesScheduleDataPointer<bgcolor=cRed>;
+        int eaglesScheduleDataSize<bgcolor=cRed>;
+        int unkDataPointer6<bgcolor=cRed>;
+        int unkDataSize6<bgcolor=cRed>;
+        int unkDataPointer7<bgcolor=cRed>;
+        int unkDataSize7<bgcolor=cRed>;
+        int unkDataPointer8<bgcolor=cRed>;
+        int unkDataSize8<bgcolor=cRed>;
+        int unkDataPointer9<bgcolor=cRed>;
+        int unkDataSize9<bgcolor=cRed>;
+        int unkDataPointer10<bgcolor=cRed>;
+        int unkDataSize10<bgcolor=cRed>;
+    } sectionPointers;
+    CelebrationData celebrationData;
+    AcademyScheduleData academyScheduleData;
+    ChurchScheduleData churchScheduleData;
+    LionsScheduleData lionsScheduleData;
+    DeerScheduleData deerScheduleData;
+    EaglesScheduleData eaglesScheduleData;
+    UnknownData1 unkData;
+    UnknownData2 unkData;
+    UnknownData3 unkData;
+    UnknownData4 unkData;
+    UnknownData5 unkData;
+    
+
+} file;
+
+string getCelebrationName(Celebration & q) {
+    return EnumToString(q.celebrationName);
+};
+
+string getScheduleName(Schedule & q) {
+    return q.scheduleName;
+};
