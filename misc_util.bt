@@ -1,0 +1,23 @@
+
+
+// Shamelessly taken from GenericFile6-62.bt
+struct PointerPair {
+    int start<format=hex>;
+    int length<format=hex>;
+};
+
+// Generic Pointer table
+struct SectionPointer {
+    uint32 count<bgcolor=cBlue>;
+    PointerPair pointerpair[count]<bgcolor=cRed>;
+};
+
+// Section Starter
+struct SectionMagic {
+    int32 magic<bgcolor=cSilver>;
+	uint32 num<bgcolor=cSilver>;
+	uint32 size<bgcolor=cSilver>;
+	struct SectionPadding {
+		byte Padding[0x34];
+	} padding<name="Padding",bgcolor=cDkYellow>;
+};
