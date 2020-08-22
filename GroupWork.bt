@@ -1,0 +1,158 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: Starts at 27.bin/ fixed_groupwork.bin
+//   Authors: NellsRelo
+//   Version: 0.50
+//   Purpose: Mapping of fixed_groupwork.bin.
+//   History
+//   0.75    2020-08-14  NellsRelo - Start
+//------------------------------------------------
+#include "misc_util.bt";
+#include "3H_Enums.bt";
+
+LittleEndian();
+
+struct GroupTaskSection {
+    SectionMagic groupTaskMagic;
+    struct GroupTask {
+        short goodGoldReward<name="Gold Reward (Good)">;
+        short perfectGoldReward<name="Gold Reward (Perfect)">;
+        RankStats raisedSkill<name="Skill to Improve">;
+        byte goodReward<name="Item Reward (Good)">;
+        byte perfectReward<name="Item Reward (Perfect)">;
+        byte goodRewardAmount<name="Reward Amount (Good)">;
+        byte perfectRewardAmount<name="Reward Amount (Perfect)">;
+        byte uncPadding<bgcolor=cDkYellow,name="Padding">;
+    } groupTasks[groupTaskMagic.num];
+};
+
+// These all affect what dialog is shown during group
+// tasks. Unfortunately, it is inconsistent in terms of
+// which byte affects which task for each duo.
+struct GroupTaskDialog {
+    TrueFalse groupTaskDialog;
+    TrueFalse groupTaskDialog;
+    TrueFalse groupTaskDialog;
+    TrueFalse groupTaskDialog;
+    TrueFalse groupTaskDialog;
+    TrueFalse groupTaskDialog;
+    TrueFalse groupTaskDialog;
+    TrueFalse groupTaskDialog;
+};
+
+struct ActivityConversationSection {
+    SectionMagic activityConversationMagic;
+    struct ActivityConversationData {
+        CharID charID1<name="Character ID">;
+        CharID charID2<name="Character ID">;
+
+        // These next 4 bytes may be route related.
+        byte unkVal;
+        // Related to timeskip Dmitri being a person again(Chapter 
+        // 18)? Value is 0 in each instance except for Dmitri/Gilber
+        // and Dmitri/Dedue.
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+
+        // 0 = None, 1 = C, 2 = B, 3 = A
+        byte mealDialogueSupport1<name="Unique Dining Chat Support Requirement">;
+        byte mealDialogSupport2<name="Unique Dining Chat Support Requirement">;
+        byte mealDialogASupport3<name="Unique Dining Chat Support Requirement">;
+
+        GroupTaskDialog groupTasks<name="Group Task Dialog Options">;
+        TrueFalse unkVal;
+    } activityConversations[activityConversationMagic.num]<read=getActivityConvoName>;
+};
+
+struct UnknownSection3 {
+    SectionMagic unknownSection3Magic;
+    struct UnknownData3 {
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte uncPadding<bgcolor=cDkYellow>;
+    } unknownData3[unknownSection3Magic.num];
+};
+
+struct UnknownSection4 {
+    SectionMagic unknownSection4Magic;
+    struct UnknownData4 {
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+        byte unkVal;
+    } unknownData4[unknownSection4Magic.num];
+};
+
+// Not present prior to DLC waves. Possibly Sauna-related?
+struct UnknownSection5 {
+    SectionMagic unknownSection5Magic;
+    struct UnknownData5 {
+        short unkID;
+        short unkID;
+        byte unkVal; // Always 1
+        byte uncPadding<bgcolor=cDkYellow>;
+    } unknownData5[unknownSection5Magic.num];
+};
+
+struct File {
+    SectionPointer sectionPointer;
+    GroupTaskSection groupTaskSection<bgcolor=cDkGreen>;
+    ActivityConversationSection activityConversationSection<bgcolor=cBlue>;
+    UnknownSection3 unknownSection3<bgcolor=cPurple>;
+    UnknownSection4 unknownSection4<bgcolor=cDkRed>;
+    short padding<bgcolor=cDkYellow>;
+    byte padding<bgcolor=cDkYellow>;
+    UnknownSection5 unknownSection5<bgcolor=cYellow>;
+} file;
+
+string getActivityConvoName(ActivityConversationData & q) {
+    return EnumToString(q.charID1) + " & " + EnumToString(q.charID2);
+}
