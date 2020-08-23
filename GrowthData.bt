@@ -1,0 +1,128 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: 9.bin/ fixed_growthdata.bin
+//   Authors: NellsRelo
+//   Version: 0.50
+//   Purpose: Mapping of fixed_growthdata.bin.
+//   History
+//   0.50    2020-08-23  NellsRelo - Start
+//------------------------------------------------
+#include "misc_util.bt";
+#include "3H_Enums.bt";
+
+LittleEndian();
+local int i<hidden=true>;
+
+struct PointsCap {
+    local MinRanks skillLevelName;
+    local string levelString;
+    skillLevelName = i;
+    SPrintf(levelString, "%d", (int)i + 1);
+    ushort pointsCap<name="Points Needed for Next Level">;
+};
+
+struct ExperienceMultiplierSection {
+    SectionMagic experienceMultiplierMagic;
+    struct experienceMultiplier {
+        ubyte normalMultiplier<name="XP Multiplier (Normal)">;
+        ubyte hardMultiplier<name="XP Multiplier (Hard)">;
+        ubyte maddeningMultiplier<name="XP Multiplier (Maddening)">;
+    } experienceMultiplierSection[experienceMultiplierMagic.num]<name="EXP Multiplier",
+        comment="Percentage Multiplier of EXP based on difficulty">;
+};
+
+// Likely a multiplier - Current Amount and % gain. Needs further research
+struct UnknownMultiplierSection {
+    SectionMagic unkMultiplierMagic;
+    struct UnknownMultiplierBlock {
+        byte uncAmount;
+        byte uncMultiplier;
+    } unknownMultiplierBlock[unkMultiplierMagic.num];
+};
+
+struct SkillPointCapSection {
+    SectionMagic skillPointCapMagic;
+    for (i = 0; i < skillPointCapMagic.num; i++) {
+        PointsCap skillPointCap<name="Skill Point Requirement",read=getRankName>;
+    }
+};
+
+// 40, 60, 100, 0. Based on the numbers, not likely to be related to
+// Battalion EXP. Comes close to matching Renown NG+ rewards based on difficulty.
+struct UnknownSection4 {
+    SectionMagic unk4Magic;
+    struct UnkBlock4 {
+        byte unkVal;
+    } unkBlock4[unk4Magic.num];
+};
+
+struct SupportPointCapSection {
+    SectionMagic supportCapMagic;
+    for (i = 3; i < supportCapMagic.num + 3; i++) {
+        PointsCap supportPointCap<name="Support Point Requirement",read=getRankName>;
+    }
+};
+
+struct ExperiencePointsCapSection {
+    SectionMagic experiencePointsCapMagic;
+    for (i = 0; i < experiencePointsCapMagic.num; i++) {
+        PointsCap experiencePointsCap<name="EXP Requirements",read=getLevelString>;
+    };
+};
+
+// All bytes are 0 until entry 24.
+struct UnknownSection7 {
+    SectionMagic unk7Magic;
+    struct UnkBlock7 {
+        byte unkVal;
+    } unkBlock7[unk7Magic.num];
+};
+
+// This reads like some Discreet Mathematics practice
+// First 10 values are literally a pattern 2^{n}+1
+// Next 9 are 2(2^{n} + 1). Next 8 are 4(2{n}+1).
+// Next 7 are 8(2^{n} + 1). Next 6 are, you guessed it,
+// 16(2^{n} + 1). Followed by 32(2^{n}+1), 64(2^{n}+1),
+// 128..., 256..., then with 1 digit, 1536(entry 54). This
+// is then followed with 2^{n-1}, and then a bunch of numbers
+// that don't fit the established pattern. Entries 128-142
+// were added in a DLC wave. Needs, uh, more math-minded folks
+// to figure out what it's doing.
+struct UnknownSection8 {
+    SectionMagic unk8Magic;
+    struct UnkBlock8 {
+        ushort unkVal;
+    } unkBlock8[unk8Magic.num];
+};
+
+struct File {
+    SectionPointer sectionPointer<name="Section Pointers">;
+    ExperienceMultiplierSection experienceMultiplierSection<bgcolor=cDkGreen,
+        name="EXP/Difficulty Multiplier">;
+    byte padding<bgcolor=cDkYellow,name="Padding",hidden=true>;
+    UnknownMultiplierSection unknownMultiplierSection<bgcolor=cBlue,
+        name="Unknown Multiplier">;
+    SkillPointCapSection skillPointCapSection<bgcolor=cPurple,
+        name="Skill Point Requirements">;
+    UnknownSection4 unknownSection4<bgcolor=cDkRed,
+        name="Unknown Block">;
+    SupportPointCapSection supportPointsCapSection<bgcolor=cYellow,
+        name="Support Point Requirements">;
+    short padding<bgcolor=cDkYellow,name="Padding",hidden=true>;
+    ExperiencePointsCapSection experiencePointsCapSection<bgcolor=cAqua,
+        name="Experience Requirements">;
+    UnknownSection7 unknownSection7<bgcolor=cGreen,
+        name="Unknown Block">;
+    short padding<bgcolor=cDkYellow,name="Padding",hidden=true>;
+    UnknownSection8 unknownSection8<bgcolor=cBlack,
+        name="Unknown Block">;
+} pointRequirementData<name="Point Multipliers and Caps">;
+
+string getRankName(PointsCap & q) {
+    return EnumToString(q.skillLevelName);
+};
+
+string getLevelString(PointsCap & q) {
+    return "Level " + q.levelString;
+};
