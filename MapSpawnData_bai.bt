@@ -73,9 +73,9 @@ struct File{
 					Team allegiance<name="Allegiance byte",comment="0 = Player, 1 = Enemy, 2 = NPC", bgcolor=cLtYellow>;
 					ScriptSpawn SpawnType<name="Spawn Type",comment="0 = Spawns auto, 1 = Only Spawns from script.", bgcolor=cBlack>;
 					MovementFlags characterFlags<name="Movement Flags",comment="3 - No movement, 2 - Movement", bgcolor=cGray>;
-					ubyte unk<name="Unknown", bgcolor=cAqua>;
+					TrueFalse battallionFlag<name="Has Battalion Enabled", bgcolor=cAqua>;
 					CommanderStatus IsCommander<name="Commander Flag", bgcolor=cAqua>;
-					ubyte Battalion<name="Battalion", bgcolor=cRed>;
+					BattalionID Battalion<name="Battalion", bgcolor=cRed>;
 					ubyte BattalionLv<name="Battalion Level", bgcolor=cRed>;
 					SpellIDBai Spell<name="Extra Spell 1", bgcolor=cLtBlue>;
 					SpellIDBai Spell<name="Extra Spell 2", bgcolor=cLtBlue>;
