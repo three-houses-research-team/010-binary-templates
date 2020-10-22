@@ -1,0 +1,96 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: NUNS.bt
+//   Authors: Joschka
+//   Version: 1.0
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History:
+//  1.0 2020-03-13  Joschka: Created the file
+//------------------------------------------------
+#ifndef G1M_NUNS
+#define G1M_NUNS
+
+#ifndef G1M_SHAREDSTRUCTURES
+#include "../G1SharedStructures.bt"
+#endif // G1M_SHAREDSTRUCTURES
+
+#ifndef G1M_NUNO
+#include "NUNO.bt"
+#endif // G1M_NUNO
+
+typedef struct NUNS_INFLUENCE {
+        int P1;
+        int P2;
+        int P3;
+        int P4;
+        float P5;
+        float P6;
+        int P7;
+        int P8;
+    }Nuns_influence<name="Influence">;
+
+typedef struct BLWO {
+        char magic[4]<name="Magic", comment="reversed">;
+        uint32 unk1;
+        uint32 size;
+        FSkip(size);
+}blwo_struct<name="Blwo", optimize=false>;
+
+//only one seen
+typedef struct {
+    uint16 parentBoneIDLE<name="Parent Bone ID LE">; //Only if LE, otherwise it's the next one
+    uint16 parentBoneIDBE<name="Parent Bone ID BE">;
+    uint32 controlPointsCount<name="Control points count">;
+    uint32 unk1;
+    uint32 unk2;
+    uint32 unk3;
+    uint32 unk4;
+    uint32 skip1;
+    FSkip(0xA4);
+    ControlPoint controlPoints[controlPointsCount]<name="Control Point">;
+    Nuns_influence influences[controlPointsCount]<name="Influence">;
+    FSkip(skip1);
+    blwo_struct Blow;
+    FSkip(0xC);
+    
+} nunsentry_00060001<name="Entry (0x00060001)", optimize=false>;
+
+typedef struct G1MNUNSSECTION {
+    uint32 subSectionCount<name="Subsection count">;
+    local int i = 0;
+    local int pos = 0;
+    for (i = 0;i < subSectionCount; i++)
+    {   
+        pos = FTell();
+        struct NUNSSUBCHUNK {
+            uint32 flag<name="Subsection type", format=hex>;
+            uint32 subsection_size<name="Subsection size", format=hex>;
+            uint32 entry_count<name="Entry count">;
+            switch(flag)
+            {
+                case 0x00060001:
+                    nunsentry_00060001 entries[entry_count];
+                    break;
+            }
+        }NunsSubSection<name="SubSection",optimize=false>; 
+        FSeek(pos + NunsSubSection.subsection_size);
+    }
+}G1MNunsSection<name="NUNSSection",open=true>;
+
+#ifndef G1M_FILELESS
+#define G1M_FILELESS
+
+LittleEndian();
+
+struct FILE {
+    GResourceSectionHeader header<name="Header">;
+    G1MNunsSection data<name="Nuns data">;
+} File<name="NUNS", open=true>;
+
+#endif // G1M_FILELESS
+
+#endif // G1M_NUNS
