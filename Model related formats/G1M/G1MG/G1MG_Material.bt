@@ -22,13 +22,17 @@ typedef enum <ushort> G1MGEOMETRYTEXTURETYPE {
     TextureType_Skin = 29
 } G1MGeometryTextureType;
 
+typedef enum <ushort> G1MGEOMETRYTEXTUREWRAPPING {
+    WrappingType_Repeat = 4
+} G1MGeometryTextureWrapping;
+
 typedef struct G1MGEOMETRYTEXTURE {
     short index<name="Index", comment="Texture index in a G1T file">;
     short layer<name="Layer", comment="TEXCOORD layer">;
     G1MGeometryTextureType type<name="Type">;
     G1MGeometryTextureType alternate_type<name="Alt. Type">;
-    short unknown1<name="Unknown 1">;
-    short unknown2<name="Unknown 2">;
+    G1MGeometryTextureWrapping unknown1<name="Vertical wrapping type">;
+    G1MGeometryTextureWrapping unknown2<name="Horizontal wrapping type">;
 } G1MGeometryTexture;
 
 typedef struct G1MGEOMETRYMATERIAL {

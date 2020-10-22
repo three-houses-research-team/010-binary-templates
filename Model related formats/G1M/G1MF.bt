@@ -2,13 +2,15 @@
 //--- 010 Editor v9.0.2 Binary Template
 //
 //      File: G1MF.bt
-//   Authors: HealingBrew
-//   Version: 1.1
+//   Authors: HealingBrew, Raywto, Joschka
+//   Version: 1.3
 //   Purpose: Outlines G1MF format found in G1M files
 //  Category: Game File
 // File Mask: 
 //  ID Bytes: 46 4D 31 47
 //   History:
+//   1.3      2020-10-22  Joschka : Added more info
+//   1.2      2020-04-30  Raytwo: Found the significance of all values related to G1MG
 //   1.1      2020-01-18  HealingBrew: Updated with logic from Ryza.
 //   1.0      2019-11-06  HealingBrew: Created the file
 //------------------------------------------------

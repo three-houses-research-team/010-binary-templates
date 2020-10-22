@@ -2,13 +2,14 @@
 //--- 010 Editor v9.0.2 Binary Template
 //
 //      File: G1MG_ShaderParam.bt
-//   Authors: HealingBrew
-//   Version: 1.0
+//   Authors: HealingBrew, Raytwo
+//   Version: 1.1
 //   Purpose: Outlines ShaderParam format found in G1MG sections
 //  Category: Game File
 // File Mask: 
 //  ID Bytes:
 //   History:
+//  1.1 2020-04-30  Raytwo: Fixed the types and renamed unknown1
 //  1.0 2019-11-06  HealingBrew: Created the file
 //------------------------------------------------
 
