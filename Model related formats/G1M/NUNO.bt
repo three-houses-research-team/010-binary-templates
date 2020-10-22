@@ -36,6 +36,14 @@ typedef struct INFLUENCE {
         float P6;
     }Influence<name="Influence">;
 
+typedef struct NUNO2BONESECTION {
+    uint16 boneIndex;
+    uint16 padding;
+    uint32 reserved[3];
+    Vector3 coords;
+    uint32 padding;
+}nuno2BoneSection<name="nuno2Bone", optimize=false>;
+
 typedef struct UNKSECTION {
         
     }UnkSection<name="Unknown Section",size=0x30>;
@@ -58,6 +66,15 @@ typedef struct {
 
 //No idea what the entry is for but it's not necessary to rebuild meshes or bones.
 typedef struct {
+    uint16 parentBoneIDLE<name="Parent Bone ID LE">;
+    uint16 padding;
+    uint32 unk1;
+    uint32 physicsBoneCount;
+    uint32 skip1;
+    FSkip(0x40);
+    //Skip 12 i version high
+    nuno2BoneSection physicsBones[physicsBoneCount];
+    FSkip(skip1 * 4); 
 
 } nunoentry_00030002<name="Entry (0x00030002)", optimize=false>;
 
@@ -77,7 +94,7 @@ typedef struct {
     UnkSection unknownSections[unknownSectionCount]<name="Unknown Sections">;
     FSkip(skip1 * 4);
     FSkip(skip2 * 8);
-    FSkip(skip3 *12); 
+    FSkip(skip3 * 12); 
 } nunoentry_00030003<name="Entry (0x00030003)", optimize=false>;
 
 //No idea what the entry is for but it's not necessary to rebuild meshes or bones.

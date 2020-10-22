@@ -1,16 +1,14 @@
-
 //------------------------------------------------
 //--- 010 Editor v9.0.2 Binary Template
 //
 //      File: G1MG_ShaderParam.bt
-//   Authors: HealingBrew, Raytwo
-//   Version: 1.1
+//   Authors: HealingBrew
+//   Version: 1.0
 //   Purpose: Outlines ShaderParam format found in G1MG sections
 //  Category: Game File
 // File Mask: 
 //  ID Bytes:
 //   History:
-//  1.1 2020-04-30       Raytwo: Fixed the types and renamed unknown1
 //  1.0 2019-11-06  HealingBrew: Created the file
 //------------------------------------------------
 
@@ -18,39 +16,39 @@
 #define G1M_GEOMETRY_SHADERPARAM
 
 typedef enum <ushort> G1MGEOMETRYSHADERPARAMBUFFERTYPE {
-    ShaderParamBufferType_Float32 = 1,
-    ShaderParamBufferType_Vector2 = 2,
-    ShaderParamBufferType_Vector3 = 3,
-    ShaderParamBufferType_Vector4 = 4,
-    ShaderParamBufferType_Int32   = 5
+    ShaderParamBufferType_Float32 = 0x1,
+    ShaderParamBufferType_Vec2 = 0x2,
+    ShaderParamBufferType_Vec3 = 0x3,
+    ShaderParamBufferType_Vec4 = 0x4,
+    ShaderParamBufferType_Int32 = 0x5
 } G1MGeometryShaderParamBufferType;
 
 typedef struct G1MGEOMETRYSHADERPARAM {
     local int pos = FTell();
     int size<name="Size">;
-    int unknown1<name="Padded name length">;
-    int unknown2<name="Unknown 2">;
-    G1MGeometryShaderParamBufferType buffer_type<name="Parameter Type">;
-    short buffer_count<name="Parameter Count">;
+    int unknown1<name="Null terminated string name padded size">;
+    int unknown2<name="Reserved">;
+    G1MGeometryShaderParamBufferType buffer_type<name="Buffer Type">;
+    short buffer_count<name="Buffer Count">;    
     string param_name<name="Name">;
     G1Helper_AlignBytes(4);
     local int header_size = FTell() - pos;
     switch(buffer_type)
     {
         case ShaderParamBufferType_Float32:
-            float data[buffer_count]<name="Params">;
+            float data[buffer_count]<name="Data">;
             break;
-        case ShaderParamBufferType_Vector2:
-            Vector2 data[buffer_count]<name="Params">; 
+        case ShaderParamBufferType_Vec2:
+            Vector2 data[buffer_count]<name="Data">;
             break;
-        case ShaderParamBufferType_Vector3:
-            Vector3 data[buffer_count]<name="Params">;
+        case ShaderParamBufferType_Vec3:
+            Vector3 data[buffer_count]<name="Data">;
             break;
-        case ShaderParamBufferType_Vector4:
-            Vector4 data[buffer_count]<name="Params">;
+        case ShaderParamBufferType_Vec4:
+            Vector4 data[buffer_count]<name="Data">;
             break;
         case ShaderParamBufferType_Int32:
-            int data[buffer_count]<name="Params">;
+            int data[buffer_count]<name="Data">;
             break;
         default:
             if(header.size > 0xC) {

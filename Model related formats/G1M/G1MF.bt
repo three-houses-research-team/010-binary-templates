@@ -9,7 +9,6 @@
 // File Mask: 
 //  ID Bytes: 46 4D 31 47
 //   History:
-//   1.2      2020-04-30       Raytwo: Found the significance of all values related to G1MG
 //   1.1      2020-01-18  HealingBrew: Updated with logic from Ryza.
 //   1.0      2019-11-06  HealingBrew: Created the file
 //------------------------------------------------
@@ -22,68 +21,69 @@
 #endif // G1M_SHAREDSTRUCTURES
 
 typedef struct G1MFORMAT20 {
-    int unknown0<name="Boneset count">; // 0
-    int total_bone_count<name="Total bone count">; // 4, multiplied with unknown 2
-    int g1ms_section_count<name="G1MS section count">; // 8, multiply with 0x1F
-    int unknown3<name="Total matrices count">; // C, subtract 1, multiply with 0x2, add 5
-    int unknown4<name="Socket count">; // 10, subtract 1
-    int unknown5<name="Materials count">; // 14, oh god
-    int unknown6<name="Shader set count">; // 18, what am i doing
-    int unknown7<name="Total shader count">; // 1C
-    int unknown8<name="Shader buffer count?">; // 20
-    int unknown9<name="Total shader entry size", comment="Add the size of every Shader Param together">; // 24
+    int unknown0<name="Unknown 0">; // 00
+    int total_bone_count<name="Total bone count">; // 04
+    int g1ms_section_count<name="G1MS section count">; // 08
+    int unknown3<name="Total matrices count">; // 0C
+    int unknown4<name="G1MG section 1 element count">; // 10
+    int unknown5<name="Materials count">; // 14
+    int unknown6<name="Shader params count">; // 18
+    int unknown7<name="Total shader params count">; // 1C
+    int unknown8<name="Total shader params padded string names size">; // 20
+    int unknown9<name="'Useful' shared params data (see comment)",comment="Section size - count*4 (count info) - header size (12)">; // 24
     int unknown10<name="Vertex buffer count">; // 28
     int unknown11<name="Vertex attributes count">; // 2C
-    int unknown12<name="Index buffer count">; // 30
+    int unknown12<name="Unknown C">; // 30
     int unknown13<name="Bone bind count">; // 34
     int unknown14<name="Total bone bind count">; // 38
-    int unknown15<name="Mesh count">; // 3C
-    int unknown16<name="Submesh count">; // 40
+    int unknown15<name="Index buffers count">; // 3C
+    int unknown16<name="Submeshes count">; // 40
     int unknown17<name="Total submesh count?">; // 44
-    int unknown18<name="MeshGroup count">; // 48
-    int unknown19<name="Total meshes submesh count">; // 4C
-    int unknown20<name="Total mesh indices count">; // 50
+    int unknown18<name="Mesh groups count">; // 48
+    int unknown19<name="Total mesh groups mesh count">; // 4C
+    int unknown20<name="Total mesh groups meshes' submeshes count">; // 50
     int unknown21<name="COLL entry count?">; // 54
     int unknown22<name="COLL total something count">; // 58
-    int unknown23<name="Unknown 17">; // 5C
-    int unknown24<name="Unknown 18">; // 60
-    int unknown25<name="Unknown 19">; // 64
-    int unknown26<name="Unknown 1A">; // 68
-    int unknown27<name="Unknown 1B">; // 6C
-    int unknown28<name="Unknown 1C">; // 70
-    int unknown29<name="Unknown 1D">; // 74
-    int unknown30<name="Unknown 1E">; // 78
-    int unknown31<name="Bone indices count">; // 7C
+    int unknown23<name="Nuno2 entry count">; // 5C
+    int unknown24<name="Nuno2 skip1 count">; // 60
+    int unknown25<name="Nuno2 physics bones count">; // 64
+    int unknown26<name="Nuno1 count">; // 68
+    int unknown27<name="Nuno1 skip3 count">; // 6C
+    int unknown28<name="Nuno1 total control point count">; // 70
+    int unknown29<name="Nuno1 total Unknown section count">; // 74
+    int unknown30<name="Nuno1 skip1 + skip2 count">; // 78
+    int unknown31<name="Total bone global indices count",comment="Takes duplicated G1MS sections into account">; // 7C
 } G1MFormatV20;
 
 typedef struct G1MFORMAT21 {
-    int unknown0<name="Unknown 0">; // 80, 20
+    int unknown0<name="Extr section count">; // 80, 20
 } G1MFormatV21;
 
 typedef struct G1MFORMAT22 {
-    int unknown0<name="NUNV entry count?">; // 84, 21
-    int unknown1<name="NUNV unk1 total?">; // 88, 22
-    int unknown2<name="NUNV control point count">; // 8C, 23
-    int unknown3<name="NUNV unknown section count">; // 90, 24
+    int unknown0<name="Nunv1 count">; // 84, 21
+    int unknown1<name="Nunv1 skip1 count">; // 88, 22
+    int unknown2<name="Nunv1 total control point count">; // 8C, 23
+    int unknown3<name="Nunv1 total Unknown section count">; // 90, 24
 } G1MFormatV22;
 
+//NUNS
 typedef struct G1MFORMAT23 {
-    int unknown0<name="Unknown 0">; // 94, 25
+    int unknown0<name="Nuns1 count">; // 94, 25
     int unknown1<name="Unknown 1">; // 98, 26
-    int unknown2<name="Unknown 2">; // 9C, 27
+    int unknown2<name="Nuns1 total control point count">; // 9C, 27
     int unknown3<name="Unknown 3">; // A0, 28
     int unknown4<name="Unknown 4">; // A4, 29
-    int unknown5<name="Unknown 5">; // A8, 2A
-    int unknown6<name="Unknown 6">; // AC, 2B
-    int unknown7<name="Unknown 7">; // B0, 2C
-    int unknown8<name="Unknown 8">; // B4, 2D
-    int unknown9<name="Unknown 9">; // B8, 2E
-    int unknown10<name="Unknown A">; // BC, 2F
+    int unknown5<name="Nuns1 skip1 count">; // A8, 2A
+    int unknown6<name="Unknown 6 (HAIR section related)">; // AC, 2B
+    int unknown7<name="Unknown 7 (HAIR section related)">; // B0, 2C
+    int unknown8<name="Unknown 8 (HAIR section related)">; // B4, 2D
+    int unknown9<name="Unknown 9 (HAIR section related)">; // B8, 2E
+    int unknown10<name="Unknown A (HAIR section related)">; // BC, 2F
 } G1MFormatV23;
 
-// NUNO
+// SOFT related
 typedef struct G1MFORMAT24 {
-    int unknown0<name="Unknown 0">; // C0, 30
+    int unknown0<name="Soft entry count">; // C0, 30
     int unknown1<name="Unknown 1">; // C4, 31
     int unknown2<name="Unknown 2">; // C8, 32
     int unknown3<name="Unknown 3">; // CC, 33
@@ -92,11 +92,11 @@ typedef struct G1MFORMAT24 {
     int unknown6<name="Unknown 6">; // D8, 36
     int unknown7<name="Unknown 7">; // DC, 37
     int unknown8<name="Unknown 8">; // E0, 38
-    int unknown9<name="Unknown 9">; // E4, 39
-    int unknown10<name="NUNO entry count">; // E8, 3A
-    int unknown11<name="NUNO control points total count">; // EC, 3B
-    int unknown12<name="NUNO unknown section total count">; // F0, 3C
-    int unknown13<name="Unknown D">; // F4, 3E
+    int unknown9<name="Nuno3 count", comment="See Eddie's head for that section">; // E4, 39
+    int unknown10<name="Nuno3 skip1 count">; // E8, 3A
+    int unknown11<name="Nuno3 total control point count">; // EC, 3B
+    int unknown12<name="Nuno3 total Unknown section count">; // F0, 3C
+    int unknown13<name="Nuno3 skip2 count">; // F4, 3E
 } G1MFormatV24;
 
 // SOFT related, it seems
@@ -110,6 +110,7 @@ typedef struct G1MFORMAT26 {
     int unknown1<name="Unknown 1">; // 104, 42
 } G1MFormatV26;
 
+//NUNO4
 typedef struct G1MFORMAT27 {
     int unknown0<name="Unknown 0">; // 108, 43
     int unknown1<name="Unknown 1">; // 10C, 44
@@ -150,11 +151,11 @@ typedef struct G1MFORMAT {
     }
     
     if(version >= 23) { // 0xC0 bytes total
-        G1MFormatV23 version23<name="V23">;
+        G1MFormatV23 version23<name="NUNS/HAIR">;
     }
     
     if(version >= 24) { // 0xF8 bytes total
-        G1MFormatV24 version24<name="SOFT?">;
+        G1MFormatV24 version24<name="SOFT/NUNO3">;
     }
     
     if(version >= 25) { // 0x100 bytes total
@@ -166,7 +167,7 @@ typedef struct G1MFORMAT {
     }
     
     if(version >= 27) { // 0x11C bytes total
-        G1MFormatV27 version27<name="V27">;
+        G1MFormatV27 version27<name="NUNO4">;
     }
     
     if(version >= 28) { // 0x120 bytes total

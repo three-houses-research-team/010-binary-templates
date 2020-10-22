@@ -41,6 +41,7 @@ LittleEndian();
 #include "G1M/G1MG.bt"
 #include "G1M/NUNO.bt"
 #include "G1M/NUNV.bt"
+#include "G1M/NUNS.bt"
 #include "G1M/EXTR.bt"
 
 //NUNV (Hair,) COLL (Collision)
@@ -68,6 +69,9 @@ typedef struct G1MSUBSECTION {
             break;
         case "VNUN":
             G1MNunvSection date<name="Nunv data">;
+            break;
+        case "SNUN":
+            G1MNunsSection date<name="Nuns data">;
             break;
         case "RTXE":
             G1MExtraSet data<name="Extra">;
