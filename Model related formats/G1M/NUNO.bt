@@ -88,7 +88,7 @@ typedef struct {
     uint32 skip2;
     uint32 skip3;
     uint32 skip4;
-    if(version<32)
+    if(version<30)
     {
         FSkip(0xA8); //Unknown
         if(version>=25)
