@@ -44,8 +44,6 @@ LittleEndian();
 #include "G1M/NUNS.bt"
 #include "G1M/EXTR.bt"
 
-//NUNV (Hair,) COLL (Collision)
-
 typedef struct G1MSUBSECTION {
     local int32 pos = FTell();
     GResourceSectionHeader header<name="Section Header", read=GetSectionName>;
