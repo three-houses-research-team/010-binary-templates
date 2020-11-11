@@ -67,12 +67,14 @@ typedef struct {
 
 
 typedef struct {
+    local int version = G1Helper_GetVersionA(header.version);
     uint32 parentBoneID<name="Parent Bone ID">;
     uint32 unk1;
     uint32 physicsBoneCount;
     uint32 skip1;
     FSkip(0x40);
-    //Skip 12 if version high ? To be confirmed
+    if(version >= 29)
+        FSkip(0xC);
     nuno2BoneSection physicsBones[physicsBoneCount];
     FSkip(skip1 * 4); 
 
