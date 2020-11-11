@@ -130,13 +130,16 @@ typedef struct G1MFORMAT29 {
     int unknown0<name="Unknown 0 (SOFT section related)", comment="See DOA6">; // 120, 49
 } G1MFormatV29;
 
-typedef struct G1MFORMAT31 {
+typedef struct G1MFORMAT30 {
     int unknown0<name="Unknown 0">; // 124, 50
-    int unknown1<name="Unknown 1">; // 128, 51
-    int unknown2<name="Unknown 2">; // 12C, 52
-    int unknown3<name="Nuno3 offset count">; // 130, 53
-    int unknown4<name="Unknown 4">; // 134, 54
-    int unknown5<name="Nuno3 skip4 count">; // 138, 55
+} G1MFormatV30;
+
+typedef struct G1MFORMAT31 {
+    int unknown0<name="Unknown 0">; // 128, 51
+    int unknown1<name="Unknown 1">; // 12C, 52
+    int unknown2<name="Nuno3 offset count">; // 130, 53
+    int unknown3<name="Unknown 3">; // 134, 54
+    int unknown4<name="Nuno3 skip4 count">; // 138, 55
 } G1MFormatV31;
 
 typedef struct G1MFORMAT33 {
@@ -211,6 +214,10 @@ typedef struct G1MFORMAT {
     
     if(version >= 29) { // 0x124 bytes total
         G1MFormatV29 version29<name="V29">;
+    }
+
+    if(version >= 30) { // 0x128 bytes total
+        G1MFormatV30 version30<name="V30">;
     }
 
     if(version >= 31) { // 0x13C bytes total
