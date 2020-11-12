@@ -3,12 +3,13 @@
 //
 //      File: NUNO.bt
 //   Authors: Raytwo, Joschka
-//   Version: 1.2
+//   Version: 1.3
 //   Purpose: 
 //  Category: 
 // File Mask: 
 //  ID Bytes: 
 //   History:
+//  1.3 2020-11-12  Joschka : NUNO4
 //  1.2 2020-02-25  Joschka : Updated with more accurate structure
 //  1.1 2020-01-01  Joschka : Changed structures, added 0301 and 0302 entries
 //  1.0 2019-09-09  Raytwo: Created the file
@@ -25,7 +26,7 @@ typedef struct CONTROLPOINT {
         float Y;
         float Z;
         float W;
-    }ControlPoint<name="ControlPoint">;
+}ControlPoint<name="ControlPoint">;
 
 typedef struct INFLUENCE {
         int P1;
@@ -34,7 +35,7 @@ typedef struct INFLUENCE {
         int P4;
         float P5;
         float P6;
-    }Influence<name="Influence">;
+}Influence<name="Influence">;
 
 typedef struct NUNO2BONESECTION {
     uint16 boneIndex;
@@ -44,9 +45,31 @@ typedef struct NUNO2BONESECTION {
     uint32 padding;
 }nuno2BoneSection<name="nuno2Bone", optimize=false>;
 
+typedef struct NUNO4VBoneInfo {
+    uint32 id;    
+    uint32 unk0;
+    uint32 unk1;
+    uint32 clonedID;
+}nuno4VirtualBoneInfo<name="nuno4VBoneInfo", optimize=false>;
+
+typedef struct NUNO4ROTMATRIX {
+    float rotationMatrix[9];
+}nuno4RotMatrix<name="nuno4RotMatrix", optimize=false>;
+
+typedef struct NUNO4BONE {
+    Vector4 coords;
+    uint32 chainID;
+    float chainPercentage;
+    float offsetFromPrevious;
+}nuno4Bone<name="nuno4Bone", optimize=false>;
+
+typedef struct NUNO4MAP {
+    uint32 id;
+    uint32 boneID;
+}nuno4Map<name="nuno4Map", optimize=false>;
+
 typedef struct UNKSECTION {
-        
-    }UnkSection<name="Unknown Section",size=0x30>;
+}UnkSection<name="Unknown Section",size=0x30>;
 
 typedef struct {
     local int version = G1Helper_GetVersionA(header.version);
@@ -113,9 +136,45 @@ typedef struct {
 
 
 typedef struct {
+    local int version = G1Helper_GetVersionA(header.version);
     uint32 parentBoneID<name="Parent Bone ID">;
-    uint32 physicsBoneCount;
+    uint32 totalBoneEntries<name="Total bone entries",comment="physBCount + virtBCount, check 4fd9d728 from HW2">;
+    uint32 rotMatrixCount; //number of 36 bytes chunks
     uint32 skip1;
+    uint32 physicsBoneCount;
+    
+    if(version >= 32)
+    {
+        uint32 virtualBoneCount;
+        uint32 unk; //something weird going on with that index, check Yaonamihime
+        uint32 reserved[3];
+        uint32 offset;
+        FSkip(offset-4);
+        uint32 unk2; //May be included with the offset above)
+        if(virtualBoneCount)
+        {
+            uint32 unk3;
+            uint32 unk4;
+        }
+    }
+    else
+    {
+        FSkip(0x44);
+    }
+    
+    nuno4RotMatrix rotationMatrices[rotMatrixCount];
+    nuno4Bone bone[totalBoneEntries];
+    FSkip(skip1 * 4);
+    nuno4Map maps[physicsBoneCount];
+
+    if(version >= 32)
+    {
+        nuno4VirtualBoneInfo virtualBonesInfo[virtualBoneCount];
+    }
+
+    
+    
+    
 } nunoentry_00030004<name="Entry (0x00030004)", optimize=false>;
 
 typedef struct G1MNUNOSECTION {

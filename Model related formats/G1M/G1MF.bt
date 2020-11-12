@@ -3,12 +3,13 @@
 //
 //      File: G1MF.bt
 //   Authors: HealingBrew, Raywto, Joschka
-//   Version: 1.3
+//   Version: 1.5
 //   Purpose: Outlines G1MF format found in G1M files
 //  Category: Game File
 // File Mask: 
 //  ID Bytes: 46 4D 31 47
 //   History:
+//   1.5      2020-11-12  Joschka : NUNO4 info
 //   1.4      2020-11-11  Joschka, Raywto : Updated with new info
 //   1.3      2020-10-22  Joschka : Added more info
 //   1.2      2020-04-30  Raytwo: Found the significance of all values related to G1MG
@@ -115,11 +116,11 @@ typedef struct G1MFORMAT26 {
 
 //NUNO4
 typedef struct G1MFORMAT27 {
-    int unknown0<name="Unknown 0">; // 108, 43
-    int unknown1<name="Unknown 1">; // 10C, 44
-    int unknown2<name="Unknown 2">; // 110, 45
-    int unknown3<name="Unknown 3">; // 114, 46
-    int unknown4<name="Unknown 4">; // 118, 47
+    int unknown0<name="Nuno4 count">; // 108, 43
+    int unknown1<name="Nuno4 total bone count",comment="(check AoC helmet)">; // 10C, 44
+    int unknown2<name="Nuno4 chain count">; // 110, 45
+    int unknown3<name="Nuno4 skip 1 count">; // 114, 46
+    int unknown4<name="Nuno4 physbone count">; // 118, 47
 } G1MFormatV27;
 
 typedef struct G1MFORMAT28 {
@@ -138,13 +139,13 @@ typedef struct G1MFORMAT31 {
     int unknown0<name="Unknown 0">; // 128, 51
     int unknown1<name="Unknown 1">; // 12C, 52
     int unknown2<name="Nuno3 offset count">; // 130, 53
-    int unknown3<name="Unknown 3">; // 134, 54
+    int unknown3<name="Nuno4 offset count">; // 134, 54
     int unknown4<name="Nuno3 skip4 count">; // 138, 55
 } G1MFormatV31;
 
 typedef struct G1MFORMAT33 {
-    int unknown0<name="Unknown 0">; // 13C, 57
-    int unknown1<name="Unknown 1">; // 140, 58
+    int unknown0<name="Nuno4 vBones count">; // 13C, 57
+    int unknown1<name="Nuno4 vBones section size">; // 140, 58
     int unknown2<name="Unknown 2">; // 144, 59
     int unknown3<name="Unknown 3">; // 148, 60
     int unknown4<name="Unknown 4">; // 14C, 61
