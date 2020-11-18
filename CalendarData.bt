@@ -7,6 +7,7 @@
 //   Purpose: Mapping of fixed_calendar.bin.
 //   History
 //   0.80    2020-08-14  NellsRelo - Start
+//   0.81    2020-11-18  [FF7] Sephiroth - Added tournament data to UnknownData5 / Unknown30Byte
 //------------------------------------------------
 #include "3H_Enums.bt";
 #include "3H_CalendarEnums.bt";
@@ -175,27 +176,27 @@ struct UnknownData4 {
 
 struct Unknown30Byte {
     short padding<bgcolor=cBlue>;
-    short unk1;
-    short unk2;
-    short unk3;
-    short unk4;
-    short unk5;
-    short unk6;
-    byte unk7;
-    byte unk8;
-    byte unk9;
-    byte unk10;
-    byte unk11;
-    byte unk12;
-    byte unk13;
-    byte unk14;
-    byte unk15;
-    byte unk16;
-    byte unk17;
-    byte unk18;
-    byte unk19;
-    byte unk20;
-    byte unk21;
+    short unk1<name="Prize Item", comment="put a comment here">;
+    short unk2<name="Gold reward #1">;
+    short unk3<name="Gold reward #2">;
+    short unk4<name="Gold reward #3">;
+    short unk5<name="Gold reward #4">;
+    short unk6<name="Gold reward #5">;
+    byte unk7<name="Player Magic?">;
+    byte unk8<name="Player Weapon">;
+    byte unk9<name="Heal amount">;
+    byte unk10<name="Displayed Recommended Level">;
+    byte unk11<name="Displayed tournament info">;
+    ubyte unk12<bgcolor=cYellow,name="Opponent 1", comment="put a comment here">;
+    ubyte unk13<bgcolor=cYellow,name="Opponent 2", comment="put a comment here">;
+    ubyte unk14<bgcolor=cYellow,name="Opponent 3", comment="put a comment here">;
+    ubyte unk15<bgcolor=cYellow,name="Opponent 4", comment="put a comment here">;
+    ubyte unk16<bgcolor=cYellow,name="Opponent 5", comment="put a comment here">;
+    byte unk17<name="Opponent 1 Level", comment="put a comment here">;
+    byte unk18<name="Opponent 2 Level", comment="put a comment here">;
+    byte unk19<name="Opponent 3 Level", comment="put a comment here">;
+    byte unk20<name="Opponent 4 Level", comment="put a comment here">;
+    byte unk21<name="Opponent 5 Level", comment="put a comment here">;
     byte padding<bgcolor=cBlue>;
 };
 
