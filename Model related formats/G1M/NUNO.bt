@@ -95,9 +95,11 @@ typedef struct {
     uint32 unk1;
     uint32 physicsBoneCount;
     uint32 skip1;
-    FSkip(0x40);
-    if(version >= 29)
-        FSkip(0xC);
+    float paramSet1[9];
+    uint32 unk<format=hex>;
+    float paramSet2[6];
+    if(version>=29)
+        float paramSet3[3];
     nuno2BoneSection physicsBones[physicsBoneCount];
     FSkip(skip1 * 4); 
 
