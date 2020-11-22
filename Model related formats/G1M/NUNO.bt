@@ -52,6 +52,14 @@ typedef struct NUNO4VBoneInfo {
     uint32 clonedID;
 }nuno4VirtualBoneInfo<name="nuno4VBoneInfo", optimize=false>;
 
+typedef struct NUNO4PARAMSET {
+    float param1;    
+    uint32 unk0;
+    float params2[5];
+    uint32 unk1;
+    float params3[9];
+}nuno4ParamSet<name="nuno4ParamSet", optimize=false>;
+
 typedef struct NUNO4ROTMATRIX {
     float rotationMatrix[9];
 }nuno4RotMatrix<name="nuno4RotMatrix", optimize=false>;
@@ -161,7 +169,7 @@ typedef struct {
     }
     else
     {
-        FSkip(0x44);
+        nuno4ParamSet params;        
     }
     
     nuno4RotMatrix rotationMatrices[rotMatrixCount];
