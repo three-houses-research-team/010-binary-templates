@@ -491,10 +491,10 @@ struct FILE {
                     byte CAAvoid2<name="Avoid 2", comment="Always the same as Avoid">;
                     CAEffect CAEffectdata<name="Effect">;
                     ClassName CARequiredClass<name="Required Class">;
+                    byte Unk;
                     ubyte CADurCost<name="Durability Cost">;
                     ubyte CAMaxRange<name="Maximum Range">;
                     ubyte CAMinRange<name="Minimum Range">;
-                    byte Unk;
                     byte Unk;
                     struct CAEffectivenessBits{
                         ubyte bit0 : 1<name="Infantry">;
