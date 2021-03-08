@@ -1,0 +1,70 @@
+// For KTSR sections with magic BD 88 8C 36
+
+LittleEndian();
+
+uint32 type_id <name="Type ID", bgcolor=cRed>;
+uint32 section_size <name="Section Size", bgcolor=cRed>;
+uint32 link_id <name="Link ID", bgcolor=cRed>;
+uint32 x <bgcolor=cRed>;
+uint32 y <bgcolor=cRed>;
+uint32 z <bgcolor=cRed>;
+while(true) {
+    struct {
+        uint32 commandID<bgcolor=cGreen>;
+        struct { 
+            if (commandID == 0x00014ab5) ubyte args[0x1c];
+            else if (commandID == 0x4820efc4) {
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 AmountOfAlternatives<bgcolor=cBlue>;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+            }
+            else if (commandID == 0x000001a8) ubyte args[0xc];
+            else if (commandID == 0xb7db4b73) ubyte args[0x1c];
+            else if (commandID == 0xa5170472) {
+                uint32 unk;
+                uint32 unk;
+                uint32 unk; 
+                uint32 unk;
+                uint32 AlternativeLinkID<bgcolor=cRed>;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+                uint32 unk;
+            }
+        } args<bgcolor=cPurple>;
+    } command;
+}
