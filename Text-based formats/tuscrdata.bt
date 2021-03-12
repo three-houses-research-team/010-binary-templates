@@ -44,23 +44,22 @@ struct FILE {
         struct FIRST_TABLE_HEADER {
           uint magic <name="Magic">;
           ushort tableSize <name="Table Size">;
-          ushort unk;
+          ushort flagSize;
           ushort numOfMessages <name="Number of Messages">;
           ushort ptrSize <name="Pointer Size">;
-          ushort headerSize <name="Header Size", comment="Maybe uint">;
-          ushort unk;
-          uint unk;
-          uint unk;
+          uint tableStart <name="Header Size">;
+          byte flags[flagSize];
+          byte padding[4 - (flagSize %4)];
           struct FIRST_TABLE_TEXT_PTRS {
             uint ptr <name="Pointer">;
-            uint unk;
-            uint unk;
-            uint unk;
+            uint portrait;
+            uint voiceID;
+            uint portrait2;
             uint unk;
           } FirstTableTextPtrs [numOfMessages] <name="Text Pointers">;
         } FirstTableHeader <name="Header">;
         for (j = 0; j < FirstTableHeader.numOfMessages; j++) {
-          FSeek(tableRelativePos + FirstTableHeader.headerSize + FirstTableHeader.FirstTableTextPtrs[j].ptr);
+          FSeek(tableRelativePos + FirstTableHeader.tableStart + FirstTableHeader.FirstTableTextPtrs[j].ptr);
           struct FIRST_TABLE_TEXT {
             char line[ReadStringLength(FTell())] <name="Value">;
           } FirstTableText <name="Text">;
@@ -74,15 +73,16 @@ struct FILE {
         struct SECOND_TABLE_HEADER {
           uint magic <name="Magic">;
           ushort tableSize <name="Table Size">;
-          ushort unk;
+          ushort flagSize;
           ushort numOfMessages <name="Number of Messages">;
           ushort ptrSize <name="Pointer Size">;
-          uint headerSize <name="Header Size">;
-          uint unk;
+          uint tableStart <name="Header Size">;
+          byte flags[flagSize];
+          byte padding[4 - (flagSize %4)];
           uint secondTableTextPtrs [numOfMessages] <name="Text Pointers">;
         } SecondTableHeader <name="Header">;
         for (j = 0; j < SecondTableHeader.numOfMessages; j++) {
-          FSeek(tableRelativePos + SecondTableHeader.headerSize + SecondTableHeader.secondTableTextPtrs[j]);
+          FSeek(tableRelativePos + SecondTableHeader.tableStart + SecondTableHeader.secondTableTextPtrs[j]);
           struct SECOND_TABLE_TEXT {
             char line[ReadStringLength(FTell())] <name="Value">;
           } SecondTableText <name="Text">;
