@@ -1,0 +1,259 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: scrdata.bt
+//   Authors: bqio
+//   Version: 1.0.0
+//   Purpose: 
+//  Category: Text
+// File Mask: *.bin
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+local int i;
+local int j;
+local int languageRelativePos;
+local int tableRelativePos;
+
+typedef struct {
+  uint ptr <name="Pointer">;
+  uint size <name="Size">;
+} DEFAULT_PTRS_TABLE;
+
+typedef struct {
+  uint magic <name="Magic">;
+  ushort tableSize <name="Table Size">;
+  ushort flagSize <name="Flag Size">;
+  ushort numOfMsg <name="Number of Messages">;
+  ushort ptrSize <name="Pointer Size">;
+  uint headerSize <name="Header Size">;
+  byte flags [flagSize] <name="Flags">;
+} DEFAULT_TABLE_HEADER;
+
+typedef struct {
+  uint line1 <name="Line 1">;
+  uint line2 <name="Line 2">;
+  uint line3 <name="Line 3">;
+  uint voice1 <name="Voice 1">;
+  uint voice2 <name="Voice 2">;
+  uint voice3 <name="Voice 3">;
+  uint portrait <name="Portrait">;
+  uint unk;
+} TABLE_0_PTRS_TABLE;
+
+typedef struct {
+  uint line1 <name="Line 1">;
+  uint line2 <name="Line 2">;
+  uint line3 <name="Line 3">;
+  uint line4 <name="Line 4">;
+  uint line5 <name="Line 5">;
+  uint line6 <name="Line 6">;
+  uint line7 <name="Line 7">;
+  uint line8 <name="Line 8">;
+} TABLE_1_PTRS_TABLE;
+
+typedef struct {
+  uint line1 <name="Line 1">;
+  uint line2 <name="Line 2">;
+  uint line3 <name="Line 3">;
+  uint line4 <name="Line 4">;
+  uint line5 <name="Line 5">;
+  uint line6 <name="Line 6">;
+  uint line7 <name="Line 7">;
+  uint line8 <name="Line 8">;
+  uint unk;
+  uint unk;
+  uint unk;
+  uint unk;
+} TABLE_2_PTRS_TABLE;
+
+typedef struct {
+  uint line1 <name="Line 1">;
+  uint line2 <name="Line 2">;
+  uint unk;
+  uint unk;
+  uint unk;
+} TABLE_3_PTRS_TABLE;
+
+typedef struct {
+  uint line <name="Line">;
+  uint unk;
+  uint unk;
+  uint unk;
+} TABLE_4_PTRS_TABLE;
+
+typedef struct {
+  uint line <name="Line">;
+  uint unk;
+  uint unk;
+  uint unk;
+} TABLE_5_PTRS_TABLE;
+
+typedef struct {
+  uint line1 <name="Line 1">;
+  uint line2 <name="Line 2">;
+  uint line3 <name="Line 3">;
+  uint line4 <name="Line 4">;
+  uint line5 <name="Line 5">;
+  uint line6 <name="Line 6">;
+  uint line7 <name="Line 7">;
+} TABLE_6_PTRS_TABLE;
+
+typedef struct {
+  uint line1 <name="Line 1">;
+  uint line2 <name="Line 2">;
+  uint line3 <name="Line 3">;
+} TABLE_7_PTRS_TABLE;
+
+typedef struct {
+  char line1 [ReadStringLength(FTell())] <name="Line 1">;
+  char line2 [ReadStringLength(FTell())] <name="Line 2">;
+  char line3 [ReadStringLength(FTell())] <name="Line 3">;
+} TABLE_0_TEXT;
+
+typedef struct {
+  char line1 [ReadStringLength(FTell())] <name="Line 1">;
+  char line2 [ReadStringLength(FTell())] <name="Line 2">;
+  char line3 [ReadStringLength(FTell())] <name="Line 3">;
+  char line4 [ReadStringLength(FTell())] <name="Line 4">;
+  char line5 [ReadStringLength(FTell())] <name="Line 5">;
+  char line6 [ReadStringLength(FTell())] <name="Line 6">;
+  char line7 [ReadStringLength(FTell())] <name="Line 7">;
+  char line8 [ReadStringLength(FTell())] <name="Line 8">;
+} TABLE_1_TEXT;
+
+typedef struct {
+  char line1 [ReadStringLength(FTell())] <name="Line 1">;
+  char line2 [ReadStringLength(FTell())] <name="Line 2">;
+  char line3 [ReadStringLength(FTell())] <name="Line 3">;
+  char line4 [ReadStringLength(FTell())] <name="Line 4">;
+  char line5 [ReadStringLength(FTell())] <name="Line 5">;
+  char line6 [ReadStringLength(FTell())] <name="Line 6">;
+  char line7 [ReadStringLength(FTell())] <name="Line 7">;
+  char line8 [ReadStringLength(FTell())] <name="Line 8">;
+} TABLE_2_TEXT;
+
+typedef struct {
+  char line1 [ReadStringLength(FTell())] <name="Line 1">;
+  char line2 [ReadStringLength(FTell())] <name="Line 2">;
+} TABLE_3_TEXT;
+
+typedef struct {
+  char line [ReadStringLength(FTell())] <name="Line">;
+} TABLE_4_TEXT;
+
+typedef struct {
+  char line1 [ReadStringLength(FTell())] <name="Line 1">;
+  char line2 [ReadStringLength(FTell())] <name="Line 2">;
+  char line3 [ReadStringLength(FTell())] <name="Line 3">;
+  char line4 [ReadStringLength(FTell())] <name="Line 4">;
+  char line5 [ReadStringLength(FTell())] <name="Line 5">;
+  char line6 [ReadStringLength(FTell())] <name="Line 6">;
+  char line7 [ReadStringLength(FTell())] <name="Line 7">;
+} TABLE_6_TEXT;
+
+struct FILE {
+  struct HEADER {
+    uint numOfLanguages <name="Number of Languages">;
+  } FileHeader <name="Header">;
+  DEFAULT_PTRS_TABLE LanguagePtrs [FileHeader.numOfLanguages] <name="Language Pointers">;
+  struct LANGUAGES {
+    for (i = 0; i < FileHeader.numOfLanguages; i++) {
+      FSeek(LanguagePtrs[i].ptr);
+      languageRelativePos = FTell();
+      struct LANGUAGE {
+        struct LHEADER {
+          uint numOfTables <name="Number of Tables">;
+        } LanguageHeader <name="Header">;
+        DEFAULT_PTRS_TABLE TablePtrs [LanguageHeader.numOfTables] <name="Table Pointers">;
+        struct TABLES {
+          struct TABLE0 {
+            DEFAULT_TABLE_HEADER Table0Header <name="Header">;
+            TABLE_0_PTRS_TABLE Table0Ptrs [Table0Header.numOfMsg] <name="Text Pointers">;
+            struct TABLE0TEXT {
+              for (j = 0; j < Table0Header.numOfMsg; j++) {
+                TABLE_0_TEXT Table0Text <name="Lines">;
+              }
+            } Table0Text <name="Text Table">;
+          } Table0 <name="Table 0">;
+          tableRelativePos = languageRelativePos + TablePtrs[1].ptr;
+          FSeek(tableRelativePos);
+          struct TABLE1 {
+            DEFAULT_TABLE_HEADER Table1Header <name="Header">;
+            TABLE_1_PTRS_TABLE Table1Ptrs [Table1Header.numOfMsg] <name="Text Pointers">;
+            struct TABLE1TEXT {
+              for (j = 0; j < Table1Header.numOfMsg; j++) {
+                TABLE_1_TEXT Table1Text <name="Lines">;
+              }
+            } Table1Text <name="Text Table">;
+          } Table1 <name="Table 1">;
+          tableRelativePos = languageRelativePos + TablePtrs[2].ptr;
+          FSeek(tableRelativePos);
+          struct TABLE2 {
+            DEFAULT_TABLE_HEADER Table2Header <name="Header">;
+            TABLE_2_PTRS_TABLE Table2Ptrs [Table2Header.numOfMsg] <name="Text Pointers">;
+            struct TABLE2TEXT {
+              for (j = 0; j < Table2Header.numOfMsg; j++) {
+                TABLE_2_TEXT Table2Text <name="Lines">;
+              }
+            } Table2Text <name="Text Table">;
+          } Table2 <name="Table 2">;
+          tableRelativePos = languageRelativePos + TablePtrs[3].ptr;
+          FSeek(tableRelativePos);
+          struct TABLE3 {
+            DEFAULT_TABLE_HEADER Table3Header <name="Header">;
+            FSeek(FTell() + 3); // flags pad
+            TABLE_3_PTRS_TABLE Table3Ptrs [Table3Header.numOfMsg] <name="Text Pointers">;
+            struct TABLE3TEXT {
+              for (j = 0; j < Table3Header.numOfMsg; j++) {
+                TABLE_3_TEXT Table3Text <name="Lines">;
+              }
+            } Table3Text <name="Text Table">;
+          } Table3 <name="Table 3">;
+          tableRelativePos = languageRelativePos + TablePtrs[4].ptr;
+          FSeek(tableRelativePos);
+          struct TABLE4 {
+            DEFAULT_TABLE_HEADER Table4Header <name="Header">;
+            TABLE_4_PTRS_TABLE Table4Ptrs [Table4Header.numOfMsg] <name="Text Pointers">;
+            struct TABLE4TEXT {
+              for (j = 0; j < Table4Header.numOfMsg; j++) {
+                TABLE_4_TEXT Table4Text <name="Lines">;
+              }
+            } Table4Text <name="Text Table">;
+          } Table4 <name="Table 4">;
+          tableRelativePos = languageRelativePos + TablePtrs[5].ptr;
+          FSeek(tableRelativePos);
+          struct TABLE5 {
+            DEFAULT_TABLE_HEADER Table5Header <name="Header">;
+            TABLE_5_PTRS_TABLE Table5Ptrs [Table5Header.numOfMsg] <name="Text Pointers">;
+            struct TABLE5TEXT {
+              for (j = 0; j < Table5Header.numOfMsg; j++) {
+                TABLE_4_TEXT Table5Text <name="Lines">;
+              }
+            } Table5Text <name="Text Table">;
+          } Table5 <name="Table 5">;
+          tableRelativePos = languageRelativePos + TablePtrs[6].ptr;
+          FSeek(tableRelativePos);
+          struct TABLE6 {
+            DEFAULT_TABLE_HEADER Table6Header <name="Header">;
+            FSeek(FTell()+1); // flags pad
+            TABLE_6_PTRS_TABLE Table6Ptrs [Table6Header.numOfMsg] <name="Text Pointers">;
+            struct TABLE6EXT {
+              for (j = 0; j < Table6Header.numOfMsg; j++) {
+                TABLE_6_TEXT Table6Text <name="Lines">;
+              }
+            } Table6Text <name="Text Table">;
+          } Table6 <name="Table 6">;
+          tableRelativePos = languageRelativePos + TablePtrs[7].ptr;
+          FSeek(tableRelativePos);
+          struct TABLE7 { // empty table
+            DEFAULT_TABLE_HEADER Table7Header <name="Header">;
+            FSeek(FTell()+1); // flags pad
+            TABLE_7_PTRS_TABLE Table7Ptrs [Table7Header.numOfMsg] <name="Text Pointers">;
+          } Table7 <name="Table 7">;
+        } Tables <name="Tables">;
+      } Language <name="Language">;
+    }
+  } Languages <name="Languages">;
+} File <name="File">;
