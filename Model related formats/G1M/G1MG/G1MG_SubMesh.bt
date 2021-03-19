@@ -34,8 +34,8 @@ typedef struct G1MGEOMETRYSUBMESH {
     G1MGeometrySubMeshFaceType face_type<name="Face Type">;
     int vertex_offset<name="Vertex Offset">;
     int vertex_count<name="Vertex Count">;
-    int face_offset<name="Face Offset">;
-    int face_count<name="Face Count">;
+    int face_offset<name="Index Offset">;
+    int face_count<name="Index Count">;
 } G1MGeometrySubMesh;
 
 #endif // G1M_GEOMETRY_SUBMESH
