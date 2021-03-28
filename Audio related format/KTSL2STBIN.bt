@@ -68,6 +68,8 @@ struct KTSL2STBIN {
 				byte streamCount<name="Stream count">;
 				byte coupledCount<name="Coupled count">;
 				byte channelMappingFamily[channelCount]<name="Channel mapping family">;
+                FSeek(start + frameDescAddress);
+                short frameDescriptor[packetCount]<name="Frame descriptor">;
 				//byte padding2[0x70 - FTell() % 0x70]<name="Big tiddy padding">;
 				FSeek(start + audioOffset);
 				struct AUDIO {
