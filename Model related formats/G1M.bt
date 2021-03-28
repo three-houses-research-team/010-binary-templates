@@ -43,6 +43,7 @@ LittleEndian();
 #include "G1M/NUNV.bt"
 #include "G1M/NUNS.bt"
 #include "G1M/EXTR.bt"
+#include "G1M/SOFT.bt"
 
 typedef struct G1MSUBSECTION {
     local int32 pos = FTell();
@@ -73,6 +74,9 @@ typedef struct G1MSUBSECTION {
             break;
         case "RTXE":
             G1MExtraSet data<name="Extra">;
+            break;
+        case "TFOS":
+            G1MSoftSection data<name="Soft">;
             break;
         default:
             Printf("*NOTE (%s) Offset 0x%X: Unhandled G1 Resource Section %s\n", GetFileName(), pos, header.magic);

@@ -10,6 +10,7 @@
 //   ID Bytes: 4B 54 53 52 // KTSR
 //   History
 //   1.0.0    2019-11-12  Raytwo: 	  Made the template
+//   1.1.0    2021-03-28  Raytwo: 	  Rename "Dunno" to "Frame descriptor section address"
 //------------------------------------------------
 
 
@@ -58,9 +59,9 @@ struct KTSL2STBIN {
 				uint32 padding<name="Moar padding">;
 				uint32 audioOffset<name="Audio section address", format=hex>;
 				uint32 dataSize<name="Audio section size", format=hex>;
-				uint32 dunno<name="Dunno", format=decimal>;
+				uint32 frameDescAddress<name="Frame descriptor section address", format=hex>;
 				uint32 packetCount<name="Frame count">;
-				short packetSize<name="Frame size", format=hex>;
+				short packetSize<name="Frame size", comment="If this is 0, the file uses variable frame size", format=hex>;
 				short someConstant<name="Some constant", comment="Always 0x3C0 so far">;
 				uint32 inputSampleRate<name="Sample rate (original)", comment="The frequency the original file was using", format=decimal>;
 				short preSkip<name="Skip", comment="Initial delay in samples">;
