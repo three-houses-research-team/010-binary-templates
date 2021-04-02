@@ -1,0 +1,33 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: TextS (ENG_U: 10754 ~ 10846)
+//   Authors: kolakcc
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+struct TextSHeader {
+    uint unk;
+    uint unk;
+    uint unk;
+    uint textPointerLength<bgcolor=cPurple>;
+    uint count<bgcolor=cRed>;
+    uint unk;
+    uint unk;
+    uint unk;
+    uint textpointers[count+1];
+    ubyte padding[textPointerLength - (count+1)*4]<bgcolor=cGreen>;
+} header;
+
+local int i = 0;
+for (i = 0; i < header.count; i++) {
+    FSeek(sizeof(header) + header.textpointers[i]);
+    struct Line { 
+        string text; 
+    } line; 
+}
