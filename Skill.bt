@@ -1,0 +1,116 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: CrestData.bin / 15.bin
+//   Authors: DeathChaos
+//   Version: 1.00
+//   Purpose: Three Houses character file mapping
+//   History
+//   1.00    2019-09-11  DeathChaos - started this
+//------------------------------------------------
+
+//---------------------------------------------
+// Includes
+//---------------------------------------------
+#include "3H_Enums.bt"
+#include "3H_SkillEnums.bt"
+
+LittleEndian();
+local int i<hidden=true>;
+local int StringStart<hidden=true> = 0xFAC;
+
+struct File{
+	struct SectionPointers{
+		uint32 NumOfSections;
+		uint32 AbilityListPointer<bgcolor=cDkPurple>;
+		uint32 AbilityListTotalSize<bgcolor=cDkPurple>;
+		uint32 CrestDataPointer<bgcolor=cDkGreen>;
+		uint32 CrestDataTotalSize<bgcolor=cDkGreen>;
+	}sectionpointers<name="Section Pointers">;
+
+	FSeek(sectionpointers.AbilityListPointer);
+	struct AbilityListStructure{
+		uint32 AbilityList_Magic<bgcolor=cRed>;
+		uint32 numAbilityList<bgcolor=cRed>;
+		uint32 SizeOfAbilityBlock<bgcolor=cRed>;
+		struct AbilityListHeaderPadding {
+			byte Padding[0x34];
+		}AbilityListheaderpadding<name="Padding", bgcolor=cBlue>;
+		for( i = 0; i < numAbilityList; i++ )
+		{
+			struct AbilityStruct{
+			local AbilityID NameOfAbility<hidden=true>;
+			NameOfAbility = i;
+			byte Property1Value<name="Skill Property 1 Value">;
+			byte Property2Value<name="Skill Property 2 Value">;
+			byte Property3Value<name="Skill Property 3 Value">;
+			UpgradeCategory upgrade<name="Upgrade Category", comment="Skills that replace one another when learned">;
+			ubyte SkillID<name="Skill ID", comment="Determines ability order in menus">;
+			Conditional1 Conditionalmaybe1<name="Condition 1">;
+			Conditional2 Conditionalmaybe2<name="Condition 2", comment="Usually determines Modifier 1/2 behavior">;
+			byte unk7;
+			ubyte SkillIcon<name="Skill Icon">;
+			struct unk9flag{
+                ubyte bit0 : 1<name="???">;
+                ubyte bit1 : 1<name="???">;
+                ubyte bit2 : 1<name="???">;
+                ubyte bit3 : 1<name="???">;
+                ubyte bit4 : 1<name="Learnable From Adjutant">;
+                ubyte bit5 : 1<name="Removed if Class Ability">;
+                ubyte bit6 : 1<name="???">;
+                ubyte bit7 : 1<name="???">;
+            }wepflags01<name="Flags">;
+			SkillProperty Property1<name="Skill Property 1">;
+			SkillProperty Property2<name="Skill Property 2">;
+			SkillProperty Property3<name="Skill Property 3">;
+            byte Conditionalvalue<name="Modifier 1">;
+			byte Conditionalexpression<name="Modifier 2">;
+			}abilitystruct<name="Skill List Data", read=GetAbilityName, bgcolor=cDkBlue>;
+		}
+	}abilityliststructure<name="Skill List", bgcolor=cDkBlue>;
+	
+	FSeek(sectionpointers.CrestDataPointer);
+	struct CrestDataStructure{
+		uint32 CrestData_Magic<bgcolor=cRed>;
+		uint32 numCrestData<bgcolor=cRed>;
+		uint32 SizeOfCrestDataBlock<bgcolor=cRed>;
+		struct CrestDataHeaderPadding{
+			byte Padding[0x34];
+		}crestdataheaderpadding<name="Padding", bgcolor=cBlue>;
+		struct CrestsStruct{
+			for( i = 0; i < numCrestData; i++ )
+			{
+				struct CrestData{
+					local Crests NameOfCrest<hidden=true>;
+					NameOfCrest = i;
+					uint32 BtlEfctPointer<name="Battle Effect Pointer">;
+					local string BattleEffectParticle<name="Battle Effect">;
+					BattleEffectParticle = ReadString(StringStart+BtlEfctPointer);
+					SkillProperty effect<name="Crest Effects">;
+					struct TriggerCondition{
+						ubyte bit0 : 1<name="Phys Weapon">;
+						ubyte bit1 : 1<name="Magic Attack">;
+						ubyte bit2 : 1<name="Combat Art">;
+						ubyte bit3 : 1<name="White Magic">;
+						ubyte bit4 : 4<name="Reserve">;
+					}triggercondition<name="Crest Trigger Conditions">;
+					ubyte MajorRate<name="Activation Rate as Major Crest">;
+					ubyte MinorRate<name="Activation Rate as Minor Crest">;
+					ubyte ItemRate<name="Activation Rate as NG+ Item Crest">;
+					uint16 unknown<name="Unknown">;
+					ubyte unknown<name="Unknown">;
+				}crestdata<name="Crest Data",read=ReadName>;
+			}
+		}crestsstruct<name="Crests">;
+	}crestdatastructure<bgcolor=cDkGreen,name="Crest Data Section">;
+}file<name="Skill Data">;
+
+string ReadName(CrestData &p)
+{
+return EnumToString(p.NameOfCrest);
+}
+
+string GetAbilityName(AbilityStruct &i)
+{
+    return EnumToString(i.NameOfAbility);
+}

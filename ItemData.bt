@@ -9,6 +9,7 @@
 //            1.1 - Raytwo: Added StatIncreaseType for items + typo fixf
 //------------------------------------------------
 #include "3H_WepEnums.bt"
+#include "3H_SkillEnums.bt"
 
 LittleEndian();
 local int i<hidden=true>;
@@ -66,19 +67,19 @@ struct FILE {
 				    local WeapID NameOfWeapon<hidden=true>;
 				    NameOfWeapon = i;                
                     byte UnknownByte01;
-                    byte UnknownBytes01;
-                    ubyte HPMod<name="HP Modification">; 
-                    byte UnknownBytes02[1];
-                    ExtraMagEffect MagEff<name="Magic Effect">;
-                    WeaponTypes WeaponType<name="Waepon Type">;
-                    WeaponRanks WeaponRank<name="Weapon Rank">;
+                    byte UnknownByte02;
+                    byte Property1Value<name="Skill Property 1 Value">;
+			        byte Property2Value<name="Skill Property 2 Value">;
+                    ExtraMagEffect MagEff<name="Effect">;
+                    WeaponTypes WeaponType<name="Type">;
+                    WeaponRanks WeaponRank<name="Rank">;
                     ubyte MaximumRange<name="Maximum Range">;
-                    WeaponModel ModelID<name="Weapon Model">;
-                    Crests RequiredCrest<name="Crests">;
+                    WeaponModel ModelID<name="Model">;
+                    Crests RequiredCrest<name="Crest">;
                     byte MinimumRange<name="Minimum Range">;
-                    ubyte Durability<name="Durability">;
-                    WeaponExtraEffects WepEff<name="Extra Effect">;
-                    ItemTypes ItemType<name="Item Type">;
+                    ubyte Durability<name="Durability/Uses">;
+                    Status WepEff<name="Status Effect", comment="Pairs with 'Status Effect Block'">;
+                    ItemTypes ItemType<name="Icon">;
                     struct EffectivenessBits{
                         ubyte bit0 : 1<name="Infantry">;
                         ubyte bit1 : 1<name="Armor">;
@@ -88,32 +89,23 @@ struct FILE {
                         ubyte bit5 : 1<name="Monster">;
                         ubyte bit6 : 1<name="???", comment="Unseen">;
                         ubyte bit7 : 1<name="???", comment="Unseen">;
-                    }effectivenessbits<name="Effectiveness", comment="All = Crown">;
-                    byte UnknownByte04;
+                    }effectivenessbits<name="Effectiveness Flags", comment="All = Crown">;
+                    struct Wep01Flags01{
+                        ubyte bit0 : 1<name="???">;
+                        ubyte bit1 : 1<name="???">;
+                        ubyte bit2 : 1<name="???">;
+                        ubyte bit3 : 1<name="???">;
+                        ubyte bit4 : 1<name="???">;
+                        ubyte bit5 : 1<name="???">;
+                        ubyte bit6 : 1<name="Broken Weapon">;
+                        ubyte bit7 : 1<name="Stone">;
+                    }wep01flags01<name="Additional Flags 1">;
                     byte MT<name="MT">;
                     byte Hit<name="Hit">;
                     byte Crit<name="Crit">;
                     byte WT<name="Weight">;
-                    struct WepFlags01{
-                        ubyte bit0 : 1<name="???">;
-                        ubyte bit1 : 1<name="???">;
-                        ubyte bit2 : 1<name="???">;
-                        ubyte bit3 : 1<name="???">;
-                        ubyte bit4 : 1<name="???">;
-                        ubyte bit5 : 1<name="???">;
-                        ubyte bit6 : 1<name="???">;
-                        ubyte bit7 : 1<name="???">;
-                    }wepflags01<name="Flags 01">;
-                    struct WepFlags02{
-                        ubyte bit0 : 1<name="???">;
-                        ubyte bit1 : 1<name="???">;
-                        ubyte bit2 : 1<name="???">;
-                        ubyte bit3 : 1<name="???">;
-                        ubyte bit4 : 1<name="???">;
-                        ubyte bit5 : 1<name="???">;
-                        ubyte bit6 : 1<name="???">;
-                        ubyte bit7 : 1<name="???">;
-                    }wepflags02<name="Flags 02">;
+                    SkillProperty Property1<name="Skill Property 1">;
+			        SkillProperty Property2<name="Skill Property 2">;
                     struct WepFlags03{
                         ubyte bit0 : 1<name="Magic">;
                         ubyte bit1 : 1<name="Ignores Res">;
@@ -123,7 +115,7 @@ struct FILE {
                         ubyte bit5 : 1<name="Attack Twice">;
                         ubyte bit6 : 1<name="Regalia">;
                         ubyte bit7 : 1<name="Hero Relic">;
-                    }wepflags03<name="Flags 03">;
+                    }wepflags03<name="Additional Flags 2">;
                     byte Padding<name="Padding">;
                 }Weap01Data<name="Weapon Data", read=GetWeaponModelName>;
             }
@@ -146,17 +138,19 @@ struct FILE {
                     local SpellID NameOfMagic<hidden=true>;
 					NameOfMagic = i;
                     byte UnknownByte01;
-                    byte UnknownBytes01[3];
-                    ExtraMagEffect MagEff<name="Magic Effect">;
-                    WeaponTypes WeaponType<name="Waepon Type">;
-                    WeaponRanks WeaponRank<name="Weapon Rank">;
+                    byte UnknownByte02;
+                    byte Property1Value<name="Skill Property 1 Value">;
+			        byte Property2Value<name="Skill Property 2 Value">;
+                    ExtraMagEffect MagEff<name="Effect">;
+                    WeaponTypes WeaponType<name="Type">;
+                    WeaponRanks WeaponRank<name="Rank">;
                     ubyte MaximumRange<name="Maximum Range">;
-                    WeaponModel ModelID<name="Weapon Model">;
-                    Crests RequiredCrest<name="Crests">;
+                    WeaponModel ModelID<name="Model">;
+                    Crests RequiredCrest<name="Crest">;
                     byte MinimumRange<name="Minimum Range">;
-                    ubyte Durability<name="Durability">;
-                    WeaponExtraEffects WepEff<name="Extra Effect">;
-                    ItemTypes ItemType<name="Item Type">;
+                    ubyte Durability<name="Durability/Uses">;
+                    Status WepEff<name="Status Effect", comment="Pairs with 'Status Effect Block'">;
+                    ItemTypes ItemType<name="Icon">;
                     struct EffectivenessBits02{
                         ubyte bit0 : 1<name="Infantry">;
                         ubyte bit1 : 1<name="Armor">;
@@ -166,32 +160,14 @@ struct FILE {
                         ubyte bit5 : 1<name="Monster">;
                         ubyte bit6 : 1<name="???", comment="Unseen">;
                         ubyte bit7 : 1<name="???", comment="Unseen">;
-                    }effectivenessbits02<name="Effectiveness", comment="All = Crown">;
+                    }effectivenessbits02<name="Effectiveness Flags", comment="All = Crown">;
                     byte UnknownByte04;
                     byte MT<name="MT">;
                     byte Hit<name="Hit">;
                     byte Crit<name="Crit">;
                     byte WT<name="Weight">;
-                    struct Wep02Flags01{
-                        ubyte bit0 : 1<name="???">;
-                        ubyte bit1 : 1<name="???">;
-                        ubyte bit2 : 1<name="???">;
-                        ubyte bit3 : 1<name="???">;
-                        ubyte bit4 : 1<name="???">;
-                        ubyte bit5 : 1<name="???">;
-                        ubyte bit6 : 1<name="???">;
-                        ubyte bit7 : 1<name="???">;
-                    }wep02flags01<name="Flags 01">;
-                    struct Wep02Flags02{
-                        ubyte bit0 : 1<name="???">;
-                        ubyte bit1 : 1<name="???">;
-                        ubyte bit2 : 1<name="???">;
-                        ubyte bit3 : 1<name="???">;
-                        ubyte bit4 : 1<name="???">;
-                        ubyte bit5 : 1<name="???">;
-                        ubyte bit6 : 1<name="???">;
-                        ubyte bit7 : 1<name="???">;
-                    }wep02flags02<name="Flags 02">;
+                    SkillProperty Property1<name="Skill Property 1">;
+			        SkillProperty Property2<name="Skill Property 2">;
                     struct Wep02Flags03{
                         ubyte bit0 : 1<name="Magic">;
                         ubyte bit1 : 1<name="Ignores Res">;
@@ -201,7 +177,7 @@ struct FILE {
                         ubyte bit5 : 1<name="Attack Twice">;
                         ubyte bit6 : 1<name="Silver Icon">;
                         ubyte bit7 : 1<name="Gold Icon">;
-                    }wep02flags03<name="Flags 03">;
+                    }wep02flags03<name="Additional Flags">;
                     byte Padding<name="Padding">;
                 }MagicData<name="Magic Data", read=GetMagicName>;
             }
@@ -238,16 +214,19 @@ struct FILE {
 					local GambitType NameOfGambit<hidden=true>;
 					NameOfGambit = i;
                     byte UnknownByte01;
-                    byte UnknownBytes01[4];
-                    WeaponTypes WeaponType<name="Waepon Type">;
-                    WeaponRanks WeaponRank<name="Weapon Rank">;
+                    byte UnknownByte02;
+                    byte Property1Value<name="Skill Property 1 Value">;
+			        byte Property2Value<name="Skill Property 2 Value">;
+                    ExtraMagEffect MagEff<name="Effect">;
+                    WeaponTypes WeaponType<name="Type">;
+                    WeaponRanks WeaponRank<name="Rank">;
                     ubyte MaximumRange<name="Maximum Range">;
-                    WeaponModel ModelID<name="Weapon Model">;
-                    Crests RequiredCrest<name="Crests">;
+                    WeaponModel ModelID<name="Model">;
+                    Crests RequiredCrest<name="Crest">;
                     byte MinimumRange<name="Minimum Range">;
-                    ubyte Durability<name="Durability">;
-                    WeaponExtraEffects WepEff<name="Extra Effect">;
-                    ItemTypes ItemType<name="Item Type">;
+                    ubyte Durability<name="Durability/Uses">;
+                    Status WepEff<name="Status Effect", comment="Pairs with 'Status Effect Block'">;
+                    ItemTypes ItemType<name="Icon">;
                     struct EffectivenessBits04{
                         ubyte bit0 : 1<name="Infantry">;
                         ubyte bit1 : 1<name="Armor">;
@@ -257,32 +236,14 @@ struct FILE {
                         ubyte bit5 : 1<name="Monster">;
                         ubyte bit6 : 1<name="???", comment="Unseen">;
                         ubyte bit7 : 1<name="???", comment="Unseen">;
-                    }effectivenessbits04<name="Effectiveness", comment="All = Crown">;
+                    }effectivenessbits04<name="Effectiveness Flags", comment="All = Crown">;
                     byte UnknownByte04;
                     byte MT<name="MT">;
                     byte Hit<name="Hit">;
                     byte Crit<name="Crit">;
                     byte WT<name="Weight">;
-                    struct Wep04Flags01{
-                        ubyte bit0 : 1<name="???">;
-                        ubyte bit1 : 1<name="???">;
-                        ubyte bit2 : 1<name="???">;
-                        ubyte bit3 : 1<name="???">;
-                        ubyte bit4 : 1<name="???">;
-                        ubyte bit5 : 1<name="???">;
-                        ubyte bit6 : 1<name="???">;
-                        ubyte bit7 : 1<name="???">;
-                    }wep04flags01<name="Flags 01">;
-                    struct Wep04Flags02{
-                        ubyte bit0 : 1<name="???">;
-                        ubyte bit1 : 1<name="???">;
-                        ubyte bit2 : 1<name="???">;
-                        ubyte bit3 : 1<name="???">;
-                        ubyte bit4 : 1<name="???">;
-                        ubyte bit5 : 1<name="???">;
-                        ubyte bit6 : 1<name="???">;
-                        ubyte bit7 : 1<name="???">;
-                    }wep04flags02<name="Flags 02">;
+                    SkillProperty Property1<name="Skill Property 1">;
+			        SkillProperty Property2<name="Skill Property 2">;
                     struct Wep04Flags03{
                         ubyte bit0 : 1<name="Magic">;
                         ubyte bit1 : 1<name="Ignores Res">;
@@ -292,7 +253,7 @@ struct FILE {
                         ubyte bit5 : 1<name="Attack Twice">;
                         ubyte bit6 : 1<name="Silver Icon">;
                         ubyte bit7 : 1<name="Gold Icon">;
-                    }wep04flags03<name="Flags 03">;
+                    }wep04flags03<name="Additional Flags">;
                     byte Padding<name="Padding">;
                 }GambitData<name="Gambit Data", read=GetGambitName>;
             }
@@ -329,16 +290,19 @@ struct FILE {
 					local EquipID NameOfEquipment<hidden=true>;
 					NameOfEquipment = i;            
                     byte UnknownByte01;
-                    byte UnknownBytes01[4];
-                    WeaponTypes WeaponType<name="Waepon Type">;
-                    WeaponRanks WeaponRank<name="Weapon Rank">;
+                    byte UnknownByte01;
+                    byte Property1Value<name="Skill Property 1 Value">;
+			        byte Property2Value<name="Skill Property 2 Value">;
+			        ExtraMagEffect MagEff<name="Effect">;
+                    WeaponTypes WeaponType<name="Type">;
+                    WeaponRanks WeaponRank<name="Rank">;
                     ubyte MaximumRange<name="Maximum Range">;
-                    WeaponModel ModelID<name="Weapon Model">;
-                    Crests RequiredCrest<name="Crests">;
+                    WeaponModel ModelID<name="Model">;
+                    Crests RequiredCrest<name="Crest">;
                     byte MinimumRange<name="Minimum Range">;
-                    ubyte Durability<name="Durability">;
-                    WeaponExtraEffects WepEff<name="Extra Effect">;
-                    ItemTypes ItemType<name="Item Type">;
+                    ubyte Durability<name="Durability/Uses">;
+                    Status WepEff<name="Status Effect", comment="Pairs with 'Status Effect Block'">;
+                    ItemTypes ItemType<name="Icon">;
                     struct EffectivenessBits06{
                         ubyte bit0 : 1<name="Infantry">;
                         ubyte bit1 : 1<name="Armor">;
@@ -348,32 +312,14 @@ struct FILE {
                         ubyte bit5 : 1<name="Monster">;
                         ubyte bit6 : 1<name="???", comment="Unseen">;
                         ubyte bit7 : 1<name="???", comment="Unseen">;
-                    }effectivenessbits06<name="Effectiveness", comment="All = Crown">;
+                    }effectivenessbits06<name="Effectiveness Flags", comment="All = Crown">;
                     byte UnknownByte04;
-                    byte MT<name="MT">;
-                    byte Hit<name="Hit">;
-                    byte Crit<name="Crit">;
+                    byte MT<name="Prt">;
+                    byte Hit<name="Unused">;
+                    byte Crit<name="Unused">;
                     byte WT<name="Weight">;
-                    struct EquipFlags01{
-                        ubyte bit0 : 1<name="???">;
-                        ubyte bit1 : 1<name="???">;
-                        ubyte bit2 : 1<name="???">;
-                        ubyte bit3 : 1<name="???">;
-                        ubyte bit4 : 1<name="???">;
-                        ubyte bit5 : 1<name="???">;
-                        ubyte bit6 : 1<name="???">;
-                        ubyte bit7 : 1<name="???">;
-                    }wep02flags01<name="Flags 01">;
-                    struct EquipFlags02{
-                        ubyte bit0 : 1<name="???">;
-                        ubyte bit1 : 1<name="???">;
-                        ubyte bit2 : 1<name="???">;
-                        ubyte bit3 : 1<name="???">;
-                        ubyte bit4 : 1<name="???">;
-                        ubyte bit5 : 1<name="???">;
-                        ubyte bit6 : 1<name="???">;
-                        ubyte bit7 : 1<name="???">;
-                    }wep02flags02<name="Flags 02">;
+                    SkillProperty Property1<name="Skill Property 1">;
+			        SkillProperty Property2<name="Skill Property 2">;
                     struct EquipFlags03{
                         ubyte bit0 : 1<name="Magic">;
                         ubyte bit1 : 1<name="Ignores Res">;
@@ -383,7 +329,7 @@ struct FILE {
                         ubyte bit5 : 1<name="Attack Twice">;
                         ubyte bit6 : 1<name="Silver Icon">;
                         ubyte bit7 : 1<name="Gold Icon">;
-                    }wep02flags03<name="Flags 03">;
+                    }wep02flags03<name="Additional Flags">;
                     byte Padding<name="Padding">;
                 }EquipData<name="Equipment Data", read=GetEquipmentName>;
             }
@@ -406,17 +352,19 @@ struct FILE {
 					local ItemID NameOfItem<hidden=true>;
 					NameOfItem = i;                
                     byte UnknownByte01;
-                    byte UnknownBytes01[3];
-                    byte StatIncreaseType<name="Stat increase type", comment="1 is for healing calculation, 0x15 for bonus stats">;
-                    WeaponTypes WeaponType<name="Weapon Type">;
-                    WeaponRanks WeaponRank<name="Weapon Rank">;
+                    byte UnknownByte01;
+                    byte Property1Value<name="Skill Property 1 Value">;
+			        byte Property2Value<name="Skill Property 2 Value">;
+			        ExtraMagEffect MagEff<name="Effect">;
+                    WeaponTypes WeaponType<name="Type">;
+                    WeaponRanks WeaponRank<name="Rank">;
                     ubyte MaximumRange<name="Maximum Range">;
-                    WeaponModel ModelID<name="Weapon Model">;
-                    Crests RequiredCrest<name="Crests">;
+                    WeaponModel ModelID<name="Model">;
+                    Crests RequiredCrest<name="Crest">;
                     byte MinimumRange<name="Minimum Range">;
-                    ubyte Uses<name="Uses">;
-                    WeaponExtraEffects WepEff<name="Extra Effect">;
-                    ItemTypes ItemType<name="Item Type">;
+                    ubyte Uses<name="Durability/Uses">;
+                    Status WepEff<name="Status Effect", comment="Pairs with 'Status Effect Block'">;
+                    ItemTypes ItemType<name="Icon">;
                     struct EffectivenessBits07{
                         ubyte bit0 : 1<name="Infantry">;
                         ubyte bit1 : 1<name="Armor">;
@@ -426,32 +374,14 @@ struct FILE {
                         ubyte bit5 : 1<name="Monster">;
                         ubyte bit6 : 1<name="???", comment="Unseen">;
                         ubyte bit7 : 1<name="???", comment="Unseen">;
-                    }effectivenessbits07<name="Effectiveness", comment="All = Crown">;
+                    }effectivenessbits07<name="Effectiveness Flags", comment="All = Crown">;
                     byte UnknownByte04;
-                    byte Increase<name="Increase">;
+                    byte Increase<name="Amount">;
                     Stats Stat<name="Stat">;
-                    byte Crit<name="Crit">;
+                    byte Crit<name="ID">;
                     byte WT<name="Weight">;
-                    struct ItemFlags01{
-                        ubyte bit0 : 1<name="???">;
-                        ubyte bit1 : 1<name="???">;
-                        ubyte bit2 : 1<name="???">;
-                        ubyte bit3 : 1<name="???">;
-                        ubyte bit4 : 1<name="???">;
-                        ubyte bit5 : 1<name="???">;
-                        ubyte bit6 : 1<name="???">;
-                        ubyte bit7 : 1<name="???">;
-                    }wep02flags01<name="Flags 01">;
-                    struct ItemFlags02{
-                        ubyte bit0 : 1<name="???">;
-                        ubyte bit1 : 1<name="???">;
-                        ubyte bit2 : 1<name="???">;
-                        ubyte bit3 : 1<name="???">;
-                        ubyte bit4 : 1<name="???">;
-                        ubyte bit5 : 1<name="???">;
-                        ubyte bit6 : 1<name="???">;
-                        ubyte bit7 : 1<name="???">;
-                    }wep02flags02<name="Flags 02">;
+                    SkillProperty Property1<name="Skill Property 1">;
+			        SkillProperty Property2<name="Skill Property 2">;
                     struct ItemFlags03{
                         ubyte bit0 : 1<name="Magic">;
                         ubyte bit1 : 1<name="Ignores Res">;
@@ -461,7 +391,7 @@ struct FILE {
                         ubyte bit5 : 1<name="Attack Twice">;
                         ubyte bit6 : 1<name="Silver Icon">;
                         ubyte bit7 : 1<name="Gold Icon">;
-                    }wep02flags03<name="Flags 03">;
+                    }wep02flags03<name="Additional Flags">;
                     byte Padding<name="Padding">;
                 }ItemData<name="Item Data", read=GetItemsName>;
             }
@@ -491,11 +421,21 @@ struct FILE {
                     byte CAAvoid2<name="Avoid 2", comment="Always the same as Avoid">;
                     CAEffect CAEffectdata<name="Effect">;
                     ClassName CARequiredClass<name="Required Class">;
+                    byte Unk;
                     ubyte CADurCost<name="Durability Cost">;
                     ubyte CAMaxRange<name="Maximum Range">;
                     ubyte CAMinRange<name="Minimum Range">;
-                    byte Unk;
-                    byte Unk;
+                    struct CAWeaponTypeBits{
+                        ubyte bit0 : 1<name="Sword">;
+                        ubyte bit1 : 1<name="Lance">;
+                        ubyte bit2 : 1<name="Axe">;
+                        ubyte bit3 : 1<name="Bow">;
+                        ubyte bit4 : 1<name="Gauntlet">;
+                        ubyte bit5 : 1<name="Tome">;
+                        ubyte bit6 : 1<name="???", comment="Unseen">;
+                        ubyte bit7 : 1<name="???", comment="Unseen">;
+                    }caweapontypebits<name="Usable Weapons">;
+                    ubyte Unk;
                     struct CAEffectivenessBits{
                         ubyte bit0 : 1<name="Infantry">;
                         ubyte bit1 : 1<name="Armor">;
@@ -510,13 +450,13 @@ struct FILE {
                         ubyte bit0 : 1<name="Magic">;
                         ubyte bit1 : 1<name="???">;
                         ubyte bit2 : 1<name="???">;
-                        ubyte bit3 : 1<name="No Counter">;
-                        ubyte bit4 : 1<name="???">;
+                        ubyte bit3 : 1<name="Prevent Counterattack">;
+                        ubyte bit4 : 1<name="Learned by All">;
                         ubyte bit5 : 1<name="???">;
-                        ubyte bit6 : 1<name="???">;
-                        ubyte bit7 : 1<name="???">;
+                        ubyte bit6 : 1<name="Target Self">;
+                        ubyte bit7 : 1<name="Target Ally">;
                     }caflags<name="Flags">;
-                    ushort CAPadding;
+                    ubyte CAPadding;
                 }ArtsData<name="Combat Arts Data", read=GetArtsName>;
             }
         }Item08<name="Combat Arts">;
@@ -560,9 +500,19 @@ struct FILE {
             byte Padding[0x34];
         }itemheaderpadding11<name="Padding", bgcolor=cBlue>;
         struct ITEM11{
-            byte Item11Size[SizeOfItemBlock11];
-        }Item11[numItem11]<name="Item Data">;
-    }itemstructure11<name="Other Block 04", bgcolor=cYellow>;
+            for( i = 0; i < numItem11; i++ )
+            {
+                struct STATUSDATA {
+                    local Status NameOfStatus<hidden=true>;
+                    NameOfStatus = i;
+                    byte StatusAmount<name="Amount">;
+                    byte unk1;
+                    StatusVFX SVFX<name="VFX">;
+                    StatusEffect SEffect<name="Status Effect">;
+                }StatusData<name="Status Effect Data", read=GetStatusName>;
+            }
+        }Item11<name="Status Effects">;
+    }itemstructure11<name="Status Effect Block", bgcolor=cYellow>;
 
     //Table 12
     FSeek(SectionPointer.PointerToItemBlock12);
@@ -707,6 +657,10 @@ string GetItemsName(ITEMDATA &q)
 string GetArtsName(ARTSDATA &q)
 {
     return EnumToString(q.NameOfArt);
+}
+string GetStatusName(STATUSDATA &q)
+{
+    return EnumToString(q.NameOfStatus);
 }
 string GetBattalionName(BATTALIONDATA &q)
 {
