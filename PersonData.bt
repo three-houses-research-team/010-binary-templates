@@ -472,9 +472,33 @@ struct File{
 			byte Padding[0x34];
 		}UnkSect1headerpadding<name="Padding">;
 		struct UnkSect1ID{
-			byte unk[SizeOfUnkSect1];
-		}unksect1id[numUnkSect1]<name="Unk Sect 1",optimize=false>;
-	}unksect1<name="Unknown Section 1", bgcolor=cDkGreen>;
+			byte unk1;
+			byte unk2;
+			byte unk3;
+			byte unk4;
+			byte unk5;
+			byte unk6;
+			byte unk7;
+			byte unk8;
+			byte unk9;
+			byte unk10;
+			byte hitn<name="No Support Hit">;
+			byte hitc<name="C Support Hit">;
+			byte hitb<name="B Support Hit">;
+			byte hita<name="A Support Hit">;
+			byte hits<name="S Support Hit">;
+			byte avon<name="No Support Avo">;
+			byte avoc<name="C Support Avo">;
+			byte avob<name="B Support Avo">;
+			byte avoa<name="A Support Avo">;
+			byte avos<name="S Support Avo">;
+			byte mtn<name="No Support Mt">;
+			byte mtc<name="C Support Mt">;
+			byte mtb<name="B Support Mt">;
+			byte mta<name="A Support Mt">;
+			byte mts<name="S Support Mt">;
+		}unksect1id[numUnkSect1]<name="Linked Attack Data",optimize=false>;
+	}unksect1<name="Linked Attacks (Generic)", bgcolor=cDkGreen>;
 	
 	FSeek(sectionpointers.UnkPointer02);
 	struct UnkSect2{
@@ -485,9 +509,36 @@ struct File{
 			byte Padding[0x34];
 		}UnkSect2headerpadding<name="Padding">;
 		struct UnkSect2ID{
-			byte unk[SizeOfUnkSect2];
-		}unksect2id[numUnkSect2]<name="Unk Sect 2",optimize=false>;
-	}unksect2<name="Unknown Section 2", bgcolor=cDkGreen>;
+			Names NameID1<name="Name ID 1">;
+			Names NameID2<name="Name ID 2">;
+			byte unk5;
+			byte unk6;
+			byte unk7;
+			byte unk8;
+			byte unk9;
+			byte unk10;
+			byte unk11;
+			byte unk12;
+			byte unk13;
+			byte unk14;
+			byte hitn<name="No Support Hit">;
+			byte hitc<name="C Support Hit">;
+			byte hitb<name="B Support Hit">;
+			byte hita<name="A Support Hit">;
+			byte hits<name="S Support Hit">;
+			byte avon<name="No Support Avo">;
+			byte avoc<name="C Support Avo">;
+			byte avob<name="B Support Avo">;
+			byte avoa<name="A Support Avo">;
+			byte avos<name="S Support Avo">;
+			byte mtn<name="No Support Mt">;
+			byte mtc<name="C Support Mt">;
+			byte mtb<name="B Support Mt">;
+			byte mta<name="A Support Mt">;
+			byte mts<name="S Support Mt">;
+            byte unk30;
+		}unksect2id[numUnkSect2]<name="Special Linked Attack Data",optimize=false>;
+	}unksect2<name="Linked Attacks (Special)", bgcolor=cDkGreen>;
 	
 	FSeek(sectionpointers.SupportListPointer);
     struct SupportListTableStruct{
@@ -505,18 +556,45 @@ struct File{
     }supportlisttablestruct<bgcolor=0x70c009, name="Support Pair Table">;
 	
 	FSeek(sectionpointers.UnkPointer04);
-	struct UnkSect4{
-		uint32 UnkSect4Magic;
-		uint32 numUnkSect4;
-		uint32 SizeOfUnkSect4;
-		struct UnkSect4HeaderPadding{
+	struct SharedAbilitiesTableStruct{
+		uint32 SharedAbilitiesMagic<bgcolor=cRed>;
+		uint32 numSharedAbilities<bgcolor=cRed>;
+		uint32 SizeOfSharedAbilities<bgcolor=cRed>;
+		struct SharedAbilitiesHeaderPadding{
 			byte Padding[0x34];
-		}UnkSect4headerpadding<name="Padding">;
-		struct UnkSect4ID{
-			byte unk[SizeOfUnkSect4];
-		}unksect4id[numUnkSect4]<name="Unk Sect 4",optimize=false>;
-	}unksect4<name="Unknown Section 4", bgcolor=cDkGreen>;
+		}SharedAbilitiesheaderpadding<name="Padding">;
+        for( i = 0; i < numSharedAbilities; i++ )
+		{
+		    struct SharedAbilitiesStruct{
+                local MinRanks NameOfRank<hidden=true>;
+			    NameOfRank = i;
+			    ArtID NameOfArt<name="Sword Combat Art">;
+			    ArtID NameOfArt<name="Lance Combat Art">;
+			    ArtID NameOfArt<name="Axe Combat Art">;
+			    ArtID NameOfArt<name="Bow Combat Art">;
+			    ArtID NameOfArt<name="Gauntlet Combat Art">;
+			    ArtID NameOfArt<name="Reason Combat Art">;
+			    ArtID NameOfArt<name="Faith Combat Art">;
+			    ArtID NameOfArt<name="Authority Combat Art">;
+			    ArtID NameOfArt<name="Armor Combat Art">;
+			    ArtID NameOfArt<name="Riding Combat Art">;
+			    ArtID NameOfArt<name="Flying Combat Art">;
+			    AbilityID NameOfAbility<name="Sword Ability">;
+			    AbilityID NameOfAbility<name="Lance Ability">;
+			    AbilityID NameOfAbility<name="Axe Ability">;
+			    AbilityID NameOfAbility<name="Bow Ability">;
+			    AbilityID NameOfAbility<name="Gauntlet Ability">;
+			    AbilityID NameOfAbility<name="Reason Ability">;
+			    AbilityID NameOfAbility<name="Faith Ability">;
+			    AbilityID NameOfAbility<name="Authority Ability">;
+			    AbilityID NameOfAbility<name="Armor Ability">;
+			    AbilityID NameOfAbility<name="Riding Ability">;
+			    AbilityID NameOfAbility<name="Flying Ability">;
+		    }sharedabilitiesstruct<name="Shared Learnset Data", read=GetRankName, optimize=false>;
+        }
+	}unksect4<name="Shared Learnset Table", bgcolor=cDkGreen>;
 	
+
 }file;
 
 string ReadNameID(Person &p)
@@ -547,6 +625,10 @@ string GetTalentNames(HiddenTalentData &i)
 string GetCharNames4(WpnRankData &i)
 {
     return EnumToString(i.NameOfChar);
+}
+string GetRankName(SharedAbilitiesStruct &i)
+{
+    return EnumToString(i.NameOfRank);
 }
 
 string GetSupportPairs(SupportPairs &i)
