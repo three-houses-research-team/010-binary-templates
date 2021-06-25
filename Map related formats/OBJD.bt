@@ -2,8 +2,8 @@
 //--- 010 Editor v11.0.1 Binary Template
 //
 //      File: OBJD.bt
-//   Authors: Greenf1re
-//   Version: 1.0
+//   Authors: Greenf1re, Joschka
+//   Version: 1.01
 //   Purpose: Object placement in FETH
 //  Category: File Format
 // File Mask: *.OBJD
@@ -13,56 +13,90 @@
 LittleEndian();
 #include "../Model related formats/G1SharedStructures.bt"
 
-    struct HeaderInfo {
-    char Magic[4];
-    short SectionAmount;
-    short section0Length;
-    short section1Length;
-    short section2Length;
-    short section3Length;
-    short unk1;
-    
-} headerinfo <bgcolor=cLtRed>;
+typedef struct HEADER {
+    char magic[4];
+    short sectionCount;
+    short section0EntryCount;
+    short section1EntryCount;
+    short section2EntryCount;
+    short section3EntryCount;
+    short padding;    
+} Header <bgcolor=cLtRed, name="Header">;
 
-struct SectionHeader {
-    int SectionMagic <comment="Section start Magic?">;
-    short sectionIndex;
-    short unk2;
+typedef struct SECTIONHEADER {
+    int sectionMagic <comment="Section start Magic?">;
+    int sectionIndex;
     int sectionSize;
-    float unk5;
+    int reserved;
+} SectionHeader <bgcolor=cLtPurple,name="Section Header">;
+
+typedef struct SECTION0ENTRY
+{
     
-} sectionHeader0 <bgcolor=cLtPurple>;
+} Section0Entry<size=0x40>;
 
-struct section0
+typedef struct SECTION1ENTRY
 {
-    FSkip(14);
-    short unk6;
-    int parentObject;
-    int g1m_index;
-    VECTOR3 Position;
-    VECTOR4 Rotatiom;
-    VECTOR3 Scale;
-} objd0[headerinfo.section0Length] <bgcolor=cLtBlue>;
+    
+} Section1Entry<size=0x400>;
 
-struct SectionHeader sectionHeader1 <bgcolor=cLtPurple>;
-
-struct section1
+typedef struct SECTION2ENTRY
 {
-    byte unkSec2Data[1024];
-} objd1[headerinfo.section1Length]<bgcolor=cLtGreen>;
+    Vector4 Scale<name="Scale">;
+    Vector4 Rotation<comment="Euler in radians probably",name="Rotation">;
+    Vector4 Position<name="Position">;
+    int unk0;
+    short unk1;
+    short unk2;
+    int unk3;
+    short unk4;
+    short unk5;
+    
+    
+} Section2Entry<size=0x40>;
 
-struct SectionHeader sectionHeader2 <bgcolor=cLtPurple>;
-
-struct section2
+typedef struct SECTION3ENTRY
 {
-    byte unkSec3Data[64];
-} objd2[headerinfo.section2Length]<bgcolor=cLtYellow>;
+    Vector4 Position<name="Position">;
+    Vector4 Rotation<comment="Euler in radians probably",name="Rotation">;
+    Vector4 Scale<name="Scale">;
+    int unk0;
+    int entryIndex<name="Entry index ?">;
+    int unk1;
+    int unk2;
+    short unk3;
+    short unk4;
+    int unk6;
+    int unk7;
+    int unk8;
+    
+    
+} Section3Entry<size=0x50>;
 
-struct SectionHeader sectionHeader3 <bgcolor=cLtPurple>;
+typedef struct SECTION (int s0C, int s1C, int s2C, int s3C){
+    SectionHeader sHeader;
+    local int32 pos = FTell();
+    switch(sHeader.sectionIndex)
+    {
+        case 0:
+            Section0Entry entries[s0C]<name="Entries">;            
+            break;
+        case 1:
+            Section1Entry entries[s1C]<name="Entries">;
+            break;
+        case 2:
+            Section2Entry entries[s2C]<name="Entries">;
+            break;
+        case 3:
+            Section3Entry entries[s3C]<name="Entries">;
+            break;
+    }
+    FSeek(pos + sHeader.sectionSize);
+} Section;
 
 
-struct section3
-{
-    byte unkSec4Data[80];
-} objd3[headerinfo.section3Length]<bgcolor=cLtRed>;
 
+struct FILE {
+    Header header;
+    Section section(header.section0EntryCount,header.section1EntryCount,header.section2EntryCount,header.section3EntryCount) [header.sectionCount+1]<name="Section", optimize=false>;
+}File<name="OBJD file", open=true>;
