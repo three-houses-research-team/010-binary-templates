@@ -1,0 +1,92 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: OBJD.bt
+//   Authors: Greenf1re
+//   Version: 1.0
+//   Purpose: Object placement in FETH
+//  Category: File Format
+// File Mask: *.OBJD/*.DMIG
+//  ID Bytes: 44 4A 42 4F
+//   History: 
+//------------------------------------------------
+LittleEndian();
+#include "Model related formats/G1SharedStructures.bt"
+
+local int isCompressed;
+if( ReadInt( FTell() ) == 2 )
+{
+    struct Compressed {
+        int compressedAmount <comment="amount of bundled files (usually 2, 1 OBJD and 1 DMIG">;
+        int compressedFlag;
+        int DJBOsize;
+        int unkSize <comment="compressedFlag + unkSize = DJBOsize">;
+        int DMIGsize <comment="size of the DMIG section in # of bytes">;
+        isCompressed = 1;
+        FSkip(12);
+    } Compressed0 ;
+}
+else 
+{isCompressed = 0;}
+
+    struct HeaderInfo {
+    char Magic[4];
+    short SectionAmount;
+    short section1Length;
+    short section2Length;
+    short section3Length;
+    short section4Length;
+    short unk1;
+    
+} headerinfo <bgcolor=cLtRed>;
+
+struct SectionHeader {
+    int SectionMagic <comment="Section start Magic?">;
+    short sectionIndex;
+    short unk2;
+    int sectionSize;
+    float unk5;
+    
+} sectionHeader1 <bgcolor=cLtPurple>;
+
+struct section1
+{
+    FSkip(14);
+    short unk6;
+    int parentObject;
+    int g1m_index;
+    VECTOR3 Position;
+    VECTOR4 Rotatiom;
+    VECTOR3 Scale;
+} objd[headerinfo.section1Length] <bgcolor=cLtBlue>;
+
+struct SectionHeader sectionHeader2 <bgcolor=cLtPurple>;
+
+struct section2
+{
+    byte unkSec2Data[1024];
+} objd2[headerinfo.section2Length]<bgcolor=cLtGreen>;
+
+struct SectionHeader sectionHeader3 <bgcolor=cLtPurple>;
+
+struct section3
+{
+    byte unkSec3Data[64];
+} objd3[headerinfo.section3Length]<bgcolor=cLtYellow>;
+
+struct SectionHeader sectionHeader4 <bgcolor=cLtPurple>;
+
+
+struct section4
+{
+    byte unkSec4Data[80];
+} objd4[headerinfo.section4Length]<bgcolor=cLtRed>;
+
+if (isCompressed == 1)
+{
+    struct DMIG
+    {
+        char magic[4];
+        byte unkData[Compressed0.DMIGsize - 4];
+    } dmigSection <bgcolor=cLtGreen>;
+}
