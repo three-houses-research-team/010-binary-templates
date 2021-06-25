@@ -6,28 +6,12 @@
 //   Version: 1.0
 //   Purpose: Object placement in FETH
 //  Category: File Format
-// File Mask: *.OBJD/*.DMIG
+// File Mask: *.OBJD
 //  ID Bytes: 44 4A 42 4F
 //   History: 
 //------------------------------------------------
 LittleEndian();
 #include "Model related formats/G1SharedStructures.bt"
-
-local int isCompressed;
-if( ReadInt( FTell() ) == 2 )
-{
-    struct Compressed {
-        int compressedAmount <comment="amount of bundled files (usually 2, 1 OBJD and 1 DMIG">;
-        int compressedFlag;
-        int DJBOsize;
-        int unkSize <comment="compressedFlag + unkSize = DJBOsize">;
-        int DMIGsize <comment="size of the DMIG section in # of bytes">;
-        isCompressed = 1;
-        FSkip(12);
-    } Compressed0 ;
-}
-else 
-{isCompressed = 0;}
 
     struct HeaderInfo {
     char Magic[4];
@@ -82,11 +66,3 @@ struct section4
     byte unkSec4Data[80];
 } objd4[headerinfo.section4Length]<bgcolor=cLtRed>;
 
-if (isCompressed == 1)
-{
-    struct DMIG
-    {
-        char magic[4];
-        byte unkData[Compressed0.DMIGsize - 4];
-    } dmigSection <bgcolor=cLtGreen>;
-}
