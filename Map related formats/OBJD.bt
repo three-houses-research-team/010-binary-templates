@@ -1,0 +1,102 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: OBJD.bt
+//   Authors: Greenf1re, Joschka
+//   Version: 1.01
+//   Purpose: Object placement in FETH
+//  Category: File Format
+// File Mask: *.OBJD
+//  ID Bytes: 44 4A 42 4F
+//   History: 
+//------------------------------------------------
+LittleEndian();
+#include "../Model related formats/G1SharedStructures.bt"
+
+typedef struct HEADER {
+    char magic[4];
+    short sectionCount;
+    short section0EntryCount;
+    short section1EntryCount;
+    short section2EntryCount;
+    short section3EntryCount;
+    short padding;    
+} Header <bgcolor=cLtRed, name="Header">;
+
+typedef struct SECTIONHEADER {
+    int sectionMagic <comment="Section start Magic?">;
+    int sectionIndex;
+    int sectionSize;
+    int reserved;
+} SectionHeader <bgcolor=cLtPurple,name="Section Header">;
+
+typedef struct SECTION0ENTRY
+{
+    
+} Section0Entry<size=0x40>;
+
+typedef struct SECTION1ENTRY
+{
+    
+} Section1Entry<size=0x400>;
+
+typedef struct SECTION2ENTRY
+{
+    Vector4 Scale<name="Scale">;
+    Vector4 Rotation<comment="Euler in radians probably",name="Rotation">;
+    Vector4 Position<name="Position">;
+    int unk0;
+    short unk1;
+    short unk2;
+    int unk3;
+    short unk4;
+    short unk5;
+    
+    
+} Section2Entry<size=0x40>;
+
+typedef struct SECTION3ENTRY
+{
+    Vector4 Position<name="Position">;
+    Vector4 Rotation<comment="Euler in radians probably",name="Rotation">;
+    Vector4 Scale<name="Scale">;
+    int unk0;
+    int entryIndex<name="Entry index ?">;
+    int unk1;
+    int unk2;
+    short unk3;
+    short unk4;
+    int unk6;
+    int unk7;
+    int unk8;
+    
+    
+} Section3Entry<size=0x50>;
+
+typedef struct SECTION (int s0C, int s1C, int s2C, int s3C){
+    SectionHeader sHeader;
+    local int32 pos = FTell();
+    switch(sHeader.sectionIndex)
+    {
+        case 0:
+            Section0Entry entries[s0C]<name="Entries">;            
+            break;
+        case 1:
+            Section1Entry entries[s1C]<name="Entries">;
+            break;
+        case 2:
+            Section2Entry entries[s2C]<name="Entries">;
+            break;
+        case 3:
+            Section3Entry entries[s3C]<name="Entries">;
+            break;
+    }
+    FSeek(pos + sHeader.sectionSize);
+} Section;
+
+
+
+struct FILE {
+    Header header;
+    Section section(header.section0EntryCount,header.section1EntryCount,header.section2EntryCount,header.section3EntryCount) [header.sectionCount+1]<name="Section", optimize=false>;
+}File<name="OBJD file", open=true>;
