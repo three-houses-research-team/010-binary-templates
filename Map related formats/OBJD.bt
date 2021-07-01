@@ -37,7 +37,9 @@ typedef struct SECTION0ENTRY
 
 typedef struct SECTION1ENTRY
 {
-    
+    FSkip(0x30);
+    Vector4 BBoxMin<name="BBox min",open=true>;
+    Vector4 BBoxMax<name="BBox max",open=true>;
 } Section1Entry<size=0x400>;
 
 typedef struct SECTION2ENTRY
@@ -51,8 +53,6 @@ typedef struct SECTION2ENTRY
     int unk3;
     short unk4;
     short unk5;
-    
-    
 } Section2Entry<size=0x40>;
 
 typedef struct SECTION3ENTRY
@@ -68,9 +68,7 @@ typedef struct SECTION3ENTRY
     short unk4;
     int unk6;
     int unk7;
-    int unk8;
-    
-    
+    int unk8;    
 } Section3Entry<size=0x50>;
 
 typedef struct SECTION (int s0C, int s1C, int s2C, int s3C){
