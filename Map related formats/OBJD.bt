@@ -38,8 +38,12 @@ typedef struct SECTION0ENTRY
 typedef struct SECTION1ENTRY
 {
     FSkip(0x30);
-    Vector4 BBoxMin<name="BBox min",open=true>;
-    Vector4 BBoxMax<name="BBox max",open=true>;
+    Vector4 BBoxMin<name="BBox min">;
+    Vector4 BBoxMax<name="BBox max">;
+    FSkip(0x180);
+    ushort g1mID<name="g1m model ID">;
+    FSkip(0x36);
+    ushort entryID<name="entry ID">;
 } Section1Entry<size=0x400>;
 
 typedef struct SECTION2ENTRY
