@@ -42,7 +42,8 @@ typedef struct SECTION1ENTRY
     Vector4 BBoxMax<name="BBox max">;
     FSkip(0x180);
     ushort g1mID<name="g1m model ID">;
-    FSkip(0x36);
+    FSkip(0x35);
+    ubyte bundleID<name="bundle ID">;
     ushort entryID<name="entry ID">;
 } Section1Entry<size=0x400>;
 
