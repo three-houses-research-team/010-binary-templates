@@ -27,16 +27,16 @@ typedef struct HEADER2 {
     int idxCount<name="idxCount",fgcolor=cRed, bgcolor=cWhite>;
 } HEADER2;
 
-typedef struct SEMNATICCOUNT {
+typedef struct SEMANTICCOUNT {
     short bufferIDs<name="bufferIDs", fgcolor=cAqua, bgcolor=cBlack, comment="layer or bufferID, not sure for now">;
     short offsets<name="offsets", fgcolor=cAqua, bgcolor=cBlack, comment="offset of the semantic in the vertex buffer">;
     short dataTypes<name="dataTypes", fgcolor=cAqua, bgcolor=cBlack>;
     short semantics<name="semantics", fgcolor=cAqua, bgcolor=cBlack>;
-} SEMNATICCOUNT;
+} SEMANTICCOUNT;
 
 typedef struct HEADERS {
     int semanticCount<name="semanticCount", fgcolor=cAqua, bgcolor=cBlack>;
-    SEMNATICCOUNT entries2[semanticCount]<name="semanticCount entries", fgcolor=cAqua, bgcolor=cBlack, optimize=false>;
+    SEMANTICCOUNT entries2[semanticCount]<name="semanticCount entries", fgcolor=cAqua, bgcolor=cBlack, optimize=false>;
     int vertexCount<name="vertexCount", fgcolor=cPurple, bgcolor=cBlack>;
     int vertexStride<name="vertexStride", fgcolor=cYellow, bgcolor=cBlack>;
     int idxCount<name="idxCount", fgcolor=cRed, bgcolor=cBlack, comment="Number of shorts read after">;
