@@ -2,7 +2,7 @@
 //--- 010 Editor v9.0.2 Binary Template
 //
 //      File: G1EM.bt
-//   Authors: Hellacopters
+//   Authors: Hellacopters / Joschuka
 //   Version: 1.0
 //   Purpose: Parsing G1EM Models
 //  Category: Game File
@@ -10,6 +10,7 @@
 //  ID Bytes: 4D 45 31 47
 //   History:
 //   1.0      2021-08-25  Hellacopters: Made the original file
+//   1.1      2021-08-26  Joschuka: Updated logic and variable names
 //------------------------------------------------
 
 LittleEndian();
