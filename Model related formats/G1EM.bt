@@ -1,0 +1,58 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Binary Template
+//
+//      File: G1E.bt
+//   Authors: Hellacopters
+//   Version: 1.0
+//   Purpose: Parsing G1EM Models
+//  Category: Game File
+// File Mask: *.g1em
+//  ID Bytes: 4D 45 31 47
+//   History:
+//   1.0      2021-08-25  Hellacopters: Made the original file
+//------------------------------------------------
+
+LittleEndian();
+
+typedef struct READSHORTS {
+    short data<name="data", comment="Data could be read in something other than shorts">;
+} READSHORTS;
+
+typedef struct HEADER2 {
+    int modelID<name="modelID",fgcolor=cGreen, bgcolor=cWhite>;
+    int primType<name="primType",fgcolor=cBlue, bgcolor=cWhite>;
+    int vOffset<name="vOffset",fgcolor=cYellow, bgcolor=cWhite>;
+    int vCount<name="vCount",fgcolor=cPurple, bgcolor=cWhite>;
+    int idxOffset<name="idxOffset",fgcolor=cYellow, bgcolor=cWhite>;
+    int idxCount<name="idxCount",fgcolor=cRed, bgcolor=cWhite>;
+} HEADER2;
+
+typedef struct SEMNATICCOUNT {
+    short bufferIDs<name="bufferIDs", fgcolor=cAqua, bgcolor=cBlack, comment="layer or bufferID, not sure for now">;
+    short offsets<name="offsets", fgcolor=cAqua, bgcolor=cBlack, comment="offset of the semantic in the vertex buffer">;
+    short dataTypes<name="dataTypes", fgcolor=cAqua, bgcolor=cBlack>;
+    short semantics<name="semantics", fgcolor=cAqua, bgcolor=cBlack>;
+} SEMNATICCOUNT;
+
+typedef struct HEADERS {
+    int semanticCount<name="semanticCount", fgcolor=cAqua, bgcolor=cBlack>;
+    SEMNATICCOUNT entries2[semanticCount]<name="semanticCount entries", fgcolor=cAqua, bgcolor=cBlack, optimize=false>;
+    int vertexCount<name="vertexCount", fgcolor=cPurple, bgcolor=cBlack>;
+    int vertexStride<name="vertexStride", fgcolor=cYellow, bgcolor=cBlack>;
+    int idxCount<name="idxCount", fgcolor=cRed, bgcolor=cBlack, comment="Number of shorts read after">;
+    int unk<name="Unknown", fgcolor=cAqua, bgcolor=cBlack, comment="Not sure, could define the primitive type for idx buffer (tri vs tristrip) or the bufferID">;
+    local uint64 Size = 0;
+    Size = (vertexCount * vertexStride) / 2;
+    READSHORTS entries3[Size]<name="vertex entries",open=suppress, fgcolor=cPurple, bgcolor=cBlack>;
+    READSHORTS entries4[idxCount]<name="idxCount entries",open=suppress, fgcolor=cRed, bgcolor=cBlack>;
+} HEADERS;
+
+struct GONEEM {
+    char magic[4]<name="Magic", fgcolor=cGreen, bgcolor=cBlack, comment="reversed">;
+    char version[4]<name="Version", fgcolor=cGreen, bgcolor=cBlack, comment="reversed">;
+    int unknownsixteen<name="headerSize">;
+    short count1<name="modelCount">;
+    short count2<name="meshesCount">;
+    HEADERS entries[count1]<name="model Block", optimize=false>;
+    HEADER2 entries[count2]<name="mesh Block", optimize=false>;
+} G1EM<name="G1EM", open=true>;
