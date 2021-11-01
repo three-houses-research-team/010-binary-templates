@@ -3,12 +3,13 @@
 //
 //      File: G1MF.bt
 //   Authors: HealingBrew, Raywto, Joschka
-//   Version: 1.5
+//   Version: 1.6
 //   Purpose: Outlines G1MF format found in G1M files
 //  Category: Game File
 // File Mask: 
 //  ID Bytes: 46 4D 31 47
 //   History:
+//   1.5      2021-11-01  Raytwo : SOFT info
 //   1.5      2020-11-12  Joschka : NUNO4 info
 //   1.4      2020-11-11  Joschka, Raywto : Updated with new info
 //   1.3      2020-10-22  Joschka : Added more info
@@ -87,15 +88,15 @@ typedef struct G1MFORMAT23 {
 
 // SOFT related
 typedef struct G1MFORMAT24 {
-    int unknown0<name="Soft entry count">; // C0, 30
+    int unknown0<name="Soft region 1 entry count">; // C0, 30
     int unknown1<name="Unknown 1">; // C4, 31
     int unknown2<name="Unknown 2">; // C8, 32
     int unknown3<name="Unknown 3">; // CC, 33
-    int unknown4<name="Unknown 4">; // D0, 34
-    int unknown5<name="Unknown 5">; // D4, 35
+    int unknown4<name="Soft subentry count?">; // D0, 34
+    int unknown5<name="Soft total u4 count>; // D4, 35
     int unknown6<name="Unknown 6">; // D8, 36
-    int unknown7<name="Unknown 7">; // DC, 37
-    int unknown8<name="Unknown 8">; // E0, 38
+    int unknown7<name="Soft total len2 count">; // DC, 37
+    int unknown8<name="Soft total len4 count">; // E0, 38
     int unknown9<name="Nuno3 count", comment="See Eddie's head for that section">; // E4, 39
     int unknown10<name="Nuno3 skip1 count">; // E8, 3A
     int unknown11<name="Nuno3 total control point count">; // EC, 3B

@@ -3,13 +3,15 @@
 //
 //      File: SOFT.bt
 //   Authors: Raytwo
-//   Version: 1.0
+//   Version: 1.1
 //   Purpose: 
 //  Category: 
 // File Mask: 
 //  ID Bytes: 
 //   History:
+//  1.1 2021-10-28  Raytwo : Documented first region
 //  1.0 2020-11-11  Raytwo : Created the file
+//     Notes: Translated straight from DarkstarSword's research, which can be found at https://github.com/DarkStarSword/3d-fixes/blob/master/decode_doa6_soft.py
 //------------------------------------------------
 
 #ifndef G1M_SOFT
@@ -18,6 +20,70 @@
 #ifndef G1M_SHAREDSTRUCTURES
 #include "../G1SharedStructures.bt"
 #endif // G1M_SHAREDSTRUCTURES
+
+typedef struct {
+    uint32 id<name="Entry ID">;
+    uint32 len1;
+    uint32 z2;
+    uint32 z3;
+    uint32 u4;
+    uint32 len2;
+    uint32 len3;
+    uint32 rootBoneIdx<name="Root bone ID">;
+    uint32 u6;
+    uint32 u7;
+    uint32 z8;
+    uint32 o9;
+    uint32 len4;
+} SoftNodeEntryHeader<name="SoftNode Entry Header", optimize=true>;
+
+typedef struct {
+    float unk[24];
+} SoftNodeEntryUnk1<name="SoftNode Entry Unk1", optimize=false>;
+
+typedef struct {
+    uint32 id<name="Node ID?">;
+    float data<name="Influence weight?">;
+} SoftNodeEntryNodeInfluence<name="SoftNode Entry Node Influence", optimize=true>;
+
+typedef struct {
+    uint32 unk1[3];
+    float unk2[3];
+} SoftNodeEntryNodeData<name="SoftNode Entry Node Data", optimize=false>;
+
+typedef struct {
+    uint32 id<name="Node ID">;
+    float pos[3]<name="Position", optimize=true>;
+    float rot[3]<name="Rotation", optimize=true>;
+    uint32 unk; // Always 0x43?
+    uchar b[4];
+    uint32 influenceCount<name="Influence count">;
+    SoftNodeEntryNodeInfluence influences[influenceCount + 1]<name="Influences">;
+    SoftNodeEntryNodeData data<name="Data">;
+} SoftNodeEntryNode<name="SoftNode Entry Node", optimize=false>;
+
+typedef struct {
+    uint32 unk1[3];
+} SoftNodeEntryUnk2<name="SoftNode Entry Unk2", optimize=false>;
+
+typedef struct {
+    SoftNodeEntryHeader header<name="Header">;
+    SoftNodeEntryUnk1 unk1<name="Unknown1">;
+    SoftNodeEntryNode node[header.len1]<name="Nodes">;
+    uint32 list1[header.u4];
+    uint32 list2[header.len1];
+    uint32 list3[header.u6];
+    SoftNodeEntryUnk2 list4[header.len3];
+    uint32 unk2;
+    uint32 len5;
+    float idk[(len5/4) -2];
+} SoftNodeEntry<name="SoftNode Entry", optimize=false>;
+
+typedef struct {
+    uint32 entryCount<name="Entry count">;
+
+    SoftNodeEntry entries[entryCount]<name="Soft Node Entry">;
+} SoftNodeRegion<name="SoftNodeRegion (0x80001)", optimize=true>;
 
 typedef struct G1MSOFTSECTION {
     uint32 subSectionCount<name="Subsection count">;
@@ -30,9 +96,16 @@ typedef struct G1MSOFTSECTION {
         pos = FTell();
 
         struct SOFTSUBCHUNK {
-            uint16 version<name="Subsection version", format=hex>;
-            uint16 unk<name="Unused", format=hex>;
+            uint32 magic<name="Subsection magic", format=hex>;
             uint32 subsection_size<name="Subsection size", format=hex>;
+            switch(magic)
+            {
+                case 0x80001:
+                    SoftNodeRegion entry;
+                    break;
+                case 0x80002:
+                    break;
+            }
         }SoftSubSection<name="SubSection",optimize=false>; 
 
         FSeek(pos + SoftSubSection.subsection_size);
