@@ -53,10 +53,10 @@ typedef struct SECTION2ENTRY
     Vector4 Rotation<comment="Euler in radians probably",name="Rotation">;
     Vector4 Position<name="Position">;
     int unk0;
-    short unk1;
+    short entryIndex; //Refers to section 1 entry. Section 1 gives model + bundle data + entry Index. Section 2 references just the entry Index to place model in bundle.
     short unk2;
     int unk3;
-    short unk4;
+    short Map_ID;//ID of target map/level
     short unk5;
 } Section2Entry<size=0x40>;
 
@@ -66,10 +66,10 @@ typedef struct SECTION3ENTRY
     Vector4 Rotation<comment="Euler in radians probably",name="Rotation">;
     Vector4 Scale<name="Scale">;
     int unk0;
-    int entryIndex<name="Entry index ?">;
-    int unk1;
+    int entryIndex<name="Entry index ?">;//This is the index for section 2.
+    int Map_ID; // ID of target map/level
     int unk2;
-    short unk3;
+    short G1M_ID; //seemed related to Section2Entry.entryIndex, but maybe it isn't.
     short unk4;
     int unk6;
     int unk7;
