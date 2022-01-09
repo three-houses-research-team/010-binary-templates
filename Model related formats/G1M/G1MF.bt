@@ -93,7 +93,7 @@ typedef struct G1MFORMAT24 {
     int unknown2<name="Unknown 2">; // C8, 32
     int unknown3<name="Unknown 3">; // CC, 33
     int unknown4<name="Soft subentry count?">; // D0, 34
-    int unknown5<name="Soft total u4 count>; // D4, 35
+    int unknown5<name="Soft total u4 count">; // D4, 35
     int unknown6<name="Unknown 6">; // D8, 36
     int unknown7<name="Soft total len2 count">; // DC, 37
     int unknown8<name="Soft total len4 count">; // E0, 38
