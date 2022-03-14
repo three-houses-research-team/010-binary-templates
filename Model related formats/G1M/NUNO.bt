@@ -76,6 +76,16 @@ typedef struct NUNO4MAP {
     uint32 boneID;
 }nuno4Map<name="nuno4Map", optimize=false>;
 
+typedef struct NUNO5CP {
+    Vector3 coords<name="local coords",open=true>;
+    Vector3 unk<name="unknown coords">;
+    int P1;
+    int P2;
+    int ParentID<name="Parent">;
+    int P4;
+    int P5;
+}nuno5CP<name="nuno5CP">;
+
 typedef struct UNKSECTION {
 }UnkSection<name="Unknown Section",size=0x30>;
 
@@ -180,12 +190,39 @@ typedef struct {
     if(version >= 32)
     {
         nuno4VirtualBoneInfo virtualBonesInfo[virtualBoneCount];
-    }
-
-    
-    
+    }    
     
 } nunoentry_00030004<name="Entry (0x00030004)", optimize=false>;
+
+typedef struct {
+    uint32 controlPointsCount<name="Control points count">;
+    uint32 cpsectionCountMaybe<name="CP related section count ?">;
+    uint32 skip[7];
+    uint32 reserved[3];
+    Assert(skip[5] + reserved[0] + reserved[1] + reserved[2] == 0);
+    uint32 CPoffset<name="Control points offset">;
+    FSkip(CPoffset-4);
+
+    nuno5CP cps[controlPointsCount]<name="Control points">;
+    FSkip(0x20 * controlPointsCount);
+    if (cpsectionCountMaybe == 3)
+        FSkip(0x18 * controlPointsCount);
+    FSkip(skip[0] * 4 + skip[1]*12 + skip[2]*16 + skip[3]*12 + skip[4]*8 + skip[6]*0x48);
+} nunoentry_00030005LOD<name="LOD", optimize=false>;
+
+typedef struct {
+    local int version = G1Helper_GetVersionA(header.version);
+    uint32 parentBoneID<name="Parent Bone ID">;
+    uint32 unk;
+    uint32 lodCountMaybe<name="LOD count ?">;
+    Assert(lodCountMaybe==2);
+    uint32 unk1[2];
+    Assert(!(unk1[0] + unk1[1]));
+    uint entryID<name="Entry id">;
+    uint32 unk2[3];
+    Assert(!(unk2[0] + unk2[1] + unk2[2]));
+    nunoentry_00030005LOD lod[2];
+} nunoentry_00030005<name="Entry (0x00030005)", optimize=false>;
 
 typedef struct G1MNUNOSECTION {
     uint32 subSectionCount<name="Subsection count">;
@@ -211,6 +248,9 @@ typedef struct G1MNUNOSECTION {
                     break;
                 case 0x00030004:
                     nunoentry_00030004 entries[entry_count];
+                    break;
+                case 0x00030005:
+                    nunoentry_00030005 entries[entry_count];
                     break;
             }
         }NunoSubSection<name="SubSection",optimize=false>; 

@@ -83,7 +83,7 @@ typedef struct G2ASTRUCTURE {
     G2APackedBoneInfo packed_data<name="Packed Data", comment="Divide 1st by framerate = length in sec">;
     int timing_section_size<name="Timing section size">;
     int entry_count<name="Entry Count">;
-    if(version >= 50)
+    if(version >= 40)
         int unknown1_count<name="Unknown 1">;
 
     local int bone_info_blob_size = packed_data.bone_count << 2;
