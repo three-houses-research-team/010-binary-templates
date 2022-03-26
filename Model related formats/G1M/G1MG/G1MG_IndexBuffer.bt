@@ -23,7 +23,10 @@ typedef struct G1MGEOMETRYINDEXBUFFER {
     int count<name="Count">;
     int width<name="BitWidth", comment="bit width of each index; i.e. 16 = 2 bytes">;
     int unknown2<name="Unknown 2">;
-    ushort indices[count]<name="Indices">;
+    if (width == 16)
+        ushort indices[count]<name="Indices">;
+    else
+        uint indices[count]<name="Indices">;
     G1Helper_AlignBytes(4);
 } G1MGeometryIndexBuffer;
 

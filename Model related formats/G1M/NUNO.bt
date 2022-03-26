@@ -86,6 +86,13 @@ typedef struct NUNO5CP {
     int P5;
 }nuno5CP<name="nuno5CP">;
 
+typedef struct NUNO5SKIP8 {
+    uint entryCount<name="Entry count">;
+    uint unk[3];
+    //Assert(unk[0] + unk[1] + unk[2] == 1); //See 89a38a71.g1m from SoP for non 1 unk[0]
+    uint entries[entryCount];
+}nuno5Skip8<name="nuno5Skip8">;
+
 typedef struct UNKSECTION {
 }UnkSection<name="Unknown Section",size=0x30>;
 
@@ -197,9 +204,9 @@ typedef struct {
 typedef struct {
     uint32 controlPointsCount<name="Control points count">;
     uint32 cpsectionCountMaybe<name="CP related section count ?">;
-    uint32 skip[7];
-    uint32 reserved[3];
-    Assert(skip[5] + reserved[0] + reserved[1] + reserved[2] == 0);
+    uint32 skip[9];
+    uint32 reserved;
+    Assert( reserved == 0);
     uint32 CPoffset<name="Control points offset">;
     FSkip(CPoffset-4);
 
@@ -207,21 +214,29 @@ typedef struct {
     FSkip(0x20 * controlPointsCount);
     if (cpsectionCountMaybe == 3)
         FSkip(0x18 * controlPointsCount);
-    FSkip(skip[0] * 4 + skip[1]*12 + skip[2]*16 + skip[3]*12 + skip[4]*8 + skip[6]*0x48);
+    byte skip0[4*skip[0]];
+    byte skip1[12*skip[1]];
+    byte skip2[16*skip[2]];
+    byte skip3[12*skip[3]];
+    byte skip4[8*skip[4]];
+    byte skip5[0x30*skip[5]];
+    byte skip6[0x48*skip[6]];
+    byte skip7[0x20*skip[7]];
+    nuno5Skip8 skip8[skip[8]];
 } nunoentry_00030005LOD<name="LOD", optimize=false>;
 
 typedef struct {
     local int version = G1Helper_GetVersionA(header.version);
     uint32 parentBoneID<name="Parent Bone ID">;
     uint32 unk;
-    uint32 lodCountMaybe<name="LOD count ?">;
-    Assert(lodCountMaybe==2);
+    uint32 lodCount<name="LOD count">;
     uint32 unk1[2];
     Assert(!(unk1[0] + unk1[1]));
-    uint entryID<name="Entry id">;
-    uint32 unk2[3];
-    Assert(!(unk2[0] + unk2[1] + unk2[2]));
-    nunoentry_00030005LOD lod[2];
+    ushort entryID<name="Entry id">;
+    ushort subsetID<name="Subset id">;
+    uint32 unk3[3];
+    Assert(!(unk3[0] + unk3[1] + unk3[2]));
+    nunoentry_00030005LOD lod[lodCount];
 } nunoentry_00030005<name="Entry (0x00030005)", optimize=false>;
 
 typedef struct G1MNUNOSECTION {
@@ -247,7 +262,7 @@ typedef struct G1MNUNOSECTION {
                     nunoentry_00030003 entries[entry_count];
                     break;
                 case 0x00030004:
-                    nunoentry_00030004 entries[entry_count];
+                    //nunoentry_00030004 entries[entry_count];
                     break;
                 case 0x00030005:
                     nunoentry_00030005 entries[entry_count];
