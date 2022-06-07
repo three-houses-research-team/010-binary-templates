@@ -3,7 +3,7 @@
 //
 //      File: OBJD.bt
 //   Authors: Greenf1re, Joschka
-//   Version: 1.01
+//   Version: 2.0
 //   Purpose: Object placement in FETH
 //  Category: File Format
 // File Mask: *.OBJD
@@ -32,6 +32,15 @@ typedef struct SECTIONHEADER {
 
 typedef struct SECTION0ENTRY
 {
+    FSkip(0x1C);
+    float section0Magic;
+    FSkip(0x10);//unknown
+    ushort sec0_entryID; //entry ID
+    ushort sec1_entryID;//sec2Entry calls sec1_entry[sec0[sec2.entryIndex].sec1_entryID]
+    short modelCount;//for i : modelCount, instantiate(sec1_entryID + i). 
+    FSkip(0x04);
+    byte bundleID;
+    byte padding2[5];
     
 } Section0Entry<size=0x40>;
 
@@ -42,9 +51,19 @@ typedef struct SECTION1ENTRY
     Vector4 BBoxMax<name="BBox max">;
     FSkip(0x180);
     ushort g1mID<name="g1m model ID">;
-    FSkip(0x35);
+
+    FSkip(0x12);
+    ushort textureH<name="Texture/Material">;//Seems related to sec3.section1_ID
+    FSkip(0x04);
+    ushort unk1 <comment="mostly FF">;//some sort of index, increments with entries
+    ushort collisionLayer <name = "Layer?", comment=" collision type/layer or shape, for example either makes it one-way from left, from right, 0 way, or 2 way">;//0 makes stairs passthrough, 2 makes room boxes unpassable (black boxes over each area). 12 removes colliders for pillars, wall decor, stairs, doors. 
+    FSkip(0x5);
+    byte modelTag; //4 == stairs (paths w/ stairs), outer walls, some garden stuff, dorm walls, some walls. 3 == trees, some pillars; 1 == doors,furniture, outer structures; 0 == most inner structures + floors
+    FSkip(0x13);
+
     ubyte bundleID<name="bundle ID">;
     ushort entryID<name="entry ID">;
+    FSkip(502);
 } Section1Entry<size=0x400>;
 
 typedef struct SECTION2ENTRY
@@ -52,12 +71,13 @@ typedef struct SECTION2ENTRY
     Vector4 Scale<name="Scale">;
     Vector4 Rotation<comment="Euler in radians probably",name="Rotation">;
     Vector4 Position<name="Position">;
-    int unk0;
-    short entryIndex; //Refers to section 1 entry. Section 1 gives model + bundle data + entry Index. Section 2 references just the entry Index to place model in bundle.
+    short unk0;//animations? has doors, books, banners (cloth-like physics), etc
+    FSkip(0x02);
+    short entryIndex; //Refers to section 0 entry. Sec0 gives Section 1 which gives model + bundle data + entry Index. Section 2 references just the entry Index to place model in bundle.
     short unk2;
-    int unk3;
+    int unk3;//always 0 except in last 2 entries
     short Map_ID;//ID of target map/level
-    short unk5;
+    short unk5;//always the same value
 } Section2Entry<size=0x40>;
 
 typedef struct SECTION3ENTRY
@@ -68,10 +88,10 @@ typedef struct SECTION3ENTRY
     int unk0;
     int entryIndex<name="Entry index ?">;//This is the index for section 2.
     int Map_ID; // ID of target map/level
-    int unk2;
-    short G1M_ID; //seemed related to Section2Entry.entryIndex, but maybe it isn't.
-    short unk4;
-    int unk6;
+    int unk2;//probably nothing, haven't looked into it yet
+    short entryIndex; //seemed to be the same as Section2Entry.entryIndex.
+    short section1_ID;//seems related to sec1.textureH
+    int unk6;//unk6,7,8 are probably nothing
     int unk7;
     int unk8;    
 } Section3Entry<size=0x50>;
