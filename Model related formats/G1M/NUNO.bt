@@ -21,6 +21,10 @@
 #include "../G1SharedStructures.bt"
 #endif // G1M_SHAREDSTRUCTURES
 
+#define NUNO5FLAG_SKIP0		(1<<0)
+#define NUNO5FLAG_SKIP1		(1<<1)
+#define NUNO5FLAG_SKIP2		(1<<2)
+
 typedef struct CONTROLPOINT {
         float X;
         float Y;
@@ -203,17 +207,22 @@ typedef struct {
 
 typedef struct {
     uint32 controlPointsCount<name="Control points count">;
-    uint32 cpsectionCountMaybe<name="CP related section count ?">;
+    uint32 flags<name="Flags">;
     uint32 skip[9];
-    uint32 reserved;
-    Assert( reserved == 0);
+    uint32 bUseSkip9;
+    //Assert( reserved == 0);
+    if (bUseSkip9){
+        uint32 skip9Size;
+        uint32 skip9Count;
+    }
     uint32 CPoffset<name="Control points offset">;
     FSkip(CPoffset-4);
 
     nuno5CP cps[controlPointsCount]<name="Control points">;
-    FSkip(0x20 * controlPointsCount);
-    if (cpsectionCountMaybe == 3)
-        FSkip(0x18 * controlPointsCount);
+    if (flags & NUNO5FLAG_SKIP0)
+        byte flagsSkip0[0x20 * controlPointsCount];
+    if (flags & NUNO5FLAG_SKIP1)
+        byte flagsSkip1[0x18 * controlPointsCount];
     byte skip0[4*skip[0]];
     byte skip1[12*skip[1]];
     byte skip2[16*skip[2]];
@@ -222,7 +231,13 @@ typedef struct {
     byte skip5[0x30*skip[5]];
     byte skip6[0x48*skip[6]];
     byte skip7[0x20*skip[7]];
-    nuno5Skip8 skip8[skip[8]];
+    if (flags & NUNO5FLAG_SKIP2)
+      byte flagsSkip2[0x4 * controlPointsCount];
+    nuno5Skip8 skip8Bis[skip[8]];
+    if (bUseSkip9){
+    byte skip9[skip9Size*skip9Count];
+    }
+    
 } nunoentry_00030005LOD<name="LOD", optimize=false>;
 
 typedef struct {
@@ -243,6 +258,7 @@ typedef struct G1MNUNOSECTION {
     uint32 subSectionCount<name="Subsection count">;
     local int i = 0;
     local int pos = 0;
+    local int version = G1Helper_GetVersionA(header.version);
     for (i = 0;i < subSectionCount; i++)
     {   
         pos = FTell();
@@ -265,6 +281,10 @@ typedef struct G1MNUNOSECTION {
                     //nunoentry_00030004 entries[entry_count];
                     break;
                 case 0x00030005:
+                    if (version >= 35){
+                        uint32 reserved<name="Reserved">;
+                        Assert(!reserved);
+                    }
                     nunoentry_00030005 entries[entry_count];
                     break;
             }
