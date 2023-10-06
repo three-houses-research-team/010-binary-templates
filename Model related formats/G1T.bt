@@ -5,33 +5,44 @@
 //   Authors: Raytwo
 //   Version: 1.2
 //   Purpose: Parsing G1T texture containers
-//  Category: File Format
+//  Category: OO_Asset
 // File Mask: *.g1t
-//  ID Bytes: /
+//  ID Bytes: 
 //   History:
 //   1.0    2019-08-22  Raytwo: Made the original file
 //   1.1    2019-08-23  Raytwo: Added the normal map flag table
 //   1.1    2019-09-08  Raytwo: Added support for RGBA8 internal format
 //   1.2    2019-11-28  HealingBrew: Updated MipCount, Subsystem, and Dimension logic.
+//   1.3    2019-11-28  Joschuka: Edit for DFFOO g1ts.
+//   1.4    2019-11-28  hellacopters: Edit better looping
 //------------------------------------------------
 
 LittleEndian();
 
-enum<byte> DXT_TYPE
-{
-    BGRA8 = 0x1,
-    RGBA8 = 0x2,
-    DXT1 = 0x59,
-    DXT5 = 0x5B
+enum<uint32> EG1TPlatform {
+        PS2,
+        PS3,
+        X360,
+        NWii,
+        NDS,
+        N3DS,
+        PSVita,
+        Android,
+        iOS,
+        NWiiU,
+        Windows,
+        PS4,
+        XOne,
+        NSwitch
 };
 
 enum<byte> G1TG_SUBSYSTEM
 {
-    Generic,
-    PS4, // Treated the same as Xbox
-    PSVita,
-    PS3,
-    Xbox
+    SUB_Generic,
+    SUB_PS4, // Treated the same as Xbox
+    SUB_PSVita,
+    SUB_PS3,
+    SUB_Xbox
 };
 
 struct FILE {
@@ -45,87 +56,452 @@ struct FILE {
         uint32 filesize<name="Filesize", fgcolor=cLtYellow, format=hex>;
         uint32 tableOffset<name="Offset table address", fgcolor=cLtRed,format=hex>;
         uint32 entryCount<name="Number of textures", fgcolor=cLtGreen, format=decimal>;
-        uint32 unk;
-        uint32 unk;
+        EG1TPlatform Platform<fgcolor=cLtGreen>;
+        uint32 ASTCSubFormatSize <fgcolor=cLtGreen>;
     }Header<name="Header">;
     
     uint32 NormalMapTable[Header.entryCount]<name="Normal map flag?", comment="Entries with 3 are normal maps", fgcolor=cAqua>;
-    uint32 OffsetTable[Header.entryCount]<name="Offset table", comment="Contains pointers to all the textures relative to the beginning of the table", fgcolor=cLtRed>;
 
-    local int i = 0;
+    // Read OffsetTable
 
+    uint32 OffsetTable[Header.entryCount] <name="Offset table", comment="Contains pointers to all the textures relative to the beginning of the table", fgcolor=cLtRed>;
+    
+    local int i <hidden=true> = 0;
+    if(Header.ASTCSubFormatSize != 0)
+    {
+        struct ASTCMeta {
+        for(i = 0; i < (Header.ASTCSubFormatSize/8); i++){
+            struct ASTCSub {
+                uint16 UNK1<comment="should be 21">;
+                uint16 UNK2<comment="should be 1">; 
+                Assert(UNK1 == 0x15);
+                Assert(UNK2 == 0x1);
+                int ASTCSubFormat;
+                Assert(ASTCSubFormat < 14);
+                switch(ASTCSubFormat){
+                    case 0: //confrimed
+                        local int ASTCSubFormat1 = 4;
+                        local int ASTCSubFormat2 = 4;
+                        break;
+                    case 1: //assumed
+                        local int ASTCSubFormat1 = 5;
+                        local int ASTCSubFormat2 = 4;
+                    case 2: //assumed
+                        local int ASTCSubFormat1 = 5;
+                        local int ASTCSubFormat2 = 5;
+                        break;
+                    case 3: //assumed
+                        local int ASTCSubFormat1 = 6;
+                        local int ASTCSubFormat2 = 5;
+                        break;
+                    case 4: //assumed
+                        local int ASTCSubFormat1 = 6;
+                        local int ASTCSubFormat2 = 6;
+                        break;
+                    case 5: //assumed
+                        local int ASTCSubFormat1 = 8;
+                        local int ASTCSubFormat2 = 5;
+                        break;
+                    case 6: //assumed
+                        local int ASTCSubFormat1 = 8;
+                        local int ASTCSubFormat2 = 6;
+                        break;
+                    case 7: //confrimed
+                        local int ASTCSubFormat1 = 8;
+                        local int ASTCSubFormat2 = 8;
+                        break;
+                    case 8: //assumed
+                        local int ASTCSubFormat1 = 10;
+                        local int ASTCSubFormat2 = 5;
+                        break;
+                    case 9: //assumed
+                        local int ASTCSubFormat1 = 10;
+                        local int ASTCSubFormat2 = 6;
+                        break;
+                    case 10: //assumed
+                        local int ASTCSubFormat1 = 10;
+                        local int ASTCSubFormat2 = 8;
+                        break;
+                    case 11: //assumed
+                        local int ASTCSubFormat1 = 10;
+                        local int ASTCSubFormat2 = 10;
+                        break;
+                    case 12: //assumed
+                        local int ASTCSubFormat1 = 12;
+                        local int ASTCSubFormat2 = 10;
+                        break;
+                    case 13: //assumed
+                        local int ASTCSubFormat1 = 12;
+                        local int ASTCSubFormat2 = 12;
+                        break;
+                    default:
+                        break;
+                }
+            }ASTC;
+        }
+        }ASTCmeta<name="ASTC Meta", fgcolor=cLtBlue>;
+    }
+    i = 0;
+    local int returnto <hidden=true> = FTell();
+    local int mipOffset = 0;
+
+    local int readloc = OffsetTable[0] + Header.tableOffset + mipOffset;
+    returnto = readloc;
+    
     for(i = 0;i < Header.entryCount;i++)
     {
-        FSeek(Header.tableOffset + OffsetTable[i]);
-
+        FSeek(returnto);
         struct TEXHEADER {
             byte subsystem_id : 4<name="Subsystem">,
                  mip_count : 4<name="Mip Count", comment="SHR 4">;
             local G1TG_SUBSYSTEM subsystem = (G1TG_SUBSYSTEM) subsystem_id;
-            DXT_TYPE type<name="DXT Type", format=hex>;
+            byte type<name="DXT Type", format=hex>;
             byte packed_width : 4<name="Width">,
                  packed_height : 4<name = "Height", comment="SHR 4">;
             byte unknown1<name="Unknown 1">;
-            
             byte unknown2<name="Unknown 2">;
             byte unknown3<name="Unknown 3">;
-            byte unknown3<name="Unknown 4">;
+            byte unknown4<name="Unknown 4">;
             byte extra_version<name="Extra Version">;
-
+        
             if(extra_version > 0)
             {
-                struct EXTRATEXHEADER {
-                    uint32 size<name="Extra Texture Header size", format=hex>;
-                    float unknown1;
-                    uint16 unknown2;
-                    uint16 unknown3;
-                    if(size >= 0x10) {
-                        int width;
-                    }
-                    if(size >= 0x14) {
-                        int height;
-                    }
-                }ExtraTexHeader<name="Extra Texture Header", comment="Width and Height values for non-powers of two and large textures", bgcolor=cDkGray>;
-                
-                if(ExtraTexHeader.size != 0xC && ExtraTexHeader.size != 0x14) {
+                uint32 extra_size<name="Extra Texture Header size">;
+                float unknown5;
+                uint16 unknown6;
+                uint16 unknown7;
+                if(extra_size >= 0x10) {
+                    int extra_width;
+                }
+                if(extra_size >= 0x14) {
+                    int extra_height;
+                }
+                if(extra_size != 0xC && extra_size != 0x14) {
                     Printf("extra tex version is not zero but data might be missing\n");
                 }
             } else {
-                local uint test = ReadUInt();
+                local uint test <hidden=true> = ReadUInt();
                 if(test == 0xC || test == 0x14) {
                     Printf("extra tex version is zero but data might be present\n");
                 }
             }
             
-            local uint32 Width = packed_width > 0 ? 1 << packed_width : ExtraTexHeader.width;
-            local uint32 Height = packed_height > 0 ? 1 << packed_height : ExtraTexHeader.height;
-
-            local uint64 Size = 0;
-
-            if(type == 0x1 || type == 0x2) //RGBA8 and BGRA8
+            local uint32 Width = packed_width > 0 ? 1 << packed_width : extra_width;
+            local uint32 Height = packed_height > 0 ? 1 << packed_height : extra_height;
+        
+            local byte bNormalized = NormalMapTable[i] == 3 ? true : false;
+            local int bSpecialCaseETC = 0;
+            local int b3DSAlpha = 0;
+            local int bETCAlpha = 0;
+            local int bNeedsX360EndianSwap = 0;
+            local string rawFormat = "";
+            local string fourccFormat = "";
+            local float mortonWidth = 0;
+            local uint64 computedSize = 0;
+            local uint64 originalSize = computedSize;
+            local uint ASTCSub1 = 0;
+            local uint ASTCSub2 = 0;
+            local string xformat = "";
+        
+            if(type == 0x0) 
             {
-                Size = (Width * Height) * 4;
+                rawFormat = "r8g8b8a8"; //4byte
+                computedSize = (Width * Height) * 4;
             }
-            if(type == 0x59) //DXT1
+            if(type == 0x1) 
             {
-                Size = (Width * Height) / 2;
+                rawFormat = "b8g8r8a8"; //4byte
+                computedSize = (Width * Height) * 4;
             }
-            if(type == 0x5B) //DXT5
+            if(type == 0x2) 
             {
-                Size = Width * Height;
+                rawFormat = "r32"; //4byte
+                computedSize = (Width * Height) * 4;
             }
-            
-            // Read mipmaps
-            local int j = 0;
-            local int originalSize = Size;
+            if(type == 0x3) 
+            {
+                rawFormat = "r16g16b16a16"; //8bytes
+                computedSize = (Width * Height) * 4;
+            }
+            if(type == 0x4) 
+            {
+                rawFormat = "r32g32b32a32"; //16bytes
+                computedSize = (Width * Height) * 4;
+            }
+            if(type == 0x5) 
+            {
+                rawFormat = "?";
+                computedSize = (Width * Height) * 4;
+            }
+            if(type == 0x6) 
+            {
+                fourccFormat = "FOURCC_DXT1";
+                bNeedsX360EndianSwap = 1;
+                computedSize = (Width * Height) * 4;
+            }
+            if(type == 0x7) 
+            {
+                fourccFormat = "FOURCC_DXT3";
+                computedSize = (Width * Height) * 4;
+            }
+            if(type == 0x8) 
+            {
+                fourccFormat = "FOURCC_DXT5";
+                computedSize = (Width * Height) * 4;
+            }
+            if(type == 0x9) 
+            {
+                rawFormat = "?";
+                computedSize = (Width * Height) * 4;
+            }
+            if(type == 0xA) 
+            {
+                rawFormat = "b8g8r8a8"; //4bytes
+                computedSize = (Width * Height) * 4;
+                mortonWidth = 32;
+            }
+            if(type == 0xB) 
+            {
+                rawFormat = "r32"; //4bytes
+                computedSize = (Width * Height);
+            }
+            if(type == 0xC) 
+            {
+                rawFormat = "?";
+                computedSize = (Width * Height);
+            }
+            if(type == 0xD) 
+            {
+                rawFormat = "r32g32b32a32"; //16bytes
+                computedSize = (Width * Height);
+            }
+            if(type == 0xF) 
+            {
+                rawFormat = "a8"; //1byte
+                computedSize = (Width * Height);
+            }
+            if(type == 0x10) 
+            {
+                fourccFormat = "FOURCC_DXT1";
+                computedSize = (Width * Height);
+                mortonWidth = 4;
+            }
+            if(type == 0x11) 
+            {
+                rawFormat = "?";
+                computedSize = (Width * Height);
+            }
+            if(type == 0x12) 
+            {
+                fourccFormat = "FOURCC_DXT5";
+                computedSize = (Width * Height);
+                mortonWidth = 8;
+            }
+            //skipping
+            if(type == 0x34) 
+            {
+                rawFormat = "b5g6r5"; //2bytes
+                computedSize = (Width * Height) * 2;
+            }
+            if(type == 0x35)
+            {
+                rawFormat = "a1b5g5r5"; //2bytes
+                computedSize = (Width * Height) * 2;
+            }
+            if(type == 0x36)
+            {
+                rawFormat = "a4b4g4r4"; //2bytes
+                computedSize = (Width * Height) * 2;
+            }
+            if(type == 0x3C) 
+            {
+                fourccFormat = "FOURCC_DXT1";
+                computedSize = (Width * Height) * 2;
+            }
+            if(type == 0x3D) 
+            {
+                fourccFormat = "FOURCC_DXT1";
+                computedSize = (Width * Height) * 2;
+            }
+            if(type == 0x47) 
+            {
+                rawFormat = "3DS_rgb";
+                computedSize = (Width * Height) * 4;
+            }
+            if(type == 0x48) 
+            {
+                rawFormat = "3DS_rgb";
+                computedSize = (Width * Height) * 4;
+                b3DSAlpha = 1;
+            }
+            if(type == 0x56)  //android FieldMap has aspect ratio issues
+            {
+                rawFormat = "ETC1_rgb";
+                computedSize = (Width * Height) / 2;
+            }
+            if(type == 0x57) 
+            {
+                rawFormat = "PVRTC";//?
+                computedSize = (Width * Height) / 4;
+            }
+            if(type == 0x58) //no idea in iOS effect pack
+            {
+                rawFormat = "PVRTC_4";
+                computedSize = (Width * Height) / 2;
+            }
+            if(type == 0x59) 
+            {
+                fourccFormat = "FOURCC_DXT1";
+                computedSize = (Width * Height) / 2;
+            }
+            if(type == 0x5B) 
+            {
+                fourccFormat = "FOURCC_DXT5";
+                computedSize = Width * Height;
+            }
+            if(type == 0x5C) 
+            {
+                fourccFormat = "FOURCC_ATI1";
+                computedSize = Width * Height;
+                bNormalized = 0;
+            }
+            if(type == 0x5D) 
+            {
+                fourccFormat = "FOURCC_ATI2";
+                computedSize = Width * Height;
+                bNormalized = 0;
+            }
+            if(type == 0x5E) 
+            {
+                fourccFormat = "FOURCC_BC6H";
+                computedSize = Width * Height;
+                bNormalized = 0;
+            }
+            if(type == 0x5F) 
+            {
+                fourccFormat = "FOURCC_BC7";
+                computedSize = Width * Height;
+                bNormalized = 0;
+            }
+            if(type == 0x60) 
+            {
+                fourccFormat = "FOURCC_DXT1";
+                computedSize = Width * Height;
+                mortonWidth = 4;
+            }
+            if(type == 0x62) 
+            {
+                fourccFormat = "FOURCC_DXT5";
+                computedSize = Width * Height;
+                mortonWidth = 8;
+                bNormalized = 0;
+            }
+            if(type == 0x63) 
+            {
+                fourccFormat = "FOURCC_BC4";
+                computedSize = Width * Height;
+                mortonWidth = 4;
+                bNormalized = 0;
+            }
+            if(type == 0x64) 
+            {
+                fourccFormat = "FOURCC_BC5";
+                computedSize = Width * Height;
+                mortonWidth = 8;
+                bNormalized = 0;
+            }
+            if(type == 0x65) 
+            {
+                fourccFormat = "FOURCC_BC6H";
+                computedSize = Width * Height;
+                mortonWidth = 8;
+                bNormalized = 0;
+            }
+            if(type == 0x66) 
+            {
+                fourccFormat = "FOURCC_BC7";
+                computedSize = Width * Height;
+                mortonWidth = 8;
+                bNormalized = 0;
+            }
+            if(type == 0x6F) //this is us
+            { 
+                rawFormat = "ETC1_rgb";
+                computedSize = Width * Height;
+                bSpecialCaseETC = 1;  
+                local int j <hidden=true> = 0;
+                for(j = 1; j < mip_count; j++) {//Skip the first entry which is the full-sized texture    
+                    originalSize = originalSize/4;
+                    computedSize += originalSize;
+                }
+                Height *= 2;              
+            }
+            if(type == 0x71) 
+            {
+                rawFormat = "ETC1_rgba";
+                computedSize = Width * Height;
+                bETCAlpha = 1;
+            }
+            if(type == 0x7D) 
+            {
+                rawFormat = "ASTC";
+                ASTCSub1 = ASTCmeta.ASTC[i].ASTCSubFormat1;
+                ASTCSub2 = ASTCmeta.ASTC[i].ASTCSubFormat2;
+                xformat = Str("%dx%d", ASTCSub1, ASTCSub2);
+                switch(xformat){
+                    case "4x4":
+                        mortonWidth = 8.00;
+                        break;
+                    case "5x4":
+                        mortonWidth = 6.40;
+                        break;
+                    case "5x5":
+                        mortonWidth = 5.12;
+                        break;
+                    case "6x5":
+                        mortonWidth = 4.27;
+                        break;
+                    case "6x6":
+                        mortonWidth = 3.56;
+                        break;
+                    case "8x6":
+                        mortonWidth = 2.67;
+                        break;
+                    case "8x8":
+                        mortonWidth = 2.00;
+                        break; 
+                    case "10x5":
+                        mortonWidth = 2.56;
+                        break;
+                    case "10x6":
+                        mortonWidth = 2.13;
+                        break;
+                    case "10x8":
+                        mortonWidth = 1.60;
+                        break;
+                    case "10x10":
+                        mortonWidth = 1.28;
+                        break;
+                    case "12x10":
+                        mortonWidth = 1.07;
+                        break;
+                    case "12x12":
+                        mortonWidth = 0.89;
+                        break;
+                    default:
+                        break;
+                }
+                computedSize = Width * Height * mortonWidth / 8;
+                if(computedSize < 16) //hack
+                {
+                    computedSize = 16;
+                }    
+            }
 
-            for(j = 1;j < mip_count; j++) //Skip the first entry which is the full-sized texture
-            {
-                originalSize = originalSize/4;
-                Size += originalSize;
-            }
+            local int bRaw = rawFormat != "" ? 1 : 0;
 
-            ubyte Textures[Size]<name="Textures data", comment="Textures are stored with their mipmaps in this array", format=hex, open=suppress, bgcolor=cDkBlue, fgcolor=cLtAqua>;
+            ubyte Textures[computedSize]<name="Textures data", comment="Textures are stored with their mipmaps in this array", format=hex, open=suppress, bgcolor=cDkBlue, fgcolor=cLtAqua>;
+            returnto = FTell();
         }TexHeader<name="Texture", fgcolor=cLtGreen>;
     }
 }File<name="G1T file", open=true>;
