@@ -1,0 +1,34 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: TutArch.bt
+//   Authors: bqio
+//   Version: 1.0
+//   Purpose: Parsing tutorial archive
+//  Category: Archives
+// File Mask: 6131.bin
+//  ID Bytes: 98 00 00 00
+//   History: 
+//   1.0      Initial
+//------------------------------------------------
+
+LittleEndian();
+
+typedef struct POINTERTABLE {
+    uint offset;
+    uint size;
+} PointerTable;
+
+typedef struct G1TENTRY {
+    ubyte data[pointers[i].size];
+} G1TEntry;
+
+struct FILE {
+    uint number_of_files<name="Number of files">;
+    PointerTable pointers[number_of_files]<name="Pointer table">;
+    local int i = 0;
+    for(i = 0; i < number_of_files; ++i) {
+        FSeek(pointers[i].offset);
+        G1TEntry entry<name="G1T File">;
+    }
+} File<name="Tutorial Archive">;
