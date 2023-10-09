@@ -1,7 +1,7 @@
 //------------------------------------------------
 //--- 010 Editor v14.0 Binary Template
 //
-//      File: msgdata.bin
+//      File: msgdata.bt
 //   Authors: Moonling, Sloth, bqio
 //   Version: 1.2
 //   Purpose: Parsing msgdata type files
@@ -10,6 +10,8 @@
 //  ID Bytes: 0C 00 00 00
 //   History: 
 //------------------------------------------------
+
+local uint i;
 
 ubyte text_flags_count(ubyte flags[], uint flag_size)
 {
@@ -28,8 +30,6 @@ void FAlign(uint alignment)
 }
 
 LittleEndian();
-
-local uint i;
 
 typedef struct POINTERTABLE {
     uint offset<name="Offset">;
@@ -53,11 +53,11 @@ typedef struct TABLEHEADER {
 } TableHeader;
 
 typedef struct LINE {
-    char line[ReadStringLength(FTell())]<name="Line Value">;
+    char value[ReadStringLength(FTell())]<name="Value">;
 } Line;
 
 typedef struct ENTRY {
-    Line line[flag_count]<optimize=false, name="Line">;
+    Line lines[flag_count]<optimize=false, name="Line", read=to_value>;
 } Entry;
 
 typedef struct TABLE {
@@ -89,3 +89,9 @@ struct FILE {
     FileHeader header<name="Header">;
     Language languages[header.number_of_languages]<name="Language", optimize=false>;
 } File;
+
+
+string to_value(LINE &l)
+{
+    return WStringToString(l.value, CHARSET_UTF8);
+}
