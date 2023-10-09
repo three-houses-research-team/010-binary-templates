@@ -1,144 +1,91 @@
 //------------------------------------------------
-//--- 010 Editor v9.0.2 Binary Template
+//--- 010 Editor v14.0 Binary Template
 //
-//      File: msgdata.bin / 0.bin
-//   Authors: Moonling, Sloth
-//   Version: 1.1
-//   Purpose: 3H Text Editing
+//      File: msgdata.bin
+//   Authors: Moonling, Sloth, bqio
+//   Version: 1.2
+//   Purpose: Parsing msgdata type files
+//  Category: Text
+// File Mask: 0.bin, 1.bin, 2.bin, 3.bin, 4.bin
+//  ID Bytes: 0C 00 00 00
 //   History: 
 //------------------------------------------------
-LittleEndian();
-local int i;
-local int ii;
-local int iii;
-local int relativePos;
 
-struct FILE {
-    struct HEADER {
-        uint NumOfSections<name="Number of Sections">;
-        struct SECTIONS {
-            uint SectionPTR<name="Section Pointer">;
-            uint SectionSize<name="Section Size">;
-        }sections[header.NumOfSections]<name="Sections">;
-    }header<name="Header", bgcolor=cRed>;
-
-    struct LANGUAGES {
-        for (i = 0; i < header.NumOfSections; i++)
-        {
-            FSeek(header.sections[i].SectionPTR);
-            struct SECTION {
-            local int Language = i;
-               struct SECTIONHEADER {
-                    uint NumOfTables<name="Number of Tables">;
-                    struct TABLES {
-                        uint TablePTR<name="Table PTR">;
-                        uint TableSize<name="Table Size">;
-                    }tables[sectionHeader.NumOfTables]<name="Tables">;
-               }sectionHeader<name="Header", bgcolor=cLtPurple>; 
-    
-            for (ii = 0; ii <section[i].sectionHeader.NumOfTables; ii++)
-            {
-                FSeek(header.sections[i].SectionPTR + section[i].sectionHeader.tables[ii].TablePTR);
-                relativePos = FTell();
-                struct TABLE {
-                    struct TABLEHEADER {
-                        uint MagicID<name="Magic ID">;
-                        ushort TableSize;
-                        ushort Unk;
-                        ushort NumOfPTRs;
-                        ushort PTRSize;
-                        uint TableHeaderSize;
-                        uint Unk;
-                    }tableHeader<name="Header", bgcolor=cLtBlue>;
-    
-                    uint TextPointers[table[ii].tableHeader.NumOfPTRs]<name="Text Pointers", bgcolor=cLtRed>;
-                    struct TEXT {
-                        for (iii = 0; iii < table[ii].tableHeader.NumOfPTRs; iii++)
-                        {
-                            FSeek((table[ii].TextPointers[iii] + 0x14 + relativePos));
-                            struct LINES {
-                                char line[ReadStringLength(FTell())]<fgcolor=cYellow>;
-                            }textLines<name="Lines", read=DisplayLineAsValue>;
-                        }
-                    }text<name="Text">;
-                }table<name="Table">;
-            }
-            }section<name=GetLanguage>;
-        }
-    }languages<name="Languages">;
-}file<name="msgdata">;
-
-string DisplayLineAsValue(LINES &l)
+ubyte text_flags_count(ubyte flags[], uint flag_size)
 {
-    return WStringToString(l.line, CHARSET_UTF8);
-}
-string GetLanguage(SECTION &l)
-{
-    switch(l.Language){
-        case(0):
-        {
-            return "Japanese";
-        break;
-        }
-        case(1):
-        {
-            return "American English";
-        break;
-        }
-        case(2):
-        {
-            return "European English";
-        break;
-        }
-        case(3):
-        {
-            return "German";
-        break;
-        }
-        case(4):
-        {
-            return "European French";
-        break;
-        }
-        case(5):
-        {
-            return "American French";
-        break;
-        }
-        case(6):
-        {
-            return "European Spanish";
-        break;
-        }
-        case(7):
-        {
-            return "American Spanish";
-        break;
-        }
-        case(8):
-        {
-            return "Italian";
-        break;
-        }
-        case(9):
-        {
-            return "Korean";
-        break;
-        }
-        case(10):
-        {
-            return "Simplified Chinese";
-        break;
-        }
-        case(11):
-        {
-            return "Traditional Chinese";
-        break;
-        }
-        default:
-        {
-            return "Language Section";
-        break;
+    local ubyte count;
+    for (i = 0; i < flag_size; i++) {
+        if (flags[i] == 0) {
+            count++;    
         }
     }
+    return count;
 }
+
+void FAlign(uint alignment)
+{
+    FSeek((FTell() + (alignment - 1)) & ~(alignment - 1));
+}
+
+LittleEndian();
+
+local uint i;
+
+typedef struct POINTERTABLE {
+    uint offset<name="Offset">;
+    uint size<name="Size">;
+} PointerTable;
+
+typedef struct TABLEPOINTER {
+    uint pointer[flag_size]<name="Pointer">;
+} TablePointer;
+
+typedef struct TABLEHEADER {
+    uint magic<name="Magic">;
+    ushort table_size<name="Table size">;
+    ushort flag_size<name="Flag size">;
+    ushort number_of_entries<name="Number of entries">;
+    ushort pointer_size<name="Pointer size">;
+    uint header_size<name="Header size">;
+    ubyte flags[flag_size]<name="Flags">;
+    FAlign(4);
+    TablePointer pointers[number_of_entries]<optimize=false, name="Pointers", fgcolor=cYellow>;
+} TableHeader;
+
+typedef struct LINE {
+    char line[ReadStringLength(FTell())]<name="Line Value">;
+} Line;
+
+typedef struct ENTRY {
+    Line line[flag_count]<optimize=false, name="Line">;
+} Entry;
+
+typedef struct TABLE {
+    TableHeader header<name="Header", fgcolor=cGreen>;
+    local ubyte flag_count;
+    flag_count = text_flags_count(header.flags, header.flag_size);
+    if (flag_count) {
+        Entry entries[header.number_of_entries]<optimize=false, fgcolor=cRed, name="Entries">;
+    }
+    FAlign(4);
+} Table;
+
+typedef struct LANGUAGEEADER {
+    uint number_of_tables<name="Number of tables", fgcolor=cRed>;
+    PointerTable pointers[number_of_tables]<name="Pointers", fgcolor=cYellow>;
+} LanguageHeader;
+
+typedef struct LANGUAGE {
+    LanguageHeader header<name="Header">;
+    Table tables[header.number_of_tables]<name="Tables", optimize=false>;
+} Language;
+
+typedef struct FILEHEADER {
+    uint number_of_languages<name="Number of languages", fgcolor=cRed>;
+    PointerTable pointers[number_of_languages]<name="Pointers", fgcolor=cYellow>;
+} FileHeader;
+
+struct FILE {
+    FileHeader header<name="Header">;
+    Language languages[header.number_of_languages]<name="Language", optimize=false>;
+} File;
