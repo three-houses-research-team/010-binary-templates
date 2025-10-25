@@ -14,6 +14,7 @@
 // Includes
 //---------------------------------------------
 #include "3H_Enums.bt"
+#include "Stupid_Item_IDs.bt"
 
 LittleEndian();
 
@@ -208,22 +209,23 @@ struct File{
 	}unk5<name="Unknown Section 5",bgcolor=cBlack>;
 	
 	FSeek(sectionpointers.PointerToUnk6);
-	struct Unk6{
+    struct sItemSpotAltItems{ //6
 		uint32 Unk6Magic;
 		uint32 numunk6;
 		uint32 SizeOfUnk6;
 		struct Unk6Padding{
 			byte Padding[0x34];
 		}unk6padding<name="Padding">;
-		struct UnknownSection6{
-			ubyte unk;
-			ubyte unk;
-			ubyte unk;
-			ubyte unk;
-			ubyte unk;
-			ubyte unk;
-		}unknownsection6[numunk6]<name="Unknown Section4">;
-	}unk6<name="Unknown Section 6",bgcolor=cGreen>;
+        for(i=0;i<numunk6;i++){
+			struct sItemSpotAltDropItem{
+				GeneralMerchantItems MiscellaneousItem<name="Miscellaneous Item">;
+				ubyte AdvancedItemPool<name="Enabled in Advanced Item Pool">;
+				ubyte IntermediateItemPool<name="Enabled in Intermediate Item Pool">;
+				ubyte BasicItemPool<name="Enabled in Basic Item Pool">;
+				ubyte unk1<name="padding?">;
+			}ItemSpotAltDropItem<name="ItemSpot Alt Drop Item",read = Str("%d %d %d - %s",AdvancedItemPool,IntermediateItemPool,BasicItemPool,EnumToString(MiscellaneousItem))>;
+        }
+	}ItemSpotAltItems<name="ItemSpot Alt Drop Items",bgcolor=cGreen, comment="If ItemSpots are configured to drop random items, they have a chance to drop these items">;
 	
 	FSeek(sectionpointers.PointerToUnk7);
 	struct UnknownSection7{
