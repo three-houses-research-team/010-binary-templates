@@ -412,6 +412,41 @@ enum<ubyte> FishTier{
     InvalidFT9,  
 };
 
+enum<int> Seeds {
+    Mixed_Herb_S,
+    Western_Foldlan_S,
+    Root_Vegetable_S,
+    Magical_Herb_S,
+    Noah_Fruit_S,
+    Albinean_Nut_S,
+    Vegetable_S,
+    Northern_Foldlan_S,
+    Verona_S,
+    Morfis_Plum_S,
+    Southern_Fodlan_S,
+    Morfis_S,
+    Nordsalat_S,
+    Boa_Fruit_S,
+    Albinean_S,
+    Eastern_Fodlan_S,
+    Magdred_Kirsch_S,
+    Angelica_S,
+    Mixed_Fruit_S,
+    Albinean_Berry_S,
+    Red_Flower_S,
+    White_Flowers_S,
+    Blue_Flowers_S,
+    Purple_Flowers_S,
+    Yellow_Flowers_S,
+    Green_Flowers_S,
+    Pale_Blue_Flower_S,
+    Seed27,
+    Seed28,
+    Seed29,
+    Seed30,
+    Dedues_S,
+};
+
 struct UnitPreferences{ //0
 	for (j = 0; j < EntryCount; j++){
 		struct Unit {
@@ -541,6 +576,28 @@ struct Fishing{ //7
 	}
 };	
 
+struct Gardening{ //8
+	for (j = 0; j < EntryCount; j++){
+		struct GardeningEntry {
+			struct Yield {
+				 GeneralMerchantItems gardeningItem0;
+                 GeneralMerchantItems gardeningItem1;
+                 GeneralMerchantItems gardeningItem2;
+                 GeneralMerchantItems gardeningItem3;
+                 GeneralMerchantItems gardeningItem4;
+			};
+			local Seeds seed = j;
+			GeneralMerchantItems StatBoosterSlot<name="Stat Booster Slot", name="Stat Booster">;
+			Yield yield1_low<read="Yield Level 1 Low", name="Yield">;
+			Yield yield1_high<read="Yield Level 1 High", name="Yield">;
+			Yield yield2_low<read="Yield Level 2 Low", name="Yield">;
+			Yield yield2_high<read="Yield Level 2 High", name="Yield">;
+			Yield yield3_low<read="Yield Level 3 Low", name="Yield">;
+			Yield yield3_high<read="Yield Level 3 High", name="Yield">;
+		}gardeningYield<name="Seed Yield", read=EnumToString(seed)>;;
+	}
+};
+
 struct File {
     int count<bgcolor=cBlack>;
     struct PointerPair {
@@ -591,6 +648,11 @@ struct File {
             else if (i==7){
             	Fishing FishingRewards;
                 name = "Fishing Rewards";
+            }
+            else if (i==8){
+            	Gardening GardeningYields;
+                name = "Gardening Yields";
+            
             }
             else //other stuff, use generic struct in that case
             {
