@@ -1,0 +1,474 @@
+//------------------------------------------------
+//--- 010 Editor v15.0.2 Binary Template
+//
+//      File: fixed_lobby_quest.bt
+//   Authors: ReichardTheThird
+//   Version: 1.0
+//   Purpose: idk
+//  Category: 
+// File Mask: fixed_lobby_quest.bin
+//  ID Bytes: 
+//   History: 
+//   1.0    5/26/25 ReichardTheThird:   Started this Template
+//------------------------------------------------
+#include "3H_Enums.bt"
+#include "Stupid_Item_IDs.bt"
+#include "3H_ScenarioEnums.bt"
+LittleEndian();
+local int i = 0;
+
+enum<ubyte> AuxUnitBin{
+    Unused0,
+    StandardThiefRogueBandits1,
+    GenericMonster2,
+    DesertMonster3,
+    Pirates4,
+    WesternChurch5,
+    Unused6,
+    Unused7,
+    Unused8,
+    Thieves9,
+    Unused10,
+    Bandits11,
+    KingdomSoldiers12,
+    Bandits13,
+    ImperialSoldiers14,
+    Pirates15,
+    KingdomSoldiers16,
+    Thieves17,
+    Bandits18,
+    Agarthans19,
+    Thieves20,
+    Thieves21,
+    NoBattle=255,
+};
+
+enum<short> BattalionIDShort
+{
+    Church_of_Seiros_Soldiers_2,		//0
+    Seiros_Mercenaries_2,				//1
+    Seiros_Holy_Monks_2,				//2
+    Seiros_Sacres_Monks_2,				//3
+    Seiros_Magic_Corps_2,				//4
+    Seiros_Pegasus_Co_2,				//5
+    Knights_of_Seiros_2,				//6
+    Holy_Knights_of_Seiros_2,			//7
+    Indech_Sword_Fighters_2,			//8
+    Macuil_Evil_Repelling_Co_2,			//9
+    Empire_Infantry_2,					//10
+    Empire_Warriors_2,					//11
+    Empire_Magic_Corps_2,				//12
+    Empire_Archers_2,					//13
+    Empire_Cavalry_2,					//14
+    Empire_Knights_2,					//15
+    Empire_Armored_Co_2,				//16
+    Empire_Snipers_2,					//17
+    Empire_Magic_Users_2,				//18
+    Empire_Pavise_Co_2,					//19
+    Empire_Pegasus_Co_2,				//20
+    Empire_Wyvern_Co_2,					//21
+    Empire_Heavy_Soldiers_2,			//22
+    Empire_Holy_Magic_Users_2,			//23
+    Empire_Raiders_2,					//24
+    Imperial_Guard_2,					//25
+    Empire_Elite_Wyvern_Co_2,			//26
+    Black_Eagle_Heavy_Axes_2,			//27
+    Black_Eagle_Cavalry_2,				//28
+    Black_Eagle_Pegasus_Co_2,			//29
+    Kingdom_Infantry_2,					//30
+    Kingdom_Lance_Co_2,					//31
+    Kingdom_Magic_Corps_2,				//32
+    Kingdom_Archers_2,					//33
+    Kingdom_Cavalry_2,					//34
+    Kingdom_Knights_2,					//35
+    Kingdom_Armored_Co_2,				//36
+    Kingdom_Snipers_2,					//37
+    Kingdom_Magic_Users_2,				//38
+    Kingdom_Brave_Lance_Co_2,			//39
+    Kingdom_Pegasus_Co_2,				//40
+    Kingdom_Wyvern_Co_2,				//41
+    Kingdom_Heavy_Soldiers_2,			//42
+    Kingdom_Holy_Knights_2,				//43
+    Kingdom_Heavy_Knights_2,			//44
+    Royal_Guards_2,						//45
+    Kingdom_Priests_2,					//46
+    Blue_Lion_Knights_2,				//47
+    Blue_Lion_Magic_Corps_2,			//48
+    Blue_Lion_Dancers_2,				//49
+    Alliance_Infantry_2,				//50
+    Alliance_Duelists_2,				//51
+    Alliance_Magic_Corps_2,				//52
+    Alliance_Archers_2,					//53
+    Alliance_Cavalry_2,					//54
+    Alliance_Knights_2,					//55
+    Alliance_Armored_Co_2,				//56
+    Alliance_Snipers_2,					//57
+    Alliance_Magic_Users_2,				//58
+    Alliance_Veteran_Duelists_2,		//59
+    Alliance_Pegasus_Co_2,				//60
+    Alliance_Wyvern_Co_2,				//61
+    Alliance_Pavise_Co_2,				//62
+    Alliance_Physicians_2,				//63
+    Alliance_Sages_2,					//64
+    Alliance_Master_Archers_2,			//65
+    Alliance_Guard_2,					//66
+    Golden_Deer_Wyvern_Co_2,			//67
+    Golden_Deer_Archers_2,				//68
+    Golden_Deer_Cavalry_2,				//69
+    Supreme_Armored_Co_2,				//70
+	King_of_Lions_Corps_2,				//71
+	Immortal_Corps_2,					//72
+	Vestra_Sorcery_Engineers_2,			//73
+	Aegir_Astral_Knights_2,				//74
+	Hevring_Prayer_Troops_2,			//75
+	Bergliez_War_Group_2,				//76
+	Varley_Archers_2,					//77
+	Opera_Co_Volunteers_2,				//78
+	Brigid_Hunters_2,					//79
+	Duscur_Heavy_Soldiers_2,			//80
+	Fraldarius_Soldiers_2,				//81
+	Gaspard_Knights_2,					//82
+	Gautier_Knights_2,					//83
+	Church_Soldiers_2,					//84
+	School_of_Sorcery_Soldiers_2,		//85
+	Galatea_Pegasus_Co_2,				//86
+	Gloucester_Knights_2,				//87
+	Leicester_Mercenaries_2,			//88
+	Victor_Private_Military_2,			//89
+	Ordelia_Sorcery_Co_2,				//90
+	Edmund_Troops_2,					//91
+	Goneril_Valkyries_2,				//92
+	Sauin_Militia_2,					//93
+	Cichol_Wyvern_Co_2,					//94
+	Cethleann_Monks_2,					//95
+	Jeralts_Mercenaries_2,				//96
+	Reaper_Knights_Battalion_2,			//97
+	Secret_Transport_Force_2,			//98
+	Character_exclusive_spare_6_2,		//99
+	Remire_Militia_2,					//100
+	Empire_Youths_2,					//101
+	Kingdom_Youths_2,					//102
+	Alliance_Youths_2,					//103
+	Spare1_2,							//104
+	Duscur_Infantry_2,					//105
+	Almyra_Mercenaries_2,				//106
+	Brigid_Mercenaries_2,				//107
+	Morfis_Magic_Corps_2,				//108
+	Seiros_Brawlers_2,					//109
+	Empire_Brawlers_2,					//110
+	Kingdom_Brawlers_2,					//111
+	Alliance_Brawlers_2,				//112
+	Seiros_Armored_Co_2,				//113
+	Seiros_Archers_2,					//114
+	Essar_Research_Group_2,				//115
+	Holsts_Chosen_2,					//116
+	Dahlman_Guard_2,					//117
+	Dahlman_Magic_Co_2,					//118
+	Dahlman_Armored_Group_2,			//119
+	Dahlman_PMC_2,						//120
+	SpareBat3_2,						//121
+	SpareBat4_2,						//122
+	SpareBat5_2,						//123
+	SpareBat6_2,						//124
+	SpareBat7_2,						//125
+	SpareBat8_2,						//126
+	SpareBat9_2,						//127
+	SpareBat10_2,						//128
+	SpareBat11_2,						//129
+	Iron_Kings_Thieves_2,				//130
+	Gaspard_Militia_2,					//131
+	Gaspard_Knights1_2,					//132
+	West_Church_Corps_2,				//133
+	West_Church_Mercenaries_2,			//134
+	West_Church_Sages_2,				//135
+	West_Church_Pegasus_Co_2,			//136
+	West_Church_Knights_2,				//137
+	Mysterious_Infantry_2,				//138
+	Mysterious_Magic_Corps_2,			//139
+	Mysterious_Magic_Users_2,			//140
+	Miklan_Private_Militia_2,			//141
+	Reaper_Infantry_2,					//142
+	Reaper_Knights_2,					//143
+	Rampaging_Villagers_2,				//144
+	Solon_Subordinates_2,				//145
+	Kronya_Subordinates_2,				//146
+	Pallardo_Bodyguards_2,				//147
+	Rowe_Knights_2,						//148
+	House_Rowe_Archers_2,				//149
+	Rowe_Armored_Co_2,					//150
+	Rowe_Cavalry_2,						//151
+	Daphnel_Duelists_2,					//152
+	Almyra_Wyvern_Co_2,					//153
+	Almyra_Cavalry_2,					//154
+	Dark_Infantry_2,					//155
+	Dark_Magic_Corps_2,					//156
+	Einherjar_2,						//157
+	Enhanced_Infantry_2,				//158
+	Enhanced_Heavy_Co_2,				//159
+	Enhanced_Cavalry_2,					//160
+	Enhanced_Wyvern_Co_2,				//161
+	Ancient_Infantry_2,					//162
+	Ancient_Armored_Co_2,				//163
+	Ancient_Cavalry_2,					//164
+	Ancient_Wyvern_Co_2,				//165
+	Phantasmal_Infantry_2,				//166
+	Phantasmal_Cavalry_2,				//167
+	Phantasmal_Wyvern_Co_2,				//168
+	Duscur_Infantry__2,					//169
+	Duscur_Cavalry_2,					//170
+	Dominic_Cavalry_2,					//171
+	Merchant_Military_2,				//172
+	Battalion_Thieves_2,				//173
+	Battalion_Rogues_2,					//174
+	Battalion_Bandits_2,				//175
+	Battalion_Pirates_2,				//176
+	Arundel_Magic_Corps_2,				//177
+	Mysterious_Wyvern_Co_2,				//178
+	Dark_Wyvern_Co_2,					//179
+	Ancient_Sorcerers_2,				//180
+	Enhanced_Sorcerers_2,				//181
+	Phantasmal_Magic_Corps_2,			//182
+	Phantasmal_Archers_2,				//183
+	Gaspard_Archers_2,					//184
+	Thief_Marksmen_2,					//185
+	Cliff_Bandit_Marksmen_2,			//186
+	Pirate_Marksmen_2,					//187
+	West_Church_Archers_2,				//188
+	Flame_Emperor_Co_2,					//189
+    Mockingbird_Thieves_2,				//190
+    Leicester_Dicers_Corps_2,			//191
+    Nuvelle_Flier_Corps_2,				//192
+    Timotheos_Magi_Corps_2,				//193
+    Thief_Pegasus_Corps_2,				//194
+    Pirate_Pegasus_Corps_2,				//195
+    Bandit_Pegasus_Corps_2,				//196
+    Nuvelle_Chamberlain_Co_2,			//197
+    Nuvelle_Attendants_Co_2,			//198
+    Nuvelle_Stewards_Co_2,				//199
+    InvalidBattalion_2 = 200,			//200
+    NoBattalion_2 = 65535           	//65535
+};
+
+enum<ubyte> QuestID{
+    Informal_Introductions,
+    Set_Group_Tasks,
+    Try_Your_Hand_at_Tutoring2,
+    Try_Your_Hand_at_Tutoring3,
+    Try_Your_Hand_at_Tutoring4,
+    Tending_to_the_Saints,
+    Learn_How_to_Handle_Horses,
+    Creative_Cuisines,
+    A_Passion_for_Music,
+    Fresh_Catch,
+    Green_Thumb_Beginnings,
+    Share_a_Bite,
+    Try_Trading,
+    Lost_Found,
+    Find_the_Warrior,
+    Only_the_Bold,
+    Tea_for_Two,
+    Trade_Exchange_Students,
+    Forge_the_Way,
+    Collect_Sheet_Music,
+    Try_Certification_Exams,
+    Unlock_Report_Cards,
+    Bolstering_Forces,
+    A_Visit_to_Jeralt,
+    The_White_Heron_Cup,
+    Learning_from_the_Best,
+    Leading_the_Charge,
+    Words_of_Wisdom,
+    Tutorial_Request_Dummy5,
+    Tutorial_Request_Dummy6,
+    Tutorial_Request_Dummy7,
+    Tutorial_Request_Dummy8,
+    Tutorial_Request_Dummy9,
+    Tutorial_Request_Dummy10,
+    Tutorial_Request_Dummy11,
+    Tutorial_Request_Dummy12,
+    Tutorial_Request_Dummy13,
+    Tutorial_Request_Dummy14,
+    Tutorial_Request_Dummy15,
+    Tutorial_Request_Dummy16,
+    Herbal_Remedies,
+    Troubling_Rumors,
+    Know_Your_Enemy42,
+    Know_Your_Enemy43,
+    Know_Your_Enemy44,
+    In_Hiding,
+    No_Stone_Unturned46,
+    Fishing_Tournament,
+    Catherines_Request,
+    Missing_Students,
+    Eagle_Eye,
+    No_Stone_Unturned51,
+    No_Stone_Unturned52,
+    Shamirs_Request,
+    Story_Quest_Dummy_4,
+    Story_Quest_Dummy_5,
+    Story_Quest_Dummy_6,
+    Story_Quest_Dummy_7,
+    Story_Quest_Dummy_8,
+    Story_Quest_Dummy_9,
+    Story_Quest_Dummy_10,
+    Story_Quest_Dummy_11,
+    Story_Quest_Dummy_12,
+    Story_Quest_Dummy_13,
+    Story_Quest_Dummy_14,
+    Story_Quest_Dummy_15,
+    Story_Quest_Dummy_16,
+    Story_Quest_Dummy_17,
+    Story_Quest_Dummy_18,
+    Story_Quest_Dummy_19,
+    Special_Delivery,
+    Carried_Away,
+    Secret_Messenger,
+    Herbs_Fit_for_a_Horse,
+    Adventures_in_Wood_Carving,
+    Library_Request_1,
+    Library_Request_2,
+    Library_Request_3,
+    Maintaining_Your_Training,
+    Nostalgic_for_Remire,
+    Supply_Run80,
+    Supply_Run81,
+    Supply_Run82,
+    Supply_Run83,
+    Worried_Warrior,
+    Fishing_for_the_Big_One,
+    Taking_Care_of_Business86,
+    Taking_Care_of_Business87,
+    Taking_Care_of_Business88,
+    Taking_Care_of_Business89,
+    Banish_the_Bandits,
+    The_Best_of_the_Best,
+    Dealing_with_Deserters,
+    The_Cream_of_the_Crop,
+    Pirates_in_the_North,
+    Something_to_Prove,
+    Unused_Merchant_Liberation_2_Overlord,
+    Unused_Merchant_Liberation_2_Kingdom,
+    Unused_Merchant_Liberation_2_Alliance,
+    Unused_Merchant_Liberation_2_Empire,
+    A_Piece_of_History,
+    Undercover_Commerce,
+    Clearing_the_Way,
+    One_Persons_Trash_is_Anothers_Treasure,
+    Floral_Tribute104,
+    Floral_Tribute105,
+    Floral_Tribute106,
+    Investment_Request,
+    The_Secret_Shop,
+    Spare_Quest_109,
+    Abyss_Rumor110,
+    Abyss_Rumor111,
+    Abyss_Rumor112,
+    Fighting_Alongside_Death,
+    Annas_Heirloom114,
+    Feline_and_Canine_Friends,
+    Sauna_Time,
+    A_Servants_Essentials,
+    A_Question_of_Conduct118,
+    A_Question_of_Conduct119,
+    Annas_Heirloom120,
+    A_Peculiar_Trend121,
+    A_Peculiar_Trend122,
+    A_Peculiar_Trend123,
+    A_Peculiar_Trend124,
+    Roster_Retrieval,
+    Thieves_at_the_Throat,
+    Banned_Books,
+    Flowers_for_Her,
+    Esteemed_Company,
+    Divining_Destinies130,
+    Learning_to_Teach131,
+    Divining_Destinies132,
+    Learning_to_Teach133,
+    Spare_Quest_134,
+    Spare_Quest_135,
+    Spare_Quest_136,
+    Spare_Quest_137,
+    Spare_Quest_138,
+    Spare_Quest_139,
+    Spare_Quest_140,
+    Spare_Quest_141,
+    Spare_Quest_142,
+    Spare_Quest_143,
+    Spare_Quest_144,
+    Spare_Quest_145,
+    Spare_Quest_146,
+    Spare_Quest_147,
+    Spare_Quest_148,
+    Spare_Quest_149,
+    Spare_Quest_150,
+};
+
+struct sFile{
+	struct FileSections {
+    	int Number_of_Sections;
+    	struct {
+        	int Ptr;
+        	int SectionSize;
+    	} SectionPointers[Number_of_Sections];
+	}Sections;
+	struct sTable0{
+		struct DataSection {
+    		int magic<bgcolor=cRed>;
+    		int NumEntries<bgcolor=cBlue>;
+    		int size<bgcolor=cGreen>;
+    		int padding[13]<hidden=false,open=suppress>;
+    		if(magic != 0x16121900){
+        		Printf(Str("found magic ID of 0x%x - Expecting 0x16121900\n",magic));
+        		Printf("Parsing may have been broken by incorrect data formatting, incorrect file or file version, etc.\n");
+        		Exit(-1);
+    		}
+		}SectionHeader;
+		for(i=0;i<SectionHeader.NumEntries;i++){
+			struct sData0{
+				 local QuestID Name=i;
+				 ushort GivesRenown;
+				 ushort GivesMoney;
+				 Names character;
+				 ushort unkShortArray0x6[7];
+				 CharID TargetCharacter0;
+				 CharID TargetCharacter1;
+				 CharID TargetCharacter2;
+				 BattalionIDShort Battalion0;
+				 BattalionIDShort Battalion1;
+				 BattalionIDShort Battalion2;
+				 GeneralMerchantItems Items[4];
+				 ubyte unkByte[3];
+				 byte RedOrMandatoryQuestMaybe;
+				 ubyte unkByte0[2];
+				 byte unkByte0x2e;
+				 byte BaseRecommendedLevel;
+				 ubyte Aux;
+				 AuxUnitBin EnemyBin;
+				 ubyte AuxUnitIndex;
+				 ScenarioName Scenario;
+			}data0<read=Str("%-25s %s",EnumToString(character),EnumToString(Name))>;   
+		}
+	}Table0<name="Table0">;
+	
+	struct sTable1{
+		DataSection SectionHeader;
+		for(i=0;i<SectionHeader.NumEntries;i++){
+			struct sdata1{
+				byte unkByte[40];
+			}data1;
+		}
+	}Table1<name="", comment="">;
+	
+	struct sTable2{
+		DataSection SectionHeader;
+		for(i=0;i<SectionHeader.NumEntries;i++){
+			struct sdata2{
+				ushort GivesRenown;
+				ushort GivesMoney;
+				GeneralMerchantItems Item0;
+				GeneralMerchantItems Item1;
+				GeneralMerchantItems Item2;
+			}data2;
+		}
+	}Table2<name="", comment="">;
+}File<open=true>;
