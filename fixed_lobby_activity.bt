@@ -127,6 +127,77 @@ enum<ubyte> SaveBlockID{
 	Anna_Playable_SBI = 44,
 };
 
+struct sSilverSnowEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="CH 14 SS",comment="MonasteryScriptID = 19">;
+	ubyte bit1 : 1<name="CH 15 SS",comment="MonasteryScriptID = 20">;
+	ubyte bit2 : 1<name="CH 16 SS",comment="MonasteryScriptID = 21">;
+	ubyte bit3 : 1<name="CH 18 SS",comment="MonasteryScriptID = 22">;
+	ubyte bit4 : 1<name="CH 19 SS",comment="MonasteryScriptID = 23">;
+	ubyte bit5 : 1<name="CH 20 SS",comment="MonasteryScriptID = 24">;
+	ubyte bit6 : 1<name="CH 21 SS",comment="MonasteryScriptID = 25">;
+	ubyte bit7 : 1<name="Unused",comment="MonasteryScriptID = 26">;
+};
+struct sCrimsonFlowerEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="CH 12 CF",comment="MonasteryScriptID = 13, alternative monastery at Tower of Black Winds">;
+	ubyte bit1 : 1<name="CH 13 CF",comment="MonasteryScriptID = 14">;
+	ubyte bit2 : 1<name="CH 14 CF",comment="MonasteryScriptID = 15">;
+	ubyte bit3 : 1<name="CH 15 CF",comment="MonasteryScriptID = 16">;
+	ubyte bit4 : 1<name="CH 16 CF",comment="MonasteryScriptID = 17">;
+	ubyte bit5 : 1<name="CH 17 CF",comment="MonasteryScriptID = 18">;
+	ubyte bit6 : 1<name="Does nothing",comment="handled in another data field">;
+	ubyte bit7 : 1<name="Does nothing",comment="handled in anoth1er data field">;
+};
+struct sWhiteCloudsEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="Chapter 0",comment="MonasteryScriptID = 0">;
+	ubyte bit1 : 1<name="Chapter 1",comment="MonasteryScriptID = 1">;
+	ubyte bit2 : 1<name="Chapter 2",comment="MonasteryScriptID = 2">;
+	ubyte bit3 : 1<name="Chapter 3",comment="MonasteryScriptID = 3">;
+	ubyte bit4 : 1<name="Chapter 4",comment="MonasteryScriptID = 4">;
+	ubyte bit5 : 1<name="Chapter 5",comment="MonasteryScriptID = 5">;
+	ubyte bit6 : 1<name="Chapter 6",comment="MonasteryScriptID = 6">;
+	ubyte bit7 : 1<name="Chapter 7",comment="MonasteryScriptID = 7">;
+	ubyte bit8 : 1<name="Chapter 8",comment="MonasteryScriptID = 8">;
+	ubyte bit9 : 1<name="Chapter 9",comment="MonasteryScriptID = 9">;
+	ubyte bit10 : 1<name="Chapter 10",comment="MonasteryScriptID = 10">;
+	ubyte bit11 : 1<name="Chapter 11",comment="MonasteryScriptID = 11">;
+	ubyte bit12 : 1<name="Chapter 12 NonCF",comment="MonasteryScriptID = 12">;
+	ubyte bit13 : 1<name="Does nothing",comment="handled in another data field">;
+	ubyte bit14 : 1<name="Does nothing",comment="handled in another data field">;
+	ubyte bit15 : 1<name="Does nothing",comment="handled in another data field">;
+};
+
+struct sAzureMoonEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="CH 14 AM", comment="MonasteryScriptID = 27">;
+	ubyte bit1 : 1<name="CH 15 AM", comment="MonasteryScriptID = 28">;
+	ubyte bit2 : 1<name="CH 16 AM", comment="MonasteryScriptID = 29">;
+	ubyte bit3 : 1<name="CH 17 AM", comment="MonasteryScriptID = 30">;
+	ubyte bit4 : 1<name="CH 18 AM", comment="MonasteryScriptID = 31">;
+	ubyte bit5 : 1<name="CH 19 AM", comment="MonasteryScriptID = 32">;
+	ubyte bit6 : 1<name="CH 20 AM", comment="MonasteryScriptID = 33">;
+	ubyte bit7 : 1<name="CH 21 AM", comment="MonasteryScriptID = 34">;
+};
+
+struct sRoutesEnabledBitMask{
+	ubyte bit0 : 1<name="Silver Snow", comment="Route=0">;
+	ubyte bit1 : 1<name="Azure Moon", comment="Route=1">;
+	ubyte bit2 : 1<name="Verdant Wind", comment="Route=2">;
+	ubyte bit3 : 1<name="Crimson Flower", comment="Route=3">;
+	ubyte bit4 : 1<name="Prologue", comment="Route=4">;
+	ubyte bit5 : 1<name="Cindered Shadows", comment="Route=5">;
+	ubyte bit6 : 1<name="Does Nothing?", comment="???">;
+	ubyte bit7 : 1<name="Does Nothing?", comment="???">;
+};
+struct sVerdantWindEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="CH 14 VW", comment="MonasteryScriptID = 35">;
+	ubyte bit1 : 1<name="CH 15 VW", comment="MonasteryScriptID = 36">;
+	ubyte bit2 : 1<name="CH 16 VW", comment="MonasteryScriptID = 37">;
+	ubyte bit3 : 1<name="CH 17 VW", comment="MonasteryScriptID = 38">;
+	ubyte bit4 : 1<name="CH 18 VW", comment="MonasteryScriptID = 39">;
+	ubyte bit5 : 1<name="CH 19 VW", comment="MonasteryScriptID = 40">;
+	ubyte bit6 : 1<name="CH 20 VW", comment="MonasteryScriptID = 41">;
+	ubyte bit7 : 1<name="CH 21 VW", comment="MonasteryScriptID = 42">;
+};
+
 struct UnitPreferences{ //0
 	for (j = 0; j < EntryCount; j++){
 		struct Unit {
@@ -177,6 +248,19 @@ struct Mealstuff{ //2
 	}
 };
 
+struct Block3{ //3
+	for (j = 0; j < EntryCount; j++){
+		struct Block3_Entry{
+			sWhiteCloudsEnabledChaptersBitMask WhiteCloudsAdviceBoxAvailability<read = Str("%d %d %d %d  %d %d %d %d  %d %d %d %d  %d",bit0,bit1,bit2,bit3, bit4,bit5,bit6,bit7, bit8,bit9,bit10,bit11, bit12)>;
+			CharID character<bgcolor=cRed>;
+            sVerdantWindEnabledChaptersBitMask VerdantWindsAdviceBoxAvailability<read = Str("%d %d %d %d  %d %d %d %d",bit0,bit1,bit2,bit3, bit4,bit5,bit6,bit7)>;
+            sSilverSnowEnabledChaptersBitMask SilverSnowAdviceBoxAvailability<read = Str("%d %d %d %d  %d %d %d",bit0,bit1,bit2,bit3, bit4,bit5,bit6)>;
+            sCrimsonFlowerEnabledChaptersBitMask CrimsonFlowerAdviceBoxAvailability<read = Str("%d %d %d %d  %d %d",bit0,bit1,bit2,bit3, bit4,bit5)>;
+            sAzureMoonEnabledChaptersBitMask AzureMoonAdviceBoxAvailability<read = Str("%d %d %d %d  %d %d %d %d",bit0,bit1,bit2,bit3, bit4,bit5,bit6,bit7)>;
+		}entry<read=EnumToString(character), bgcolor=cLtBlue>;
+	}
+};
+
 struct File {
     int count<bgcolor=cBlack>;
     struct PointerPair {
@@ -211,6 +295,10 @@ struct File {
             else if(i==2){
             	Mealstuff MealPreference;
                 name="Meals Preference";
+            }
+            else if(i==3){
+            	Block3 AdviceBox;
+                name="Advice Box Availability";
             }
             else //other stuff, use generic struct in that case
             {
