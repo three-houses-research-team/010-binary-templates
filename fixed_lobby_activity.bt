@@ -709,6 +709,19 @@ struct Block15{ //15
 	}
 };
 
+struct Block16{ //16
+	for (j = 0; j < EntryCount; j++){
+		struct Entry16 {
+			float CameraPosY;
+			float CameraPosX;
+			float CameraPosZ;
+			float CameraTargetY;
+			float CameraTargetX;
+			float CameraTargetZ;
+		}entry16<name="Camera position?",read = Str("(%5d, %5d, %5d) - (%5d, %5d, %5d)",CameraPosY,CameraPosX,CameraPosZ,CameraTargetY,CameraTargetX,CameraTargetZ), comment="Entry is selected randomly?">;
+	}
+};
+
 struct File {
     int count<bgcolor=cBlack>;
     struct PointerPair {
@@ -791,6 +804,10 @@ struct File {
             else if (i==15){
             	Block15 SaunaSupportBonuses;
                 name = "Sauna Support Bonuses";
+            }
+            else if (i==16){
+            	Block16 SaunaRandomCamera;
+                name = "Sauna Random Camera Positions";
             }
             else //other stuff, use generic struct in that case
             {
