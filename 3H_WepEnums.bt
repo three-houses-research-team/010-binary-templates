@@ -1303,3 +1303,51 @@ enum<ubyte> BattalionID
 	West_Church_Archers,
 	Flame_Emperor_Co,
 };
+
+enum<ubyte> GambitAnimation {
+    Charging_Forward,
+    Fire_Arrows,
+    Charging_from_sides,
+    Fire_Attack,
+    Magic_Attack,
+    Supportive,
+    Healing
+};
+
+enum<ubyte> GambitMovement {
+    No_Enemy_Movement,
+    Push_Enemy = 1,
+    Pulls_Enemy = 2,
+    Reversal = 3,
+    Move_Enemy_Behind = 4,
+};
+
+enum<ubyte> GambitTargeting {
+    T_Shape = 1,
+    Triangle_4x3x1 = 2,
+    Line_1x2 = 3,
+    Rectangle_4x2 = 4,
+    Diamond_Shape = 5,
+    Line_1x4 = 6,
+    Line_3x1 = 7,
+    Rectangle_5x2 = 8,
+    Rectangle_8x4 = 9,
+    Rectangle_6x3 = 10,
+    Rectangle_7x4 = 11,
+    Rectangle_3x2 = 12,
+    Line_1x3 = 13,
+    UmbralSurge_Aoe = 14,
+};
+
+enum<ubyte> GambitEffects {
+    Poison_Effect = 2,
+    Ice_Effect  = 3,
+    Lightning_Effect = 4,
+    Fire_Terrian = 7,
+};
+
+enum<byte> StaggeringBlow {
+    Thorns_of_Ruin,    Heavy_Strike,
+    Poison_Breath,    Flame_Breath,    Brimstone_Breath,    Arm_Press,    Annihilation,    Light_Lance_Barrage,    Titanomachy,    Light_Breath,
+    Aurora_Breath,    Hoarfrost,    Gale,    Rapids,    Sky_Fissure,    Sandstorm,    Cyclone,    Wilted_Flower,    Umbral_Surge,
+};
