@@ -279,7 +279,7 @@ struct sFile{
         DataSection SectionHeader;
         for(i=0;i<SectionHeader.NumEntries;i++){
             struct sRandomItems{
-                WeapID weapon<comment="For Weapons, the actual item granted is -10 of what's written here (i.e.: 72 Ukonvasara actually gives you 62 Sword of the Creator ), but for equips like shields, their index is the same as what's written">;
+                GeneralMerchantItems weapon;
                 byte BaseDurabilityPercent<name="Base Durability%",comment="if -1, then it has no durability (i.e. equips/ broken/ rusted)">;
                 AbyssItemPool AbyssPool<name="Abyss Item Pool",comment="determines the tier of the item when rolling">;
                 ubyte Enabled;
