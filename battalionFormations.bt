@@ -1,0 +1,59 @@
+//------------------------------------------------
+//--- 010 Editor v15.0.2 Binary Template
+//
+//      File: 8.bt
+//   Authors: ReichardTheThird
+//   Version: 1.0
+//   Purpose: Parse the file named 8.bin, which controls XY positions of Battalion NPC models relative to the main unit
+//  Category: 
+// File Mask: 8.bin
+//  ID Bytes: 
+//   History:
+//   1.0    09/03/25 ReichardTheThird: Started this, completed this
+//------------------------------------------------
+
+LittleEndian();
+local int i =0;
+
+enum <ubyte> names{
+	//idk
+	infantry_,
+    infantry,
+	cavalry_,
+    cavalry,
+    armor_,
+    armor,
+    flier_,
+    flier
+};
+
+struct sBModelPositionsEntry{
+	struct sDataSection{
+		uint ItemMagic01<bgcolor=cRed>;
+    	uint numItem01<bgcolor=cRed>;
+    	uint SizeOfItemBlock01<bgcolor=cRed>;
+    }DataSection;
+    struct ItemHeaderPadding01 {
+        byte Padding[0x34];
+    }itemheaderpadding01<name="Padding", bgcolor=cBlue>;
+	for(i=0; i<DataSection.numItem01;i++){
+		struct sBModelPositions{
+        	local names n = i;
+			short defaultX;
+			short defaultY;
+			short XOffset[16];
+			short YOffset[16];
+		}BModelPositions<read=EnumToString(n)>;
+    }
+};
+
+struct sFile {
+	struct sFileSection{
+		uint header;
+    	uint ptr;
+    	uint size ;
+    }FileSection;
+    
+	FSeek(FileSection.ptr);
+	sBModelPositionsEntry BModels;
+}File<open=true>;
