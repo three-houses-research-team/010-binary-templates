@@ -861,6 +861,25 @@ byte unk11<bgcolor=cBlue,name="unk0", comment="A total mystery">;
 
 }TourneyData;
 
+enum<byte> Preferences {
+    Neutral_p = 0,
+    Like_p = 1,
+    Dislike_p = -1,
+
+};
+
+struct UnitPreferences{ //0
+	for (j = 0; j < EntryCount; j++){
+		struct Unit {
+			CharacterBaseID character<bgcolor=cRed>;
+			Preferences Choir<name="Choir Preference", bgcolor=cSilver>;
+			Preferences Cooking<name="Cooking Preference", bgcolor=cLtBlue>;
+			short unkShort0x4;
+		}preferences<name="Unit", read=EnumToString(character)>;
+	}
+};
+
+
 struct File {
     int count<bgcolor=cBlack>;
     struct PointerPair {
@@ -868,7 +887,7 @@ struct File {
         int length<format=hex>;
     } pointertable[count]<bgcolor=cRed>;
     
-    local int i = 0;
+    local int i,j = 0;
     for(i = 0; i < count; i++){
         FSeek(pointertable[i].start);
         struct Entry {
@@ -884,11 +903,16 @@ struct File {
                 TourneyData tourneyData[EntryCount];
                 name = "Tourney";
             }
+            else if(i==0){
+            	UnitPreferences ActivityPreferences;
+                name="Activity Preferences";
+            }
             else //other stuff, use generic struct in that case
             {
                 struct Entires {
                     byte unk[entry.Size]<bgcolor=cBlue>;
                 }entires[EntryCount];
+                name = Str("Table %d",i);
             }
         } entry<name=name>;
     }
