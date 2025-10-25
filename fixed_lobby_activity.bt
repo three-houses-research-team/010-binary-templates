@@ -78,6 +78,55 @@ enum<ubyte> FactionMealPreference{
       ChildrenOfTheGoddess_FMP,
 };
 
+enum<ubyte> SaveBlockID{
+    MaleByleth_SBI = 0,
+	FemaleByleth_SBI = 1,
+	Edelgard_2_SBI = 2,
+	Dimitri_3_SBI = 3,
+	Claude_4_SBI = 4,
+	Hubert_5_SBI = 5,
+	Ferdinand_6_SBI = 6,
+	Linhardt_7_SBI = 7,
+	Caspar_8_SBI = 8,
+	Bernadetta_9_SBI = 9,
+	Dorothea_10_SBI = 10,
+	Petra_11_SBI = 11,
+	Dedue_12_SBI = 12,
+	Felix_13_SBI = 13,
+	Ashe_14_SBI = 14,
+	Sylvain_15_SBI = 15,
+	Mercedes_16_SBI = 16,
+	Annette_17_SBI = 17,
+	Ingrid_18_SBI = 18,
+	Lorenz_19_SBI = 19,
+	Raphael_20_SBI = 20,
+	Ignatz_21_SBI = 21,
+	Lysithea_22_SBI = 22,
+	Marianne_23_SBI = 23,
+	Hilda_24_SBI = 24,
+	Leonie_25_SBI = 25,
+	Seteth_26_SBI = 26,
+	Flayn_27_SBI = 27,
+	Hanneman_28_SBI = 28,
+	Manuela_29_SBI = 29,
+	Gilbert_30_SBI = 30,
+	Alois_31_SBI = 31,
+	Catherine_32_SBI = 32,
+	Shamir_33_SBI = 33,
+	Cyril_34_SBI = 34,
+	Jeralt_35_SBI = 35,
+	Rhea_36_SBI = 36,  
+	InvalidSothis_SBI = 37, 
+	
+	Yuri_SBI = 38,
+	Balthus_SBI = 39,
+	Constance_SBI = 40,
+	Hapi_SBI = 41,
+	idkAelfric_SBI = 42,
+	Jeritza_Playable_SBI = 43,
+	Anna_Playable_SBI = 44,
+};
+
 struct UnitPreferences{ //0
 	for (j = 0; j < EntryCount; j++){
 		struct Unit {
@@ -114,6 +163,20 @@ struct sShareAMeal{ //1
 	}
 };
 
+struct Mealstuff{ //2
+	for (j = 0; j < EntryCount; j++){
+		struct MealPreferences {
+			local Meal name=j;
+			for(k =0; k<45;k++){
+				struct sCharacterPreference{
+					local SaveBlockID SaveID=k;
+					Preferences Preference;
+				}CharacterPreference<read=Str("%-9s - %s",EnumToString(Preference), EnumToString(SaveID))>;
+			}
+		}mealPreferences<name="Meal Preferences", bgcolor=cSilver, read = EnumToString(name)>;
+	}
+};
+
 struct File {
     int count<bgcolor=cBlack>;
     struct PointerPair {
@@ -121,7 +184,7 @@ struct File {
         int length<format=hex>;
     } pointertable[count]<bgcolor=cRed>;
     
-    local int i,j = 0;
+    local int i,j,k = 0;
     for(i = 0; i < count; i++){
         FSeek(pointertable[i].start);
         struct Entry {
@@ -144,6 +207,10 @@ struct File {
             else if(i==1){
             	sShareAMeal Meals;
                 name="Meals";
+            }
+            else if(i==2){
+            	Mealstuff MealPreference;
+                name="Meals Preference";
             }
             else //other stuff, use generic struct in that case
             {
