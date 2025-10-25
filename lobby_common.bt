@@ -2,10 +2,11 @@
 //--- 010 Editor v9.0.2 Binary Template
 //
 //      File: fixed_lobby_common.bin / 24.bin / previously known as TeaTime.bin
-//   Authors: DeathChaos
-//   Version: 1.00
+//   Authors: DeathChaos, Triabolical, ReichardTheThird
+//   Version: 1.01
 //   Purpose: Three Houses character file mapping
 //   History
+//	 1.01	 ----------  Triabolical - added Tea time topic responses
 //   1.00    2019-08-31  DeathChaos - started thisProficiencies
 //------------------------------------------------
 
@@ -401,7 +402,23 @@ struct File{
 			ubyte pad;
 		}finalteacomment[numFinalComment]<name="Final Comment",read=GetName4>;
 	}finalcomment<name="Final Comment",bgcolor=cLtRed>;
-
+	
+    FSeek(sectionpointers.PointerToTeaAnswers1);
+	struct TeaTopics{ //12
+		uint32 Unk5Magic;
+		uint32 numunk5;
+		uint32 SizeOfUnk5;
+		byte Padding[0x34];
+		for (i = 0; i < numunk5; ++i){
+			struct TeaResponse {
+				byte response[SizeOfUnk5];
+			}answer;
+		}
+		byte padding[2]<hidden=true>;
+	}tea;
+	
+	FSeek(sectionpointers.PointerToTeaAnswers2);
+	TeaTopics Tea2<name="Tea Time Topic Responses 2",bgcolor=cLtRed>; //13
 	
 }file;
 
