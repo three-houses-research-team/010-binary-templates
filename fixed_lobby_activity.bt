@@ -607,6 +607,25 @@ struct SeedRank{ //9
 	}
 };
 
+struct sGardeningScoreThresholds{ //10
+	for (j = 0; j < EntryCount; j++){
+		struct sScoreThresholds {
+			ubyte MinThreshold<comment="value >= MinT">;
+			ubyte MaxThreshold<comment="value <= MaxT">;
+			ubyte ScoreModifier;
+			ubyte LowYields_MaxIndex;
+			
+			ubyte HighYields_MaxIndex;
+			ubyte LowYields_MinIndex;
+			ubyte HighYields_MinIndex;
+			ubyte LowYieldsChance<comment="not actually used since L+H=100, always calcs with HighYieldsChance instead. Note: I can't remember how I determined this so idk">;
+			
+			ubyte HighYieldsChance<comment="grants HighYields if roll is less than this value">;
+		}ScoreThresholds<name="Thresholds",read = MinThreshold>;
+	}
+    byte padding2[2];
+};
+
 struct File {
     int count<bgcolor=cBlack>;
     struct PointerPair {
@@ -665,6 +684,10 @@ struct File {
             else if (i==9){
             	SeedRank SeedRanks;
                 name = "Seed Ranks";
+            }
+            else if (i==10){
+            	sGardeningScoreThresholds GardeningScoreThreholds;
+                name = "Gardening Score Thresholds";
             }
             else //other stuff, use generic struct in that case
             {
