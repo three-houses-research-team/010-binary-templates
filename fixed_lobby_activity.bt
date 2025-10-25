@@ -872,6 +872,7 @@ struct File {
     for(i = 0; i < count; i++){
         FSeek(pointertable[i].start);
         struct Entry {
+        	local string name;
             int magic<bgcolor=cLtGreen>; // should be 00 19 12 16
             if (magic != 0x16121900) Exit(-1);
             int EntryCount<bgcolor=cLtGreen>;
@@ -881,6 +882,7 @@ struct File {
             if(Size == 12)//tourney data
             {
                 TourneyData tourneyData[EntryCount];
+                name = "Tourney";
             }
             else //other stuff, use generic struct in that case
             {
@@ -888,7 +890,7 @@ struct File {
                     byte unk[entry.Size]<bgcolor=cBlue>;
                 }entires[EntryCount];
             }
-        } entry;
+        } entry<name=name>;
     }
 } file;
 
