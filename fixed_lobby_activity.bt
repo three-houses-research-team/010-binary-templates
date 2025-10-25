@@ -11,20 +11,220 @@
 LittleEndian();
 #include "3H_Enums.bt"
 
+enum<ubyte> WeapIDByte
+{
+    Unarmed_,
+    Broken_Sword_,
+    Broken_Lance_,
+    Broken_Axe_,
+    Broken_Bow_,
+    Broken_Gauntlet_,
+    Iron_Sword_,
+    Steel_Sword_,
+    Silver_Sword_,
+    Brave_Sword_,
+    Killing_Edge_,
+    Training_Sword_,
+    Iron_Lance_,
+    Steel_Lance_,
+    Silver_Lance_,
+    Brave_Lance_,
+    Killer_Lance_,
+    Training_Lance_,
+    Iron_Axe_,
+    Steel_Axe_,
+    Silver_Axe_,
+    Brave_Axe_,
+    Killer_Axe_,
+    Training_Axe_,
+    Iron_Bow_,
+    Steel_Bow_,
+    Silver_Bow_,
+    Brave_Bow_,
+    Killer_Bow_,
+    Training_Bow_,
+    Iron_Gauntlets_,
+    Steel_Gauntlets_,
+    Silver_Gauntlets_,
+    Training_Gauntlets_,
+    Levin_Sword_,
+    Bolt_Axe_,
+    Magic_Bow_,
+    Javalin_,
+    Short_Spear_,
+    Spear_,
+    Hand_Axe_,
+    Short_Axe_,
+    Tomahawk_,
+    Longbow_,
+    Mini_Bow_,
+    Armorslayer_,
+    Rapier_,
+    Horseslayer_,
+    Hammer_,
+    Blessed_Lance_,
+    Blessed_Bow_,
+    Devil_Sword_,
+    Devil_Axe_,
+    Wo_Dao_,
+    Crescent_Sickle_,
+    Sword_of_Seiros_,
+    Sword_of_Begalta_,
+    Sword_of_Moralta_,
+    Cursed_Ashiya_Sword_,
+    Sword_or_Zoltan_,
+    Thunderbrand_,
+    Blutgang_,
+    Sword_of_the_Creator_,
+    Lance_of_Zoltan_,
+    Lance_of_Ruin_,
+    Areadbhar_,
+    Luin_,
+    Spear_of_Assal_,
+    Scythe_of_Sariel_,
+    Arrow_of_Indra_,
+    Freikugel_,
+    Crusher_,
+    Axe_of_Ukonvasara_,
+    Axe_of_Zoltan_,
+    Tathlum_Bow_,
+    The_Inexhaustiable_,
+    Bow_of_Zoltan_,
+    Failnaught_,
+    Dragon_Claw_,
+    Mace_,
+    Athame_,
+    Ridill_,
+    Aymr_,
+    Dark_Sword_of_The_Creator_,
+    Venin_Edge_,
+    Venin_Lance_,
+    Venin_Axe_,
+    Venin_Bow_,
+    Mercurius_,
+    Gradivus_,
+    Hauteclere_,
+    Parthia_,
+    Killer_Knuckles_,
+    Aura_Knuckles_,
+    Rusted_Sword_Iron_,
+    Rusted_Sword_Steel_,
+    Rusted_Sword_Silver_,
+    Rusted_Sword_Brave_,
+    Rusted_Sword_Mercurius_,
+    Rusted_Lance_Iron_,
+    Rusted_Lance_Steel_,
+    Rusted_Lance_Silver_,
+    Rusted_Lance_Brave_,
+    Rusted_Lance_Gradivus_,
+    Rusted_Axe_Iron_,
+    Rusted_Axe_Steel_,
+    Rusted_Axe_Silver_,
+    Rusted_Axe_Brave_,
+    Rusted_Axe_Hauteclere_,
+    Rusted_Bow_Iron_,
+    Rusted_Bow_Steel_,
+    Rusted_Bow_Silver_,
+    Rusted_Bow_Brave_,
+    Rusted_Bow_Parthia_,
+    Rusted_Gauntlets_Iron_,
+    Rusted_Gauntlets_Steel_,
+    Rusted_Gauntlets_Silver_,
+    Rusted_Gauntlets_Dragon_Claws_,
+    Iron_Sword_Plus_,
+    Steel_Sword_Plus_,
+    Silver_Sword_Plus_,
+    Brave_Sword_Plus_,
+    Killing_Edge_Plus_,
+    Training_Sword_Plus_,
+    Iron_Lance_Plus_,
+    Steel_Lance_Plus_,
+    Silver_Lance_Plus_,
+    Brave_Lance_Plus_,
+    Killer_Lance_Plus_,
+    Training_Lance_Plus_,
+    Iron_Axe_Plus_,
+    Steel_Axe_Plus_,
+    Silver_Axe_Plus_,
+    Brave_Axe_Plus_,
+    Killer_Axe_Plus_,
+    Training_Axe_Plus_,
+    Iron_Bow_Plus_,
+    Steel_Bow_Plus_,
+    Silver_Bow_Plus_,
+    Brave_Bow_Plus_,
+    Killer_Bow_Plus_,
+    Training_Bow_Plus_,
+    Iron_Gauntlets_Plus_,
+    Steel_Gauntlets_Plus_,
+    Silver_Gauntlets_Plus_,
+    Training_Gauntlets_Plus_,
+    Levin_Sword_Plus_,
+    Bolt_Axe_Plus_,
+    Magic_Bow_Plus_,
+    Javalin_Plus_,
+    Short_Spear_Plus_,
+    Spear_Plus_,
+    Hand_Axe_Plus_,
+    Short_Axe_Plus_,
+    Tomahawk_Plus_,
+    Longbow_Plus_,
+    Mini_Bow_Plus_,
+    Armorslayer_Plus_,
+    Rapier_Plus_,
+    Horseslayer_Plus_,
+    Hammer_Plus_,
+    Blessed_Lance_Plus_,
+    Blessed_Bow_Plus_,
+    Devil_Sword_Plus_,
+    Devil_Axe_Plus_,
+    Wo_Dao_Plus_,
+    Crescent_Sickle_Plus_,
+    Cursed_Ashiya_Sword_Plus_,
+    Sword_or_Zoltan_Plus_,
+    Lance_of_Zoltan_Plus_,
+    Arrow_of_Indra_Plus_,
+    Axe_of_Zoltan_Plus_,
+    Bow_of_Zoltan_Plus_,
+    Dragon_Claw_Plus_,
+    Mace_Plus_,
+    Venin_Edge_Plus_,
+    Venin_Lance_Plus_,
+    Venin_Axe_Plus_,
+    Vinen_Bow_Plus_,
+    Killer_Knuckles_Plus_,
+    Aura_Knuckles_Plus_,
+    Sublime_Sword_of_the_Creator_,
+    Dark_Thunderbrand_,
+    Dark_Blutgang_,
+    Dark_Lance_of_Ruin_,
+    Dark_Areadbhar_,
+    Dark_Luin_,
+    Dark_Freikugel_,
+    Dark_Crusher_,
+    Dark_Failnaught_,
+};
+
 typedef struct TOURNEYDATA {
-
-ubyte unk0<bgcolor=cBlue,name="For Replacement slot", comment="Set to 255 for no replacement(allow a clone.). Match this to specify an alternative character slot if Character Base is recruited to the player's party.">;
-byte unk1<bgcolor=cBlue,name="Possibly gender", comment="put a comment here">;
-Names unk2<bgcolor=cBlue,name="Character Base (CharID)", comment="See Person Data">;
-EquipID unk4<bgcolor=cBlue,name="Accessory (EquipID)", comment="Some like Shield of Seiros may get downgraded if the player has obtained one">;
-ClassName unk5<bgcolor=cBlue,name="Class", comment="Opponent Class">;
-WeapID unk6<bgcolor=cBlue,name="Weapon, add 10", comment="Some like (+) get downgraded">;
-SpellID unk7<bgcolor=cBlue,name="Magic", comment="Spell list may be elsewhere & may have spell list / skill requirement. Weapon needs to be 255">;
-AbilityID unk8<bgcolor=cBlue,name="Ability 1", comment="Ability slots #4 & #5 location unknown">;
-AbilityID unk9<bgcolor=cBlue,name="Ability 2", comment="Ability slots #4 & #5 location unknown">;
-AbilityID unk10<bgcolor=cBlue,name="Ability 3", comment="Ability slots #4 & #5 location unknown">;
-byte unk11<bgcolor=cBlue,name="unk0", comment="A total mystery">;
-
+	for(j=0;j<EntryCount;j++){
+    	struct{
+        	local string weapon;
+			ubyte unk0<bgcolor=cBlue,name="For Replacement slot", comment="Set to 255 for no replacement(allow a clone.). Match this to specify an alternative character slot if Character Base is recruited to the player's party.">;
+			byte unk1<bgcolor=cBlue,name="Possibly gender", comment="put a comment here">;
+			Names unk2<bgcolor=cBlue,name="Character Base (CharID)", comment="See Person Data">;
+			EquipID unk4<bgcolor=cBlue,name="Accessory (EquipID)", comment="Some like Shield of Seiros may get downgraded if the player has obtained one">;
+			ClassName unk5<bgcolor=cBlue,name="Class", comment="Opponent Class">;
+			WeapIDByte unk6<bgcolor=cBlue,name="Weapon, add 10", comment="Some like (+) get downgraded">;
+			SpellID unk7<bgcolor=cBlue,name="Magic", comment="Spell list may be elsewhere & may have spell list / skill requirement. Weapon needs to be 255">;
+			AbilityID unk8<bgcolor=cBlue,name="Ability 1", comment="Ability slots #4 & #5 location unknown">;
+			AbilityID unk9<bgcolor=cBlue,name="Ability 2", comment="Ability slots #4 & #5 location unknown">;
+			AbilityID unk10<bgcolor=cBlue,name="Ability 3", comment="Ability slots #4 & #5 location unknown">;
+			byte unk11<bgcolor=cBlue,name="unk0", comment="A total mystery">;
+			
+			if(unk6==255) weapon = EnumToString(unk7);
+			else          weapon = EnumToString(unk6);
+        }Tourney<read = Str("%-16s - %s", weapon, EnumToString(unk2) )>;
+    }
 }TourneyData;
 
 enum<byte> Preferences {
@@ -281,7 +481,7 @@ struct File {
 
             if(Size == 12)//tourney data
             {
-                TourneyData tourneyData[EntryCount];
+                TourneyData tourneyData;
                 name = "Tourney";
             }
             else if(i==0){
