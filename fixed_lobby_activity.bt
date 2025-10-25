@@ -660,6 +660,16 @@ struct ProfessorLevel{ //12
 	}
 };
 
+struct Block13{ //13
+	for (j = 0; j < EntryCount; j++){
+		struct Entry13 {
+			CharID character<bgcolor=cRed>;
+			byte ZCoordOffsetModifier;
+			byte padding;
+		}entry13<read=Str("%d - %s",ZCoordOffsetModifier,EnumToString(character)),name="Character Entry">;
+	}
+};
+
 struct File {
     int count<bgcolor=cBlack>;
     struct PointerPair {
@@ -730,6 +740,10 @@ struct File {
             else if (i==12){
             	ProfessorLevel ProfessorLevels;
                 name = "Professor Rank Stats";
+            }
+            else if (i==13){
+            	Block13 ZOffsets;
+                name = "ShareAMeal Z-Coord offsets";
             }
             else //other stuff, use generic struct in that case
             {
