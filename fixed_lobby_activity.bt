@@ -598,6 +598,15 @@ struct Gardening{ //8
 	}
 };
 
+struct SeedRank{ //9
+	for (j = 0; j < EntryCount; j++){
+		struct seedRank {
+			local Seeds seed = j;
+			ubyte rank;
+		}rank<name="Rank", read=Str("%2d - %s",rank, EnumToString(seed))>;
+	}
+};
+
 struct File {
     int count<bgcolor=cBlack>;
     struct PointerPair {
@@ -652,7 +661,10 @@ struct File {
             else if (i==8){
             	Gardening GardeningYields;
                 name = "Gardening Yields";
-            
+            }
+            else if (i==9){
+            	SeedRank SeedRanks;
+                name = "Seed Ranks";
             }
             else //other stuff, use generic struct in that case
             {
