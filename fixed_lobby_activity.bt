@@ -398,6 +398,19 @@ struct sVerdantWindEnabledChaptersBitMask{
 	ubyte bit7 : 1<name="CH 21 VW", comment="MonasteryScriptID = 42">;
 };
 
+enum<ubyte> FishTier{
+    SmallFishShadow,
+	LargeFishShadow,
+	GiantFishShadow,
+	GlimmeringFishShadow,
+    StrangeFishShadow,
+    SparklingFishShadow,
+    InvalidFT6,
+    InvalidFT7,
+    InvalidFT8,
+    InvalidFT9,  
+};
+
 struct UnitPreferences{ //0
 	for (j = 0; j < EntryCount; j++){
 		struct Unit {
@@ -461,6 +474,24 @@ struct Block3{ //3
 	}
 };
 
+struct sLobbyActivity5{ //5
+	for (j = 0; j < EntryCount; j++){
+		struct sLobbyActivity5Entry {
+            local FishTier FT=j;
+            
+			byte Unsure<comment="Seems to have multiple purposes so idk">;
+            struct sLA5RollThresholds{
+                byte Standard_FET<name="No Fish Event">;
+	            byte FishOfMystery_FET<name="Fish of Mystery Event">;
+	            byte GoldenFish_FET<name="Golden Fish Event">;
+	            byte LotsOfLargeFish_FET<name="Lots of Large Fish Event">;
+            }LA5Thresholds<name="Marginal Roll Thresholds">;
+			byte unk[6]<name="Unused?">;
+		}LobbyActivity5Entry<name="Fish Tier Roll Thresholds",read=EnumToString(FT)>;
+	}
+    byte padding2[2];
+};
+
 struct File {
     int count<bgcolor=cBlack>;
     struct PointerPair {
@@ -499,6 +530,10 @@ struct File {
             else if(i==3){
             	Block3 AdviceBox;
                 name="Advice Box Availability";
+            }
+            else if (i==5){
+            	sLobbyActivity5 FishTierRollThresholds;
+                name="Fish Tier Roll Threshold";
             }
             else //other stuff, use generic struct in that case
             {
