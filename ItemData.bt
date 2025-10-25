@@ -471,10 +471,37 @@ struct FILE {
         struct ItemHeaderPadding09 {
             byte Padding[0x34];
         }itemheaderpadding09<name="Padding", bgcolor=cBlue>;
-        struct ITEM09{
-            byte Item09Size[SizeOfItemBlock09];
-        }Item09[numItem09]<name="Item Data">;
-    }itemstructure09<name="Other Block 02", bgcolor=cYellow>;
+        for (i=0;i<numItem09;i++){
+        	struct ITEM09{
+            	local GambitType NameOfGambit = i;
+					ubyte unk;
+					ubyte unk;
+					ubyte unk;
+					ubyte unk;
+					ubyte unk;
+					ubyte unk;
+					GambitAnimation act<name="Gambit Attack Animation", bgcolor=cBlue>;
+					byte GambitUses<name="Number of Gambit Uses", bgcolor=cRed>;
+					GambitMovement movemnt<name="Gambit Movement Effects">;
+					ubyte unk;
+					GambitTargeting target<name="Target Area">;
+					GambitEffects visual<name="Visual Effect">;
+					local string output;
+					struct GambitFlags{
+						ubyte bit0 : 1<name="Apply Area of Effect">;
+						ubyte bit1 : 1<name="Fire Terrian">;
+						ubyte bit2 : 1<name="Maybe Used in Targeting Eligilibility?">;
+						ubyte bit3 : 1<name="???">;
+						
+						ubyte bit4 : 1<name="???">;
+						ubyte bit5 : 1<name="???">;
+						ubyte bit6 : 1<name="???">;
+						ubyte bit7 : 1<name="???">;
+					}wep01flags01<name="Additional Flags 1", bgcolor=cBlack, open=true>;
+                    output = Str("%-20s - %s",EnumToString(NameOfGambit),EnumToString(target));
+        	}Item09<name="Item Data", read = output>;
+        }
+    }itemstructure09<name="Gambit Targeting", bgcolor=cYellow>;
 
     //Table 10
     FSeek(SectionPointer.PointerToItemBlock10);
@@ -485,10 +512,21 @@ struct FILE {
         struct ItemHeaderPadding10 {
             byte Padding[0x34];
         }itemheaderpadding10<name="Padding", bgcolor=cBlue>;
-        struct ITEM10{
-            byte Item10Size[SizeOfItemBlock10];
-        }Item10[numItem10]<name="Item Data">;
-    }itemstructure10<name="Other Block 03", bgcolor=cYellow>;
+        for(i=0; i< numItem10; i++){
+			struct ITEM10{
+				local StaggeringBlow StaggeringBlowName;
+				StaggeringBlowName = i;
+				GambitTargeting a1<name="AoE Dimensions Type">;
+				byte Unk;
+				struct StaggeringBlowFlags{
+					ubyte Flame : 1<name="Applies Flame to AoE Tiles">;
+					ubyte Rattle : 1<name="Applies Rattle">;
+					ubyte DisableFriendlyFire : 1<name="Does not deal damage to allies">;
+					ubyte HealAllies : 1<name="Heals allies hit", comment="Uses normal heal formula (no heal+5/+10 or heal staff/crest)">;
+				}staggerinblowflag<name="Flags", bgcolor=cBlack>;
+			}Item10<name="Item Data", read = Str("%-19s - %s", EnumToString(StaggeringBlowName),EnumToString(a1)), optimize=false>;
+		}
+    }itemstructure10<name="Staggering Blow Targeting", bgcolor=cYellow>;
 
     //Table 11
     FSeek(SectionPointer.PointerToItemBlock11);
