@@ -670,6 +670,22 @@ struct Block13{ //13
 	}
 };
 
+struct Block14{ //14
+	for (j = 0; j < EntryCount; j++){
+		struct Entry14 {
+			int unk;
+			CharID character<bgcolor=cRed>;
+			short AnimationID_Warmed;
+			short AnimationID_Overheated<comment="also used for 'getting dizzy' state">;
+			short AnimationID_Neutral;
+			byte Warmed_SkinReddeningLevel;
+			byte unkByte0xd<name="Unused? 0xd">;
+			byte HeatResistance;
+			byte Overheat_SkinReddeningLevel;// values 0-2
+		}entry14<read=EnumToString(character),name="Character Entry">;
+	}
+};
+
 struct File {
     int count<bgcolor=cBlack>;
     struct PointerPair {
@@ -744,6 +760,10 @@ struct File {
             else if (i==13){
             	Block13 ZOffsets;
                 name = "ShareAMeal Z-Coord offsets";
+            }
+            else if (i==14){
+            	Block14 SaunaCharacter;
+                name = "Sauna Character Model/Animation stuff";
             }
             else //other stuff, use generic struct in that case
             {
