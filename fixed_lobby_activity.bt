@@ -10,6 +10,7 @@
 //------------------------------------------------
 LittleEndian();
 #include "3H_Enums.bt"
+#include "Stupid_Item_IDs.bt"
 
 enum<ubyte> WeapIDByte
 {
@@ -514,7 +515,31 @@ struct sFishingRollThresholds { //6
 	}
     byte padding2[2];
 };
-	
+
+struct Fishing{ //7
+	for (j = 0; j < EntryCount; j++){
+		struct FishEntry {
+			local GeneralMerchantItems Bait = 1400 + j;
+				struct FishRewards{
+					GeneralMerchantItems FishReward0;  
+					GeneralMerchantItems FishReward1;  
+					GeneralMerchantItems FishReward2;  
+				};
+				FishRewards FishReward<read="Large Fish Shadow">;
+                FishRewards FishReward<read="Strange Fish Shadow">;
+                FishRewards FishReward<read="Glimmering Fish Shadow">;
+                FishRewards FishReward<read="Small Fish Shadow">;
+                
+                FishRewards FishReward<read="Sparkling Fish Shadow">;
+                FishRewards FishReward<read="Giant Fish Shadow">;
+                FishRewards FishReward<read="Unused6FishShadow">;
+                FishRewards FishReward<read="Unused7FishShadow">;
+                
+                FishRewards FishReward<read="Unused8FishShadow">;
+                FishRewards FishReward<read="Unused9FishShadow">;
+		}fish<name="Fishing Rewards", read=EnumToString(Bait)>;;
+	}
+};	
 
 struct File {
     int count<bgcolor=cBlack>;
@@ -562,6 +587,10 @@ struct File {
             else if (i==6){
             	sFishingRollThresholds FishingRollThresholds;
                 name="Fishing Roll Threshold";
+            }
+            else if (i==7){
+            	Fishing FishingRewards;
+                name = "Fishing Rewards";
             }
             else //other stuff, use generic struct in that case
             {
