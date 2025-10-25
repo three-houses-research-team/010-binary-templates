@@ -2,10 +2,11 @@
 //--- 010 Editor v9.0.2 Binary Template
 //
 //      File: fixed_lobby_common.bin / 24.bin / previously known as TeaTime.bin
-//   Authors: DeathChaos
-//   Version: 1.00
+//   Authors: DeathChaos, Triabolical, ReichardTheThird
+//   Version: 1.01
 //   Purpose: Three Houses character file mapping
 //   History
+//	 1.01	 ----------  Triabolical - added Tea time topic responses
 //   1.00    2019-08-31  DeathChaos - started thisProficiencies
 //------------------------------------------------
 
@@ -13,6 +14,7 @@
 // Includes
 //---------------------------------------------
 #include "3H_Enums.bt"
+#include "Stupid_Item_IDs.bt"
 
 LittleEndian();
 
@@ -207,22 +209,23 @@ struct File{
 	}unk5<name="Unknown Section 5",bgcolor=cBlack>;
 	
 	FSeek(sectionpointers.PointerToUnk6);
-	struct Unk6{
+    struct sItemSpotAltItems{ //6
 		uint32 Unk6Magic;
 		uint32 numunk6;
 		uint32 SizeOfUnk6;
 		struct Unk6Padding{
 			byte Padding[0x34];
 		}unk6padding<name="Padding">;
-		struct UnknownSection6{
-			ubyte unk;
-			ubyte unk;
-			ubyte unk;
-			ubyte unk;
-			ubyte unk;
-			ubyte unk;
-		}unknownsection6[numunk6]<name="Unknown Section4">;
-	}unk6<name="Unknown Section 6",bgcolor=cGreen>;
+        for(i=0;i<numunk6;i++){
+			struct sItemSpotAltDropItem{
+				GeneralMerchantItems MiscellaneousItem<name="Miscellaneous Item">;
+				ubyte AdvancedItemPool<name="Enabled in Advanced Item Pool">;
+				ubyte IntermediateItemPool<name="Enabled in Intermediate Item Pool">;
+				ubyte BasicItemPool<name="Enabled in Basic Item Pool">;
+				ubyte unk1<name="padding?">;
+			}ItemSpotAltDropItem<name="ItemSpot Alt Drop Item",read = Str("%d %d %d - %s",AdvancedItemPool,IntermediateItemPool,BasicItemPool,EnumToString(MiscellaneousItem))>;
+        }
+	}ItemSpotAltItems<name="ItemSpot Alt Drop Items",bgcolor=cGreen, comment="If ItemSpots are configured to drop random items, they have a chance to drop these items">;
 	
 	FSeek(sectionpointers.PointerToUnk7);
 	struct UnknownSection7{
@@ -401,7 +404,23 @@ struct File{
 			ubyte pad;
 		}finalteacomment[numFinalComment]<name="Final Comment",read=GetName4>;
 	}finalcomment<name="Final Comment",bgcolor=cLtRed>;
-
+	
+    FSeek(sectionpointers.PointerToTeaAnswers1);
+	struct TeaTopics{ //12
+		uint32 Unk5Magic;
+		uint32 numunk5;
+		uint32 SizeOfUnk5;
+		byte Padding[0x34];
+		for (i = 0; i < numunk5; ++i){
+			struct TeaResponse {
+				byte response[SizeOfUnk5];
+			}answer;
+		}
+		byte padding[2]<hidden=true>;
+	}tea;
+	
+	FSeek(sectionpointers.PointerToTeaAnswers2);
+	TeaTopics Tea2<name="Tea Time Topic Responses 2",bgcolor=cLtRed>; //13
 	
 }file;
 
