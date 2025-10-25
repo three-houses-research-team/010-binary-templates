@@ -17,6 +17,7 @@ Item Slot appears at these location (need more research)
 
 */
 #include "3H_Enums.bt"
+#include "Stupid_Item_IDs.bt"
 
 LittleEndian();
 local int i = 0;
@@ -192,7 +193,7 @@ struct sFile{
                     ushort CameraTargetZCoord;
                     ushort CameraTargetYCoord;
                     ushort CameraPositionZCoord;
-                    WeapID Weapon<comment="The actual Weapon granted is the WeaponID minus 6 indexes i.e. writing Aymr will give Zoltan Bow">;
+                    GeneralMerchantItems Weapon<comment="Unsure">;
                     ushort CameraPositionYCoord;
                     ushort CameraPositionXCoord;
                     sSilverSnowEnabledChaptersBitMask SilverSnowEnabledChaptersBitMask;
