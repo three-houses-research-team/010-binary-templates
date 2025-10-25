@@ -1,0 +1,221 @@
+//------------------------------------------------
+//--- 010 Editor v15.0.2 Binary Template
+//
+//      File: fixed_freescenario.bin
+//   Authors: Reichard
+//   Version: 1.0
+//   Purpose: 
+//  Category: 
+// File Mask: fixed_freescenariodata.bin
+//  ID Bytes: 
+//   History: 
+//   1.1    09/02/25 ReichardTheThird: 99% of Data Found, only AuxItemReward.UnkShort0x0 is unknown
+//   1.0    08/16/25 ReichardTheThird: Started template
+//------------------------------------------------
+#include "3H_Enums.bt"
+
+LittleEndian();
+local int i =0;
+
+enum<ubyte> AuxIndex{
+	Aux_BattleInTheOutskirts,
+	Aux_BattleInTheMountains,
+	Aux_BattleInTheEmpire,
+	Aux_BattleInTheKingdom,
+	Aux_BattleInTheDesert,
+	Aux_BattleInTheMagred,
+	Aux_BattleInTheAlmyra,
+	Aux_BattleInThePlateau,
+	Aux_MonstersOnTheRoad,
+	Aux_MonstersInTheMountains,
+	Aux_MonstersInTheDesert,
+	Aux_BattleAtGronderField,
+	Aux_MonstersAtGronderField,
+	Aux_BattleInTheRuins,
+	Aux_MonstersInTheRuins,
+	Aux_MonstersInTheRedCanyon,
+	Aux_BanditsOnTheRhodosCoast,
+	Aux_WesternChurchSuppression,
+	Aux_BattleInAillel,
+	Aux_MonstersOnThePlains,
+	GoldAux_BattleAtLakeTeutates,
+	GoldAux_BattleInTheForest,
+	GoldAux_BattleInThePlains,
+	GoldAux_BattleAtTheSealedForest,
+	GoldAux_BattleAtConandTower,
+	Semilogue_Jeritza
+};
+
+enum<ubyte> RewardBinType{
+    Unused0BT,
+    Money1,
+    FishAndBait,
+    SeedAndCrop,
+    Ores,
+    Meat,
+    Unused6BT,
+    Unused7BT,
+    UnusedSeeds8,
+    UnusedProduce9,
+    RareMonsterMoney,
+    RareMonsterMeat,
+    RareMonsterOres,
+    NoReward=255
+};
+
+enum<ubyte> AuxUnitBin{
+    Unused0UB,
+    ThiefRogueBandits1,
+    GenericMonster2,
+    DesertMonster3,
+    Pirates4,
+    WesternChurch5,
+    Unused6,
+    Unused7,
+    Unused8,
+    Thieves9,
+    Unused10,
+    Bandits11,
+    KingdomSoldiers12,
+    Bandits13,
+    ImperialSoldiers14,
+    Pirates15,
+    KingdomSoldiers16,
+    Thieves17,
+    Bandits18,
+    Agarthans19,
+    Thieves20,
+    Thieves21,
+    NoBattle=255,
+};
+
+//Entry layout
+struct sAuxItemReward{
+	ushort unkShort0x0<name="UnusedShort0x0?">;
+	RewardBinType RewardBin;
+	MiscItem RewardItem;
+	ubyte RewardCount;
+	ubyte RollThreshold[3]<comment="indexed by Aux battle selection index, if roll exceeds this amount, then decrement amount from roll and check next entry in bin#">;
+    
+    local string display = Str("%-16s - %3d%% %3d%% %3d%% - ",EnumToString(RewardBin),RollThreshold[0], RollThreshold[1],RollThreshold[2]);
+    if (RewardCount==0) display += "No Item Reward";
+    else                display += Str("%2d - %s",RewardCount, EnumToString(RewardItem));
+};
+
+struct sAuxSpawnLimit{
+	AuxUnitBin RedEnemyBin;
+	ubyte SpawnLimit<name="SpawnLimit">;
+	local AuxIndex AuxI=i;
+};
+
+struct sAuxUnit{
+	CharID Character;
+	AuxUnitBin RedEnemyBin;
+	ubyte MaximumChapter;
+	ubyte MinimumChapter;
+	ClassName Class;
+	Battalion batt<name="Battalion">;
+	ubyte UnitCount;
+	struct sUnitFlags{
+		byte bit0:1<name="Allowed In Random Pool?",comment="If not enabled then this is a quest only entry ">;
+		byte bit1:1<name="RarerEnemies?",comment="Seems to reserve up to a 1/4 of Spawnable enemies for rarer enemies">;
+		byte bit2:1<name="Green Ally">;
+		byte bit3:1;
+	   
+		byte bit4:1;
+		byte bit5:1;
+		byte bit6:1;
+		byte bit7:1;
+	}UnitFlags;
+	ubyte unkByte0x9<name="Padding?">;
+};
+
+struct sMonsterDroppableWeaponsEntry{
+	WeapID MonsterDroppableWeapon;
+	ubyte RollCosts[4];
+};
+
+struct sAuxYellowMonsterUnit{
+	CharID Character;
+	ClassName Class;
+	ubyte EncounterChance;
+};
+
+struct sAuxMoneyReward{
+	local int chapter=i;
+	
+	ushort BaseMoney;
+};
+
+struct DataSection{
+	int magic;
+    int NumEntries;
+    int size;
+    int padding[13];
+};
+
+//loop
+struct sAuxItemRewards{
+	DataSection Header;
+	for(i=0; i<Header.NumEntries;i++)
+		sAuxItemReward AuxItemReward<read= display>;
+};
+
+struct sAuxSpawnLimits{
+	DataSection Header;
+	for(i=0; i<Header.NumEntries;i++)
+		sAuxSpawnLimit AuxSpawnLimit<read=Str("%2d - %s",SpawnLimit,EnumToString(AuxI))>;
+};
+
+struct sAuxUnits{
+	DataSection Header;
+	for(i=0; i<Header.NumEntries;i++)
+		sAuxUnit AuxUnit<read=Str("Chapter %2d-%2d: %-18s %s",MinimumChapter,MaximumChapter,EnumToString(RedEnemyBin),EnumToString(Class))>;
+};
+
+struct sMonsterDroppableWeapons{
+	DataSection Header;
+	for(i=0; i<Header.NumEntries;i++)
+		sMonsterDroppableWeaponsEntry Entries<read=Str("%2d %2d %2d %2d - %s",RollCosts[0],RollCosts[1],RollCosts[2],RollCosts[3],EnumToString(MonsterDroppableWeapon))>;
+};
+
+struct sAuxYellowMonsterUnits{
+	DataSection Header;
+	for(i=0; i<Header.NumEntries;i++)
+		sAuxYellowMonsterUnit AuxYellowMonsterUnit<read=Str("%3d%% %s",EncounterChance,EnumToString(Class))>;
+};
+
+struct sAuxMoneyRewardRewards{
+	DataSection Header;
+	for(i=0; i<Header.NumEntries;i++)
+		sAuxMoneyReward AuxMoneyReward<read=Str("Chapter %d",chapter)>;
+};
+
+struct freeScenario {
+	struct FileSections{
+    	int numSections;
+        struct {
+        	int ptr;
+            int size;
+        }Sections[numSections];
+    }FS;
+	
+	FSeek(FS.Sections[0].ptr);
+	sAuxItemRewards AuxItemRewards;
+	
+	FSeek(FS.Sections[1].ptr);
+	sAuxSpawnLimits AuxSpawnLimits;
+		
+	FSeek(FS.Sections[2].ptr);
+	sAuxUnits AuxUnits;
+		
+	FSeek(FS.Sections[3].ptr);
+	sMonsterDroppableWeapons MonsterDroppableWeapons;
+		
+	FSeek(FS.Sections[4].ptr);
+	sAuxYellowMonsterUnits AuxYellowMonsterUnits<comment="Unknown if you can put nonMonsters here">;
+		
+	FSeek(FS.Sections[5].ptr);
+	sAuxMoneyRewardRewards AuxMoneyRewards<comment="This gets multiplied by reward multipliers">;
+	byte padding[2]<hidden=true>;
+}File<open=true>;
