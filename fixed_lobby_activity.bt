@@ -626,6 +626,15 @@ struct sGardeningScoreThresholds{ //10
     byte padding2[2];
 };
 
+struct CultivationCost{ //11
+	uint Infuse_With_Magic;
+    uint Pour_Airmid_Water;
+    uint Prune;
+    uint Scatter_Bonemeal;
+    uint Use_Caledonian_Soil;
+    uint Spread_Pegasus_Blessings;
+};
+
 struct File {
     int count<bgcolor=cBlack>;
     struct PointerPair {
@@ -688,6 +697,10 @@ struct File {
             else if (i==10){
             	sGardeningScoreThresholds GardeningScoreThreholds;
                 name = "Gardening Score Thresholds";
+            }
+            else if (i==11){
+            	CultivationCost CultivationCosts;
+                name = "Cultivation Costs";
             }
             else //other stuff, use generic struct in that case
             {
