@@ -635,6 +635,31 @@ struct CultivationCost{ //11
     uint Spread_Pegasus_Blessings;
 };
 
+struct ProfessorLevel{ //12
+	for (j = 0; j < EntryCount; j++){
+		struct ProfessorRank {
+			local MinRanks r=j;
+			short expNeed<name="Lecture Question Exp", bgcolor=cDkGreen>;
+			ushort CumExp<name="Total Exp Needed", bgcolor=cLtGreen>;
+			ushort Salary<name="Monthly Church Salary", bgcolor=cYellow>;
+			ubyte TeachingPoints<name="Lecture Points", bgcolor=cGreen>;
+			ubyte BattlePoints<name="Battle Points", bgcolor=cRed>;
+			ubyte unk<name="Cook Book Flag?", bgcolor=cBlack>;
+			ubyte adjutantCount<name="Adjutants", bgcolor=cBlack>;
+			ubyte ActivityPoints<name="Activity Points", bgcolor=cBlue>;
+			ubyte MasterClass<name="Master Classes Unlocked", bgcolor=cPurple>;
+			byte unk;
+			byte unk;
+			byte unk;
+			byte unk;
+			byte unk;
+			byte unk;
+			byte unk;
+			byte padding;
+		}perks<name="Professor Rank Perks", read=EnumToString(r)>;
+	}
+};
+
 struct File {
     int count<bgcolor=cBlack>;
     struct PointerPair {
@@ -701,6 +726,10 @@ struct File {
             else if (i==11){
             	CultivationCost CultivationCosts;
                 name = "Cultivation Costs";
+            }
+            else if (i==12){
+            	ProfessorLevel ProfessorLevels;
+                name = "Professor Rank Stats";
             }
             else //other stuff, use generic struct in that case
             {
