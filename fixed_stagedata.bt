@@ -1,0 +1,286 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: fixed_stagedata.bt
+//   Authors: Triabolical, ReichardTheThird
+//   Version: 1.0
+//   Purpose: Determines parameters for terrain and the moveCosts associated for each moveType on those tileTypes
+//  Category: 
+// File Mask: fixed_stagedata.bin
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+LittleEndian();
+local int i, j = 0;
+#include "3H_ScenarioEnums.bt"
+enum<ubyte> TerrainTile {
+    Impassible = 0,
+    Grassland,
+    Plains,
+    Forest,
+    Woods,
+    Desert_,
+    River,
+    Waterfall,
+    Rock,
+    Mountain,
+    Bridge,
+    Sea,
+    Floor,
+    Wall_13,
+    Fence,
+    Stairs,
+    Rampart,
+    Door,
+    Heal_Tile,
+    Rubble,
+    Wall_20,
+    Lava_21,
+    Stronghold,
+    Peak_23,
+    Thicket_24 = 24,
+    Thicket_25 = 25,
+    Flier_26,
+    Tile_27,
+    Swamp_28,
+    Cavity_29,
+    Stones_30,
+    Railing_31,
+    Bonfire_32,
+    Flames_33,
+    Pillar_34,
+    Throne_35,
+    Sky_36,
+    Cliff_37,
+    Wall_38,
+    Snowfield_39,
+    Heal_Title_Plus = 40,
+    Tower_41,
+    House_42,
+    Valley_43,
+    Grave_44,
+    Coffin_45,
+    Chest_46 = 46,
+    HolyTomb_47,
+    Deck_48,
+    Ship_49,
+    Floor_Trap_50,
+    Lever_51,
+    Fiery_Floor_52,
+    Healstone_53,
+    Crater_54,
+    Crater_55,
+    Wardwood_56,
+    Cover_57,
+    Avo_Floor_58,
+    Pray_Stone_59,
+    Ballista = 60,
+    Fire_Orb_61 = 61,
+    Healstone_62,
+    Altar_63,
+    Vistam_64 = 64,
+    Edifice_65,
+    Question_66,
+    Onager_67 = 67,
+    Iron_Fence_68,
+    Warp_Floor_69,
+    Shoal_70,
+    Lake_71,
+    Bridge_72,
+    Beach_73,
+    Ruin_74,
+    Statue_75,
+    Flame_76,
+    Trench_77,
+    Crest_Stone_78,
+    Floor_79,
+    Poison_80,
+    Door_81,
+    Stair_82,
+    Pond_83,
+    Church_84,
+    Opera_Hall_85,
+    Channel_86,
+    Alter_87,
+    Hedge_88,
+    Gate_89,
+    Low_wall_90,
+    Question_Floor_91,
+    Floor_92,
+    Windmill_93,
+    unused_94,
+    Wall_95,
+    unused_96,
+    unused_97,
+    Odd_item_98,
+    Odd_door_99,
+    Mast_100,
+    Bow_101,
+    Pillar_102,
+    Wasteland_106 = 106,
+    Abyss_Gate_107,
+    Magic_Seal_108,
+    Statue_109,
+    Statue_110,
+    Statue_111,
+    Statue_112,
+    Statue_113,
+    Vortex_114,
+};
+
+enum<byte> TileType {
+	Not_Passable = 0,
+	Flier_Only = 1,
+	Normal_Cost = 2,
+	Forest_TT = 3,
+	Sand_TT = 4,
+	Thicket_TT = 5,
+	ShoalSnow_TT = 6,
+	Unused_NoCav_3Infantry_TT = 7,
+	Unused_Thief3_NoCav_Infantry_TT = 8,
+	FlameSwampCrater_TT = 9,
+	SpecialTiles_TT = 10,
+	Stairs_TT = 11,
+	Wasteland_TT = 12,
+	Invalid13_TT = 13,
+	Invalid14_TT = 14,
+	Invalid15_TT = 15,
+};
+
+enum<byte> MoveType{
+    Infantry_MT,
+    Armor_MT,
+    Cavalry_MT,
+    ArmorCavalry_MT,
+    MagicInfantry_MT,
+    Thief_MT,
+    Flier_MT,
+    DragonMonster_MT,
+    MagicMonster_MT,
+    ThiefMonster_MT,
+    Invalid10_MT,
+    Invalid11_MT,
+    Invalid12_MT,
+    Invalid13_MT,
+    Invalid14_MT,
+    Invalid15_MT
+};
+
+struct DataSection{
+	uint magic;
+    uint NumEntries;
+    uint size;
+    uint padding[13];
+};
+
+struct StageData {
+	struct FileSections{
+    	uint numSections;
+        struct{
+        	uint ptr;
+            uint size;
+        }pointers[numSections];
+    }Sections;
+    
+	FSeek(Sections.pointers[0].ptr);
+	struct TileData {
+		DataSection Header;
+		for (i = 0; i < Header.NumEntries; i++){
+			struct Terrain {
+				local TerrainTile name<hidden=true>;
+				name = i;
+				local string s;
+				s = EnumToString(name);
+				
+				byte unk<bgcolor=cGreen>;
+				byte unk<bgcolor=cGreen>;
+				ushort unkShort<bgcolor=cGreen>;
+				byte Def<name="Protection+",bgcolor=cRed>;
+				byte Res<name="Resilence+",bgcolor=cBlue>;
+				byte Avoid<name="Avoid Bonus",bgcolor=cYellow>;
+				byte Heal<name="Healing %",bgcolor=cPurple>;
+				byte BreakableWallHP<bgcolor=cGreen>;
+				byte UnusedByte<bgcolor=cGreen>;
+				TileType restrict<name="Movement Cost", bgcolor=cYellow>;
+				struct terrainFlags_Struct{
+					ubyte flag0:1;	
+					ubyte flag1:1;
+					ubyte flag2:1;
+					ubyte flag3:1;
+					ubyte flag4:1;	
+					ubyte flag5:1;
+					ubyte flag6:1;
+					ubyte flag7:1;
+					
+					ubyte flag8:1;	
+					ubyte flag9:1;
+					ubyte flag10:1;
+					ubyte flag11:1;
+					ubyte flag12:1;	
+					ubyte flag13:1;
+					ubyte flag14:1;
+					ubyte flag15:1;
+					
+					ubyte flag16:1;	
+					ubyte flag17:1;
+					ubyte flag18:1;
+					ubyte flag19:1;
+					ubyte flag20:1;	
+					ubyte flag21:1;
+					ubyte flag22:1;
+					ubyte flag23:1;
+				}terrainFlags<bgcolor=cBlue>;	
+			}terrain<read=Str("%-20s - %s",EnumToString(restrict),EnumToString(name))>;
+		};
+	}TerrainData;
+	
+    FSeek(Sections.pointers[1].ptr);
+	struct TileTypeMoveCostsTable{
+		DataSection Header<read = Str("|%45s%24s| TileType","MoveCosts","")>;
+		for (i=0; i<Header.NumEntries; i++){
+			struct MoveCostsPerTileTypeEntry{
+				local MoveType MoveTypeName<hidden=true>;
+				MoveTypeName = i;   
+				ubyte Impassible;
+				ubyte FlierOnly;
+				ubyte NormalCost;
+				ubyte Forest;
+				
+				ubyte DesertBeach;
+				ubyte ThicketElement;
+				ubyte ShoalSnow;
+				ubyte uNoCav3Inf;
+				
+				ubyte uThief3NoCavInf;
+				ubyte FlameSwampCrater;
+				ubyte SpecialTiles;
+				ubyte Stairs;
+				
+				ubyte Wasteland;
+				ubyte uInvalid13;
+				ubyte uInvalid14;
+				ubyte uInvalid15;
+				
+			}MoveCostsPerTileType<read=Str("%3d %3d %3d %3d | %3d %3d %3d %3d | %3d %3d %3d %3d | %3d %3d %3d %3d | %s",Impassible,FlierOnly,NormalCost,Forest,DesertBeach,ThicketElement,ShoalSnow,uNoCav3Inf,uThief3NoCavInf,FlameSwampCrater,SpecialTiles,Stairs,Wasteland,uInvalid13,uInvalid14,uInvalid15,EnumToString(MoveTypeName))>;
+		}
+	}TileTypeMoveCostsT;
+	
+    
+	FSeek(Sections.pointers[2].ptr);
+	struct UnkScenarioIndexedWeirdCoordinatesThingTable{
+		DataSection Header;
+		for(i=0; i<Header.NumEntries; i++){
+        	j=0;
+			struct UnkScenIndexedWeirdCoordsThingEntry{
+				local MapList MapName<hidden=true> = i;
+                local string display = Str("%-20s - ",EnumToString(MapName));;
+				ubyte XCoord[10];
+				ubyte YCoord[10];
+                
+                while(XCoord[j]!=255 && YCoord[j]!=255){
+                	display += Str("(%d,%d) ",XCoord[j], YCoord[j++]);
+                }
+			}UnkScenIndexedWeirdCoordsThingE<read=display>;
+		}   
+	}UnkCoordinatesPerScenario;
+}File<open=true>;
