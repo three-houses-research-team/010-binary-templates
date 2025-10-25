@@ -447,6 +447,17 @@ enum<int> Seeds {
     Dedues_S,
 };
 
+enum<ubyte> SupportMinorRank{
+	NoSupport_SMR,
+	C_SMR,
+	CPlus_SMR,
+	B_SMR,
+	BPlus_SMR,
+	A_SMR,
+	APlus_SMR,
+	S_SMR
+};
+
 struct UnitPreferences{ //0
 	for (j = 0; j < EntryCount; j++){
 		struct Unit {
@@ -686,6 +697,18 @@ struct Block14{ //14
 	}
 };
 
+struct Block15{ //15
+	for (j = 0; j < EntryCount; j++){
+		struct Entry15 {
+            local SupportMinorRank SMR=j;
+            
+			short SeatingDistanceModifier<comment="Subtracts this position from Byleth's seat pos and Adds to Sauna Partner's seat pos, modifier of 71 will give them the same position">;
+			byte WarmupBarSize;
+			byte SaveChance;
+		}entry15<name="Sauna Support Bonuses",read=Str("%2d %2d %2d - %s",SeatingDistanceModifier, WarmupBarSize, SaveChance,EnumToString(SMR))>;
+	}
+};
+
 struct File {
     int count<bgcolor=cBlack>;
     struct PointerPair {
@@ -764,6 +787,10 @@ struct File {
             else if (i==14){
             	Block14 SaunaCharacter;
                 name = "Sauna Character Model/Animation stuff";
+            }
+            else if (i==15){
+            	Block15 SaunaSupportBonuses;
+                name = "Sauna Support Bonuses";
             }
             else //other stuff, use generic struct in that case
             {
