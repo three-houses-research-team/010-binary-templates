@@ -34,6 +34,50 @@ enum<byte> Preferences {
 
 };
 
+enum<ubyte> Meal{
+	Beast_Meat_Teppanyaki,
+	Grilled_Herring,
+	Saghert_and_Cream,
+	Fish_and_Bean_Soup,
+	Vegetable_Pasta_Salad,
+	Small_Fish_Skewers,
+	Sauteed_Jerky,
+	Spicy_Fish_and_Turnip_Stew,
+	Onion_Gratin_Soup,
+	Sweet_and_Salty_Whitefish_Saute,
+	Sweet_Bun_Trio,
+	Fruit_and_Herring_Tart,
+	Garreg_Mach_Meat_Pie,
+	Fishermans_Bounty,
+	Pheasant_Roast_with_Berry_Sauce,
+	Cheesy_Verona_Stew,
+	Fish_Sandwich,
+	Pickled_Rabbit_Skewers,
+	Country_Style_Red_Turnip_Plate,
+	Super_Spicy_Fish_Dango,
+	Peach_Sorbet,
+	Pickled_Seafood_and_Vegetables,
+	Two_Fish_Saute,
+	Daphnel_Stew,
+	Gronder_Meat_Skewers,
+	Sauteed_Pheasant_and_Eggs,
+	Gautier_Cheese_Gratin,
+	Cabbage_and_Herring_Stew,
+	Vegetable_Stir_Fry,
+	Bourgeois_Pike,
+	Fried_Crayfish,
+	Derdriu_Style_Fried_Pheasant,
+};
+
+enum<ubyte> FactionMealPreference{
+      FlameEmperorArmy_FMP,
+      Thieves_FMP,
+      RebelArmy_FMP,
+      Rogues_FMP,
+      Citizens_FMP,
+      ChildrenOfTheGoddess_FMP,
+};
+
 struct UnitPreferences{ //0
 	for (j = 0; j < EntryCount; j++){
 		struct Unit {
@@ -45,6 +89,30 @@ struct UnitPreferences{ //0
 	}
 };
 
+struct sShareAMeal{ //1
+	for (j = 0; j < EntryCount; j++){
+		struct sShareAMealData {
+			local Meal name=j;
+			
+			struct {
+            	MiscItem Ingredient;
+                byte ingredentMSB<hidden=true>;
+            }Ingredients[3]<read=EnumToString(Ingredient)>;
+			ubyte unkByte0x6;
+			ubyte unkByte0x7;
+			
+			ubyte unkByte0x8;
+			ubyte unkByte0x9;
+			FactionMealPreference Faction;
+			ubyte unkByte0xb;
+			
+			ubyte unkByte0xc;
+			ubyte unkByte0xd;
+			ubyte IngredientsCost[3];
+			ubyte Padding;
+		}mealPreferences<name="Meals", bgcolor=cSilver, read = EnumToString(name)>;
+	}
+};
 
 struct File {
     int count<bgcolor=cBlack>;
@@ -72,6 +140,10 @@ struct File {
             else if(i==0){
             	UnitPreferences ActivityPreferences;
                 name="Activity Preferences";
+            }
+            else if(i==1){
+            	sShareAMeal Meals;
+                name="Meals";
             }
             else //other stuff, use generic struct in that case
             {
