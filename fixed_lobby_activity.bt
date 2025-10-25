@@ -9,857 +9,718 @@
 //   1.00    2020-11-14   [FF7] Sephiroth - started this
 //------------------------------------------------
 LittleEndian();
+#include "3H_Enums.bt"
+#include "Stupid_Item_IDs.bt"
 
-
-enum<ubyte> OpponentClass
+enum<ubyte> WeapIDByte
 {
-    Noble = 0,
-    Commoner,
-    Myrmidon,
-    Soldier,
-    Fighter,
-    Monk,
-    Lord,
-    Mercenary,
-    Thief,
-    Armored_Knight,
-    Cavalier,
-    Brigand,
-    Archer,
-    Brawler,
-    Mage,
-    Dark_Mage,
-    Priest,
-    Barbarossa,
-    Hero,
-    Swordmaster,
-    Assassin,
-    Fortress_Knight,
-    Paladin,
-    Pegasus_Knight,
-    Wyvern_Rider,
-    Warrior,
-    Sniper,
-    Grappler,
-    Warlock,
-    Dark_Bishop,
-    Bishop,
-    Falcon_Knight,
-    Wyvern_Lord,
-    Mortal_Savant,
-    Great_Knight,
-    Bow_Knight,
-    Dark_Knight,
-    Holy_Knight,
-    War_Master,
-    Gremory,
-    Emperor,
-    Agastya,
-    Enlightened_One,
-    Dancer,
-    Great_Lord,
-    King_of_Liberation,
-    Saint,
-    Flame_Emperor,
-    Flame_Emperor_,
-    Thief_,
-    Ruffian,
-    Paladin_,
-    Fortress_Knight_,
-    Lord_,
-    Pegasus_Knight_,
-    Archbishop,
-    Armored_Lord,
-    High_Lord,
-    Wyvern_Master,
-    Death_Knight,
-    Black_Beast,
-    Wandering_Beast,
-    Wild_Demonic_Beast,
-    Demonic_Beast,
-    Exp_Demonic_Beast,
-    Altered_Demonic_Beast,
-    Giant_Demonic_Beast,
-    Flying_Demonic_Beast,
-    Golem,
-    Altered_Golem,
-    Titanus,
-    White_Beast,
-    The_Immaculate_One,
-    The_Immaculate_One_,
-    The_Immaculate_One__,
-    Lord_of_the_Desert,
-    Lord_of_the_Lake,
-    Giant_Bird,
-    Giant_Crawler,
-    Giant_Wolf,
-    Hegemon_Husk,
-    King_of_Beasts,
-    King_of_Fangs,
-    King_of_Wings,
-	Trickster,
-	War_Monk,
-	Dark_Flier,
-	Mage_Knight,
-    Umbral_Beast,
-    Verrat,
-    Death_Knight_91 = 91,
-    Guardian_Golem,
-    ID_93,
-    ID_94,
-    ID_95,
-    ID_96,
-    ID_97,
-    ID_98,
-    ID_99,
-    None_Class = 255,
-};
-
-enum<ushort> CharacterBaseID
-{
-	M_Byleth = 0x00,
-    F_Byleth_1,
-    Edelgard_2,
-    Dimitri_3,
-    Claude_4,
-    Hubert_5,
-    Ferdinand_6,
-    Linhardt_7,
-    Caspar_8,
-    Bernadetta_9,
-    Dorothea_10,
-    Petra_11,
-    Dedue_12,
-    Felix_13,
-    Ashe_14,
-    Sylvain_15,
-    Mercedes_16,
-    Annette_17,
-    Ingrid_18,
-    Lorenz_19,
-    Raphael_20,
-    Ignatz_21,
-    Lysithea_22,
-    Marianne_23,
-    Hilda_24,
-    Leonie_25,
-    Seteth_26,
-    Flayn_27,
-    Hanneman_28,
-    Manuela_29,
-    Gilbert_30,
-    Alois_31,
-    Catherine_32,
-    Shamir_33,
-    Cyril_34,
-    Jeralt_35,
-    Rhea__36,
-    Sothis_37,
-    Kronya_38,
-    Solon_39,
-    Thales_40,
-    Cornelia_41,
-    Death_Knight_42,
-    Kostas_43,
-    Lonato_44,
-    Miklan_45,
-    Randolph_46,
-    Flame_Emperor_47,
-    Anna_48,
-    Jeritza_49,
-    Rodrigue_50,
-    Judith_51,
-    Nader_52,
-    Monica_53,
-    Lord_Arundel_54,
-    Tomas_55,
-    Nemesis_56,
-    Seiros_58 = 58,
-    Dimitri_70 = 70,
-    Edelgard_71 = 71,
-    Emperor_Ionius_IX = 72,
-    Duke_Aegir = 73,
-    Fleche = 74,
-    Lambert = 79,
-    Metodey = 0x80,
-    Ladislava = 81,
-    Gwendal = 82,
-    Acheron = 83,
-    Pallardo_84 = 84,
-    Pallardo_85 = 85,
-    Gilbert_86 = 86,
-    QuestionName_98 = 98,
-    Edelgard2_99 = 99,
-    Imperial_Soldier_100 = 100,
-    Kingdom_Soldier_101 = 101,
-    Alliance_Soldier_102 = 102,
-    Flame_Emperor_Soldier_103 = 103,
-    Agarthan_Soldier_104 = 104,
-    Agarthan_Soldier_105 = 105,
-    Church_Soldier_106 = 106,
-    Western_Church_Soldier_107 = 107,
-    Vice_Bishop_108 = 108,
-    Bishop_109 = 109,
-    Student_110 = 110,
-    Villager_111 = 111,
-    Thief_112 = 112,
-    Rogue_113 = 113,
-    Bandit_114 = 114,
-    Mysterious_Soldier_115 = 115,
-    Ancient_Soldier_116 = 116,
-    Mysterious_Mage_117 = 117,
-    Gaspard_Soldier_118 = 118,
-    Gaspard_Commander_119 = 119,
-    Charon_120 = 120,
-    Goneril_121 = 121,
-    Daphnel_122 = 122,
-    Gautier_123 = 123,
-    Blaiddyd_124 = 124,
-    Riegan_125 = 125,
-    Gloucester_126 = 126,
-    Fraldarius_127 = 127,
-    Dominic_128 = 128,
-    Lamine_129 = 129,
-    Myson_130 = 130,
-    Bias_131 = 131,
-    Chilon_132 = 132,
-    Pittacus_133 = 133,
-    Cleobulus_134 = 134,
-    Flame_Emperor_Soldier_135 = 135,
-    Merchant_136 = 136,
-    Duscur_Soldier_137 = 137,
-    QuestionName_138 = 138,
-    Pirate_139 = 139,
-    Almyran_Soldier_140 = 140,
-    Phantom_Soldier_141 = 141,
-    Phantom_General_142 = 142,
-    Magic_Wielder_143 = 143,
-    Alliance_General_144 = 144,
-    Alliance_Soldier_145 = 145,
-    Duscur_General_146 = 146,
-    Goneril_Soldier_147 = 147,
-    Almyran_General_148 = 148,
-    Bandit_Leader_149 = 149,
-    Thief_Leader_150 = 150,
-    Priest_151 = 151,
-    Militia_152 = 152,
-    Odesse_153 = 153,
-    Baron_Dominic_154 = 154,
-    Rampaging_Villager_155 = 155,
-    Rampaging_Cardinal_156 = 156,
-    Frenzied_Church_Leader_157 = 157,
-    Frenzied_Church_Soldier_158 = 158,
-    Pirate_Captain_159 = 159,
-    King_of_Beasts_160 = 160,
-    King_of_Fangs_161 = 161,
-    King_of_Wings_162 = 162,
-    King_of_Beasts_163 = 163,
-    Thief_164 = 164,
-    Mercenary_165 = 165,
-    Apostate_166 = 166,
-    Phantom_167 = 167,
-    BaronOchs_168 = 168,
-    DarkMerchant_169 = 169,
-    Attendent_170 = 170,
-    DukeGerth_171 = 171,
-    ExpDemonic_Beast = 191,
-    Breakable_Wall = 198,
-    Viskam = 199,
-    Black_Beast_ = 200,
-    Wandering_Beast_ = 201,
-    Wild_Demonic_Beast_ = 202,
-    Demonic_Beast_203,
-    Experimental_Demonic_Beast_204,
-    Altered_Demonic_Beast_205,
-    Giant_Demonic_Beast_ = 206,
-    Winged_Demonic_Beast_ = 205,
-    Golem_ = 206,
-    Altered_Golem_ = 209,
-    Titanus_ = 210,
-    White_Beast_ = 211,
-    The_Immaculate_One_212 = 212,
-    The_Immaculate_One_213 = 213,
-    The_Immaculate_One_214 = 214,
-    The_Wind_Caller = 215,
-    The_Immovable = 216,
-    Giant_Bird_ = 217,
-    Giant_Crawler_ = 218,
-    Giant_Wolf_ = 219,
-    Hegemon_Edelgard_ = 220,
-    Luca = 221,
-    Iris = 222,
-    Bernhard = 223,
-    Gajus = 224,
-    Chevalier = 225,
-    Wilhelm = 226,
-    Stone_Demonic_Beast_ = 227,
-    Umbral_Beast_ = 228,
-    Guardian_Golem__ = 229,
-    ForlornBeast_ = 230,
-    Marcelle = 231,
-    Simone = 232,
-    Tournament_01_Myrmidon_M = 319,
-    Tournament_01_Myrmidon_F = 320,
-    Tournament_01_Mercenary_M = 329,
-    Tournament_01_Mercenary_F = 330,
-    DLC_Tournament_F_01_Armored_Knight = 415,
-    DLC_Tournament_F_02_Warlock = 417,
-    DLC_Tournament_F_03_Assassin = 677,
-    Anna_1038 = 1038,
-    Yuri_1040 = 1040,
-    Balthus_1041 = 1041,
-    Constance_1042 = 1042,
-    Hapi_1043 = 1043,
-    Aelfric_1044 = 1044,
-    Jeritza_1045 = 1045,
-    Anna_Alt_1046 = 1046,
-    Jeritza_1048 = 1048,
-    Soldier_1049_ArmoredKnight = 1049,
-    Abysskeeper_1055 = 1055,
-    Umbral_Beast_1115 = 1115,
-};
-
-enum<ubyte> EquipID
-{
-    Leather_Shield = 0,
-    Iron_Shield,
-    Steel_Shield,
-    Silver_Shield,
-    Talisman_Shield,
-    Hexlock_Shield,
-    Aegis_Shield,
-    Ochain_Shield,
-    Seiros_Shield,
-    Aurora_Shield,
-    Kadmos_Shield,
-    Lampos_Shield,
-    Accuracy_Ring,
-    Critical_Ring,
-    Evasion_Ring,
-    Speed_Ring,
-    March_Ring,
-    Goddess_Ring,
-    Prayer_Ring,
-    Magic_Staff,
-    Healing_Staff,
-    Caduceus_Staff,
-    Thyrsus,
-    Rafail_Gem,
-    Experience_Gem,
-    Knowledge_Gem,
-    Circe_Staff,
-    Tomas_Staff,
-    Armored_Knight_Shield,
-    Great_Knight_Shield,
-    Fortress_Knight_Shield,
-    Asclepius,
-    Dark_Aegis_Shield,
-    Dark_Thyrsus,
-    Dark_Rafail_Gem,
-    Flame_Shield,
-    Emperor_Shield,
-    Black_Eagle_Pendant,
-    Blue_Lion_Brooch,
-    Golden_Deer_Bracelet,
-    White_Dragon_Scarf,
-	None_Equip = 255,
-};
-
-enum<ubyte> WeapID
-{
-    Unarmed,
-    Broken_Sword,
-    Broken_Lance,
-    Broken_Axe,
-    Broken_Bow,
-    Broken_Gauntlet,
-    Iron_Sword,
-    Steel_Sword,
-    Silver_Sword,
-    Brave_Sword,
-    Killing_Edge,
-    Training_Sword,
-    Iron_Lance,
-    Steel_Lance,
-    Silver_Lance,
-    Brave_Lance,
-    Killer_Lance,
-    Training_Lance,
-    Iron_Axe,
-    Steel_Axe,
-    Silver_Axe,
-    Brave_Axe,
-    Killer_Axe,
-    Training_Axe,
-    Iron_Bow,
-    Steel_Bow,
-    Silver_Bow,
-    Brave_Bow,
-    Killer_Bow,
-    Training_Bow,
-    Iron_Gauntlets,
-    Steel_Gauntlets,
-    Silver_Gauntlets,
-    Training_Gauntlets,
-    Levin_Sword,
-    Bolt_Axe,
-    Magic_Bow,
-    Javalin,
-    Short_Spear,
-    Spear,
-    Hand_Axe,
-    Short_Axe,
-    Tomahawk,
-    Longbow,
-    Mini_Bow,
-    Armorslayer,
-    Rapier,
-    Horseslayer,
-    Hammer,
-    Blessed_Lance,
-    Blessed_Bow,
-    Devil_Sword,
-    Devil_Axe,
-    Wo_Dao,
-    Crescent_Sickle,
-    Sword_of_Seiros,
-    Sword_of_Begalta,
-    Sword_of_Moralta,
-    Cursed_Ashiya_Sword,
-    Sword_or_Zoltan,
-    Thunderbrand,
-    Blutgang,
-    Sword_of_the_Creator,
-    Lance_of_Zoltan,
-    Lance_of_Ruin,
-    Areadbhar,
-    Luin,
-    Spear_of_Assal,
-    Scythe_of_Sariel,
-    Arrow_of_Indra,
-    Freikugel,
-    Crusher,
-    Axe_of_Ukonvasara,
-    Axe_of_Zoltan,
-    Tathlum_Bow,
-    The_Inexhaustiable,
-    Bow_of_Zoltan,
-    Failnaught,
-    Dragon_Claw,
-    Mace,
-    Athame,
-    Ridill,
-    Aymr,
-    Dark_Sword_of_The_Creator,
-    Venin_Edge,
-    Venin_Lance,
-    Venin_Axe,
-    Venin_Bow,
-    Mercurius,
-    Gradivus,
-    Hauteclere,
-    Parthia,
-    Killer_Knuckles,
-    Aura_Knuckles,
-    Rusted_Sword_Iron,
-    Rusted_Sword_Steel,
-    Rusted_Sword_Silver,
-    Rusted_Sword_Brave,
-    Rusted_Sword_Mercurius,
-    Rusted_Lance_Iron,
-    Rusted_Lance_Steel,
-    Rusted_Lance_Silver,
-    Rusted_Lance_Brave,
-    Rusted_Lance_Gradivus,
-    Rusted_Axe_Iron,
-    Rusted_Axe_Steel,
-    Rusted_Axe_Silver,
-    Rusted_Axe_Brave,
-    Rusted_Axe_Hauteclere,
-    Rusted_Bow_Iron,
-    Rusted_Bow_Steel,
-    Rusted_Bow_Silver,
-    Rusted_Bow_Brave,
-    Rusted_Bow_Parthia,
-    Rusted_Gauntlets_Iron,
-    Rusted_Gauntlets_Steel,
-    Rusted_Gauntlets_Silver,
-    Rusted_Gauntlets_Dragon_Claws,
-    Iron_Sword_Plus,
-    Steel_Sword_Plus,
-    Silver_Sword_Plus,
-    Brave_Sword_Plus,
-    Killing_Edge_Plus,
-    Training_Sword_Plus,
-    Iron_Lance_Plus,
-    Steel_Lance_Plus,
-    Silver_Lance_Plus,
-    Brave_Lance_Plus,
-    Killer_Lance_Plus,
-    Training_Lance_Plus,
-    Iron_Axe_Plus,
-    Steel_Axe_Plus,
-    Silver_Axe_Plus,
-    Brave_Axe_Plus,
-    Killer_Axe_Plus,
-    Training_Axe_Plus,
-    Iron_Bow_Plus,
-    Steel_Bow_Plus,
-    Silver_Bow_Plus,
-    Brave_Bow_Plus,
-    Killer_Bow_Plus,
-    Training_Bow_Plus,
-    Iron_Gauntlets_Plus,
-    Steel_Gauntlets_Plus,
-    Silver_Gauntlets_Plus,
-    Training_Gauntlets_Plus,
-    Levin_Sword_Plus,
-    Bolt_Axe_Plus,
-    Magic_Bow_Plus,
-    Javalin_Plus,
-    Short_Spear_Plus,
-    Spear_Plus,
-    Hand_Axe_Plus,
-    Short_Axe_Plus,
-    Tomahawk_Plus,
-    Longbow_Plus,
-    Mini_Bow_Plus,
-    Armorslayer_Plus,
-    Rapier_Plus,
-    Horseslayer_Plus,
-    Hammer_Plus,
-    Blessed_Lance_Plus,
-    Blessed_Bow_Plus,
-    Devil_Sword_Plus,
-    Devil_Axe_Plus,
-    Wo_Dao_Plus,
-    Crescent_Sickle_Plus,
-    Cursed_Ashiya_Sword_Plus,
-    Sword_or_Zoltan_Plus,
-    Lance_of_Zoltan_Plus,
-    Arrow_of_Indra_Plus,
-    Axe_of_Zoltan_Plus,
-    Bow_of_Zoltan_Plus,
-    Dragon_Claw_Plus,
-    Mace_Plus,
-    Venin_Edge_Plus,
-    Venin_Lance_Plus,
-    Venin_Axe_Plus,
-    Vinen_Bow_Plus,
-    Killer_Knuckles_Plus,
-    Aura_Knuckles_Plus,
-    Sublime_Sword_of_the_Creator,
-    Dark_Thunderbrand,
-    Dark_Blutgang,
-    Dark_Lance_of_Ruin,
-    Dark_Areadbhar,
-    Dark_Luin,
-    Dark_Freikugel,
-    Dark_Crusher,
-    Dark_Failnaught,
-};
-
-enum<ubyte> SpellID
-{
-    Fire = 0,
-    Bolganone = 1,
-    Ragnarok = 2,
-    Thunder = 3,
-    Thoron = 4,
-    Bolting = 5,
-    Wind = 6,
-    Cutting_Gale = 7,
-    Excalibur = 8,
-    Blizzard = 9,
-    Fimbulvetr = 10,
-    Sagittae = 11,
-    Meteor = 12,
-    Agneas_Arrow = 13,
-    Miasma = 14,
-    Mire = 15,
-    Swarm = 16,
-    Banshee = 17,
-    Death = 18,
-    Luna = 19,
-    Dark_Spikes = 20,
-    Hades = 21,
-    Bohr = 22,
-    Quake = 23,
-    Heal = 24,
-    Recover = 25,
-    Physic = 26,
-    Fortify = 27,
-    Nosferatu = 28,
-    Seraphim = 29,
-    Aura = 30,
-    Abraxas = 31,
-    Torch_Spell = 32,
-    Restore = 33,
-    Ward = 34,
-    Silence = 35,
-    Rescue = 36,
-    Warp = 37,
-    No_Spell = 255,
-};
-
-enum<ubyte> AbilityID
-{
-    Sword_Prowess_Lv1 = 0,
-    Sword_Prowess_Lv2 = 1,
-    Sword_Prowess_Lv3 = 2,
-    Sword_Prowess_Lv4 = 3,
-    Sword_Prowess_Lv5 = 4,
-    Lance_Prowess_Lv1 = 5,
-    Lance_Prowess_Lv2 = 6,
-    Lance_Prowess_Lv3 = 7,
-    Lance_Prowess_Lv4 = 8,
-    Lance_Prowess_Lv5 = 9,
-    Axe_Prowess_Lv1 = 10,
-    Axe_Prowess_Lv2 = 11,
-    Axe_Prowess_Lv3 = 12,
-    Axe_Prowess_Lv4 = 13,
-    Axe_Prowess_Lv5 = 14,
-    Bow_Prowess_Lv1 = 15,
-    Bow_Prowess_Lv2 = 16,
-    Bow_Prowess_Lv3 = 17,
-    Bow_Prowess_Lv4 = 18,
-    Bow_Prowess_Lv5 = 19,
-    Brawling_Prowess_Lv1 = 20,
-    Brawling_Prowess_Lv2 = 21,
-    Brawling_Prowess_Lv3 = 22,
-    Brawling_Prowess_Lv4 = 23,
-    Brawling_Prowess_Lv5 = 24,
-    Reason_Prowess_Lv1 = 25,
-    Reason_Prowess_Lv2 = 26,
-    Reason_Prowess_Lv3 = 27,
-    Reason_Prowess_Lv4 = 28,
-    Reason_Prowess_Lv5 = 29,
-    Faith_Prowess_Lv1 = 30,
-    Faith_Prowess_Lv2 = 31,
-    Faith_Prowess_Lv3 = 32,
-    Faith_Prowess_Lv4 = 33,
-    Faith_Prowess_Lv5 = 34,
-    Authority_Prowess_Lv1 = 35,
-    Authority_Prowess_Lv2 = 36,
-    Authority_Prowess_Lv3 = 37,
-    Authority_Prowess_Lv4 = 38,
-    Authority_Prowess_Lv5 = 39,
-    Swordfaire = 40,
-    Lancefaire = 41,
-    Axefaire = 42,
-    Bowfaire = 43,
-    Fistfaire = 44,
-    Black_Tomefaire = 45,
-    White_Tomefaire = 46,
-    Dark_Tomefaire = 47,
-    Sword_Crit_Plus_10 = 48,
-    Lance_Crit_Plus_10 = 49,
-    Axe_Crit_Plus_10 = 50,
-    Bow_Crit_Plus_10 = 51,
-    Brawl_Crit_Plus_10 = 52,
-    Black_Magic_Cirt_Plus_10 = 53,
-    White_Magic_Crit_Plus_10 = 54,
-    Dark_Magic_Cirt_Plus_10 = 55,
-    Sword_Avo_Plus_20 = 56,
-    Lance_Avo_Plus_20 = 57,
-    Axe_Avo_Plus_20 = 58,
-    Bow_Avo_Plus_20 = 59,
-    Brawl_Avo_Plus_20 = 60,
-    Black_Magic_Avo_Plus_20 = 61,
-    White_Magic_Avo_Plus_20 = 62,
-    Dark_Magic_Avo_Plus_20 = 63,
-    HP_Plus_5 = 64,
-    Strangth_Plus_2 = 65,
-    Magic_Plus_2 = 66,
-    Dexterity_Plus_2 =67,
-    Speed_Plus_2 = 68,
-    Pomp_and_Circumstance = 69,
-    Defence_Plus_2 = 70,
-    Resistance_Plus_2 = 71,
-    Movement_Plus_1 = 72,
-    Hit_Plus_20 = 73,
-    Avo_Plus_20 = 74,
-    Crit_Plus_20 = 75,
-    Defiant_Str = 76,
-    Defiant_Mag = 77,
-    Defiant_Spd = 78,
-    Defiant_Def = 79,
-    Defiant_Res = 80,
-    Defiant_Avo = 81,
-    Defiant_Crit = 82,
-    Imerial_Lineage = 83,
-    Royal_Lineage = 84,
-    Leicester_Lineage = 85,
-    Mastermind = 86,
-    Death_Blow = 87,
-	Fiendish_Blow = 88,
-	Darting_Blow = 89,
-	Armored_Blow = 90,
-	Warding_Blow = 91,
-	Officer_Duty = 92,
-	Lady_Knight = 93,
-	Watchful_Eye = 94,
-	Distinguished_House = 95,
-	Veteran_Knight = 96,
-	Charm = 97,
-	Advocate = 98,
-	Guardian = 99,
-	Lilys_Poise = 100,
-	Infirmary_Master = 101,
-	Philanderer = 102,
-	Rivalry = 103,
-	Born_Fighter = 104,
-	Rally_Strength = 105,
-	Rally_Magic = 106,
-	Rally_Speed = 107,
-	Rally_Defense = 108,
-	Rally_Resistance = 109,
-	Rally_Movement = 110,
-	Rally_Dexterity = 111,
-	Rally_Luck = 112,
-	Rally_Charm = 113,
-	Seal_Strength = 114,
-	Seal_Magic = 115,
-	Seal_Speed = 116,
-	Seal_Defense = 117,
-	Seal_Resistance = 118,
-	Seal_Movement = 119,
-	Heartseeker = 120,
-	Swordbreaker_Plus = 121,
-	Lancebreaker_Plus = 122,
-	Axebreaker_Plus = 123,
-	Bowbreaker = 124,
-	Fistbreaker = 125,
-	Tomebreaker = 126,
-	Model_Leader = 127,
-	Defensive_Tactics = 128,
-	Offensive_Tactics = 129,
-	Fire_Ablilty = 130,
-	Miasma_Ablilty = 131,
-	Heal_Ablilty = 132,
-	Renewal_Ablilty = 133,
-	Catnap = 134,
-	Goody_Basket = 135,
-	Songstress = 136,
-	Hunters_Boon = 137,
-	Poison_Strike = 138,
-	Live_to_Serve = 139,
-	Lifetaker = 140,
-	Survival_Instinct = 141,
-	Lethality = 142,
-	Poison = 143,
-	Pavise = 144,
-	Aegis = 145,
-	Miracle = 146,
-	Terrain_Resistance = 147,
-	Special_Dance = 148,
-	Paragon = 149,
-	Professors_Guidance = 150,
-	Discipline = 151,
-	Aptitude = 152,
-	Vantage = 153,
-	Missing_Number = 154,
-	Desperation = 155,
-	Quick_Riposte = 156,
-	Wrath = 157,
-	Dance = 158,
-	Steal = 159,
-	Locktouch = 160,
-	Stealth = 161,
-	Canto = 162,
-	Pass = 163,
-	Swordbreaker = 164,
-	Lancebreaker = 165,
-	Bowrange_Plus_1 = 166,
-	Bowrange_Plus_2 = 167,
-	Black_Magic_Range_Plus_1 = 168,
-	Dark_Magic_Range_Plus_1 = 169,
-	White_Magic_Range_Plus_1 = 170,
-	Unarmed_Combat = 171,
-	Black_Magic_Uses_x2 = 172,
-	Dark_Magic_Uses_x2 = 173,
-	White_Magic_Uses_x2 = 174,
-	White_Magic_Heal_Plus_5 = 175,
-	White_Magic_Heal_Plus_10 = 176,
-	Weight_Minus_3 = 177,
-	Weight_Minus_5 = 178,
-	Axebreaker = 179,
-	Unsealable_Magic = 180,
-	Immune_Status = 181,
-	General = 182,
-	Commander = 183,
-	Infinite_Magic = 184,
-	Magic_Bind = 185,
-	Infantry_Effect_Null = 186,
-	Armored_Effect_Null = 187,
-	Cavalry_Effect_Null = 188,
-	Flying_Effect_Null = 189,
-	Dragon_Effect_Null = 190,
-	Monster_Effect_Null = 191,
-	Effect_Null = 192,
-	Air_of_Intimidation = 193,
-	Vital_Defense = 194,
-	Giant_Wings = 195,
-	Anti_Magic_Armor = 196,
-	Divine_Dragon_Horn = 197,
-	Path_of_the_Conqueror = 198,
-	Noncombatant = 199,
-	Battalion_Desperation = 200,
-	Cursed_Power = 201,
-	Anchor = 202,
-	Counterattack = 203,
-	Twin_Crests = 204,
-	Ancient_Dragon_Wrath = 205,
-	Surging_Light = 206,
-	Ancient_Dragonskin = 207,
-	Keen_Intuition = 208,
-	Staunch_Shield = 209,
-	Lone_Wolf = 210,
-	Fighting_Spirit = 211,
-	Confidence = 212,
-	Persecution_Complex = 213,
-	Animal_Friend = 214,
-	Perseverance = 215,
-	Crest_Scholar = 216,
-	Compassion = 217,
-	Lockpick = 218,
-	Battalion_Vantage = 219,
-	Battalion_Wrath = 220,
-	Battalion_Renewal = 221,
-	Black_Magic_Uses_x4 = 222,
-	Dark_Magic_Uses_x4 = 223,
-	White_Magic_Uses_x4 = 224,
-	Mighty_King_of_Legend = 225,
-	Ten_Elites = 226,
-	Alert_Stance = 227,
-	Alert_Stance_Plus = 228,
-	Close_Counter = 229,
-	Professors_Guidance_Plus = 230,
-	Imperial_Lineage_Plus = 231,
-	Royal_Lineage_Plus = 232,
-	Leicester_Lineage_Plus = 233,
-	Murderous_Intent = 234,
-	Sacred_Power = 235,
-	Agarthan_Technology = 236,
-	Blade_Breaker = 237,
-    No_Ability = 255,
+    Unarmed_,
+    Broken_Sword_,
+    Broken_Lance_,
+    Broken_Axe_,
+    Broken_Bow_,
+    Broken_Gauntlet_,
+    Iron_Sword_,
+    Steel_Sword_,
+    Silver_Sword_,
+    Brave_Sword_,
+    Killing_Edge_,
+    Training_Sword_,
+    Iron_Lance_,
+    Steel_Lance_,
+    Silver_Lance_,
+    Brave_Lance_,
+    Killer_Lance_,
+    Training_Lance_,
+    Iron_Axe_,
+    Steel_Axe_,
+    Silver_Axe_,
+    Brave_Axe_,
+    Killer_Axe_,
+    Training_Axe_,
+    Iron_Bow_,
+    Steel_Bow_,
+    Silver_Bow_,
+    Brave_Bow_,
+    Killer_Bow_,
+    Training_Bow_,
+    Iron_Gauntlets_,
+    Steel_Gauntlets_,
+    Silver_Gauntlets_,
+    Training_Gauntlets_,
+    Levin_Sword_,
+    Bolt_Axe_,
+    Magic_Bow_,
+    Javalin_,
+    Short_Spear_,
+    Spear_,
+    Hand_Axe_,
+    Short_Axe_,
+    Tomahawk_,
+    Longbow_,
+    Mini_Bow_,
+    Armorslayer_,
+    Rapier_,
+    Horseslayer_,
+    Hammer_,
+    Blessed_Lance_,
+    Blessed_Bow_,
+    Devil_Sword_,
+    Devil_Axe_,
+    Wo_Dao_,
+    Crescent_Sickle_,
+    Sword_of_Seiros_,
+    Sword_of_Begalta_,
+    Sword_of_Moralta_,
+    Cursed_Ashiya_Sword_,
+    Sword_or_Zoltan_,
+    Thunderbrand_,
+    Blutgang_,
+    Sword_of_the_Creator_,
+    Lance_of_Zoltan_,
+    Lance_of_Ruin_,
+    Areadbhar_,
+    Luin_,
+    Spear_of_Assal_,
+    Scythe_of_Sariel_,
+    Arrow_of_Indra_,
+    Freikugel_,
+    Crusher_,
+    Axe_of_Ukonvasara_,
+    Axe_of_Zoltan_,
+    Tathlum_Bow_,
+    The_Inexhaustiable_,
+    Bow_of_Zoltan_,
+    Failnaught_,
+    Dragon_Claw_,
+    Mace_,
+    Athame_,
+    Ridill_,
+    Aymr_,
+    Dark_Sword_of_The_Creator_,
+    Venin_Edge_,
+    Venin_Lance_,
+    Venin_Axe_,
+    Venin_Bow_,
+    Mercurius_,
+    Gradivus_,
+    Hauteclere_,
+    Parthia_,
+    Killer_Knuckles_,
+    Aura_Knuckles_,
+    Rusted_Sword_Iron_,
+    Rusted_Sword_Steel_,
+    Rusted_Sword_Silver_,
+    Rusted_Sword_Brave_,
+    Rusted_Sword_Mercurius_,
+    Rusted_Lance_Iron_,
+    Rusted_Lance_Steel_,
+    Rusted_Lance_Silver_,
+    Rusted_Lance_Brave_,
+    Rusted_Lance_Gradivus_,
+    Rusted_Axe_Iron_,
+    Rusted_Axe_Steel_,
+    Rusted_Axe_Silver_,
+    Rusted_Axe_Brave_,
+    Rusted_Axe_Hauteclere_,
+    Rusted_Bow_Iron_,
+    Rusted_Bow_Steel_,
+    Rusted_Bow_Silver_,
+    Rusted_Bow_Brave_,
+    Rusted_Bow_Parthia_,
+    Rusted_Gauntlets_Iron_,
+    Rusted_Gauntlets_Steel_,
+    Rusted_Gauntlets_Silver_,
+    Rusted_Gauntlets_Dragon_Claws_,
+    Iron_Sword_Plus_,
+    Steel_Sword_Plus_,
+    Silver_Sword_Plus_,
+    Brave_Sword_Plus_,
+    Killing_Edge_Plus_,
+    Training_Sword_Plus_,
+    Iron_Lance_Plus_,
+    Steel_Lance_Plus_,
+    Silver_Lance_Plus_,
+    Brave_Lance_Plus_,
+    Killer_Lance_Plus_,
+    Training_Lance_Plus_,
+    Iron_Axe_Plus_,
+    Steel_Axe_Plus_,
+    Silver_Axe_Plus_,
+    Brave_Axe_Plus_,
+    Killer_Axe_Plus_,
+    Training_Axe_Plus_,
+    Iron_Bow_Plus_,
+    Steel_Bow_Plus_,
+    Silver_Bow_Plus_,
+    Brave_Bow_Plus_,
+    Killer_Bow_Plus_,
+    Training_Bow_Plus_,
+    Iron_Gauntlets_Plus_,
+    Steel_Gauntlets_Plus_,
+    Silver_Gauntlets_Plus_,
+    Training_Gauntlets_Plus_,
+    Levin_Sword_Plus_,
+    Bolt_Axe_Plus_,
+    Magic_Bow_Plus_,
+    Javalin_Plus_,
+    Short_Spear_Plus_,
+    Spear_Plus_,
+    Hand_Axe_Plus_,
+    Short_Axe_Plus_,
+    Tomahawk_Plus_,
+    Longbow_Plus_,
+    Mini_Bow_Plus_,
+    Armorslayer_Plus_,
+    Rapier_Plus_,
+    Horseslayer_Plus_,
+    Hammer_Plus_,
+    Blessed_Lance_Plus_,
+    Blessed_Bow_Plus_,
+    Devil_Sword_Plus_,
+    Devil_Axe_Plus_,
+    Wo_Dao_Plus_,
+    Crescent_Sickle_Plus_,
+    Cursed_Ashiya_Sword_Plus_,
+    Sword_or_Zoltan_Plus_,
+    Lance_of_Zoltan_Plus_,
+    Arrow_of_Indra_Plus_,
+    Axe_of_Zoltan_Plus_,
+    Bow_of_Zoltan_Plus_,
+    Dragon_Claw_Plus_,
+    Mace_Plus_,
+    Venin_Edge_Plus_,
+    Venin_Lance_Plus_,
+    Venin_Axe_Plus_,
+    Vinen_Bow_Plus_,
+    Killer_Knuckles_Plus_,
+    Aura_Knuckles_Plus_,
+    Sublime_Sword_of_the_Creator_,
+    Dark_Thunderbrand_,
+    Dark_Blutgang_,
+    Dark_Lance_of_Ruin_,
+    Dark_Areadbhar_,
+    Dark_Luin_,
+    Dark_Freikugel_,
+    Dark_Crusher_,
+    Dark_Failnaught_,
 };
 
 typedef struct TOURNEYDATA {
-
-ubyte unk0<bgcolor=cBlue,name="For Replacement slot", comment="Set to 255 for no replacement(allow a clone.). Match this to specify an alternative character slot if Character Base is recruited to the player's party.">;
-byte unk1<bgcolor=cBlue,name="Possibly gender", comment="put a comment here">;
-CharacterBaseID unk2<bgcolor=cBlue,name="Character Base (CharID)", comment="See Person Data">;
-EquipID unk4<bgcolor=cBlue,name="Accessory (EquipID)", comment="Some like Shield of Seiros may get downgraded if the player has obtained one">;
-OpponentClass unk5<bgcolor=cBlue,name="Class", comment="Opponent Class">;
-WeapID unk6<bgcolor=cBlue,name="Weapon, add 10", comment="Some like (+) get downgraded">;
-SpellID unk7<bgcolor=cBlue,name="Magic", comment="Spell list may be elsewhere & may have spell list / skill requirement. Weapon needs to be 255">;
-AbilityID unk8<bgcolor=cBlue,name="Ability 1", comment="Ability slots #4 & #5 location unknown">;
-AbilityID unk9<bgcolor=cBlue,name="Ability 2", comment="Ability slots #4 & #5 location unknown">;
-AbilityID unk10<bgcolor=cBlue,name="Ability 3", comment="Ability slots #4 & #5 location unknown">;
-byte unk11<bgcolor=cBlue,name="unk0", comment="A total mystery">;
-
+	for(j=0;j<EntryCount;j++){
+    	struct{
+        	local string weapon;
+			ubyte unk0<bgcolor=cBlue,name="For Replacement slot", comment="Set to 255 for no replacement(allow a clone.). Match this to specify an alternative character slot if Character Base is recruited to the player's party.">;
+			byte unk1<bgcolor=cBlue,name="Possibly gender", comment="put a comment here">;
+			Names unk2<bgcolor=cBlue,name="Character Base (CharID)", comment="See Person Data">;
+			EquipID unk4<bgcolor=cBlue,name="Accessory (EquipID)", comment="Some like Shield of Seiros may get downgraded if the player has obtained one">;
+			ClassName unk5<bgcolor=cBlue,name="Class", comment="Opponent Class">;
+			WeapIDByte unk6<bgcolor=cBlue,name="Weapon, add 10", comment="Some like (+) get downgraded">;
+			SpellID unk7<bgcolor=cBlue,name="Magic", comment="Spell list may be elsewhere & may have spell list / skill requirement. Weapon needs to be 255">;
+			AbilityID unk8<bgcolor=cBlue,name="Ability 1", comment="Ability slots #4 & #5 location unknown">;
+			AbilityID unk9<bgcolor=cBlue,name="Ability 2", comment="Ability slots #4 & #5 location unknown">;
+			AbilityID unk10<bgcolor=cBlue,name="Ability 3", comment="Ability slots #4 & #5 location unknown">;
+			byte unk11<bgcolor=cBlue,name="unk0", comment="A total mystery">;
+			
+			if(unk6==255) weapon = EnumToString(unk7);
+			else          weapon = EnumToString(unk6);
+        }Tourney<read = Str("%-16s - %s", weapon, EnumToString(unk2) )>;
+    }
 }TourneyData;
+
+enum<byte> Preferences {
+    Neutral_p = 0,
+    Like_p = 1,
+    Dislike_p = -1,
+
+};
+
+enum<ubyte> Meal{
+	Beast_Meat_Teppanyaki,
+	Grilled_Herring,
+	Saghert_and_Cream,
+	Fish_and_Bean_Soup,
+	Vegetable_Pasta_Salad,
+	Small_Fish_Skewers,
+	Sauteed_Jerky,
+	Spicy_Fish_and_Turnip_Stew,
+	Onion_Gratin_Soup,
+	Sweet_and_Salty_Whitefish_Saute,
+	Sweet_Bun_Trio,
+	Fruit_and_Herring_Tart,
+	Garreg_Mach_Meat_Pie,
+	Fishermans_Bounty,
+	Pheasant_Roast_with_Berry_Sauce,
+	Cheesy_Verona_Stew,
+	Fish_Sandwich,
+	Pickled_Rabbit_Skewers,
+	Country_Style_Red_Turnip_Plate,
+	Super_Spicy_Fish_Dango,
+	Peach_Sorbet,
+	Pickled_Seafood_and_Vegetables,
+	Two_Fish_Saute,
+	Daphnel_Stew,
+	Gronder_Meat_Skewers,
+	Sauteed_Pheasant_and_Eggs,
+	Gautier_Cheese_Gratin,
+	Cabbage_and_Herring_Stew,
+	Vegetable_Stir_Fry,
+	Bourgeois_Pike,
+	Fried_Crayfish,
+	Derdriu_Style_Fried_Pheasant,
+};
+
+enum<ubyte> FactionMealPreference{
+      FlameEmperorArmy_FMP,
+      Thieves_FMP,
+      RebelArmy_FMP,
+      Rogues_FMP,
+      Citizens_FMP,
+      ChildrenOfTheGoddess_FMP,
+};
+
+enum<ubyte> SaveBlockID{
+    MaleByleth_SBI = 0,
+	FemaleByleth_SBI = 1,
+	Edelgard_2_SBI = 2,
+	Dimitri_3_SBI = 3,
+	Claude_4_SBI = 4,
+	Hubert_5_SBI = 5,
+	Ferdinand_6_SBI = 6,
+	Linhardt_7_SBI = 7,
+	Caspar_8_SBI = 8,
+	Bernadetta_9_SBI = 9,
+	Dorothea_10_SBI = 10,
+	Petra_11_SBI = 11,
+	Dedue_12_SBI = 12,
+	Felix_13_SBI = 13,
+	Ashe_14_SBI = 14,
+	Sylvain_15_SBI = 15,
+	Mercedes_16_SBI = 16,
+	Annette_17_SBI = 17,
+	Ingrid_18_SBI = 18,
+	Lorenz_19_SBI = 19,
+	Raphael_20_SBI = 20,
+	Ignatz_21_SBI = 21,
+	Lysithea_22_SBI = 22,
+	Marianne_23_SBI = 23,
+	Hilda_24_SBI = 24,
+	Leonie_25_SBI = 25,
+	Seteth_26_SBI = 26,
+	Flayn_27_SBI = 27,
+	Hanneman_28_SBI = 28,
+	Manuela_29_SBI = 29,
+	Gilbert_30_SBI = 30,
+	Alois_31_SBI = 31,
+	Catherine_32_SBI = 32,
+	Shamir_33_SBI = 33,
+	Cyril_34_SBI = 34,
+	Jeralt_35_SBI = 35,
+	Rhea_36_SBI = 36,  
+	InvalidSothis_SBI = 37, 
+	
+	Yuri_SBI = 38,
+	Balthus_SBI = 39,
+	Constance_SBI = 40,
+	Hapi_SBI = 41,
+	idkAelfric_SBI = 42,
+	Jeritza_Playable_SBI = 43,
+	Anna_Playable_SBI = 44,
+};
+
+struct sSilverSnowEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="CH 14 SS",comment="MonasteryScriptID = 19">;
+	ubyte bit1 : 1<name="CH 15 SS",comment="MonasteryScriptID = 20">;
+	ubyte bit2 : 1<name="CH 16 SS",comment="MonasteryScriptID = 21">;
+	ubyte bit3 : 1<name="CH 18 SS",comment="MonasteryScriptID = 22">;
+	ubyte bit4 : 1<name="CH 19 SS",comment="MonasteryScriptID = 23">;
+	ubyte bit5 : 1<name="CH 20 SS",comment="MonasteryScriptID = 24">;
+	ubyte bit6 : 1<name="CH 21 SS",comment="MonasteryScriptID = 25">;
+	ubyte bit7 : 1<name="Unused",comment="MonasteryScriptID = 26">;
+};
+struct sCrimsonFlowerEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="CH 12 CF",comment="MonasteryScriptID = 13, alternative monastery at Tower of Black Winds">;
+	ubyte bit1 : 1<name="CH 13 CF",comment="MonasteryScriptID = 14">;
+	ubyte bit2 : 1<name="CH 14 CF",comment="MonasteryScriptID = 15">;
+	ubyte bit3 : 1<name="CH 15 CF",comment="MonasteryScriptID = 16">;
+	ubyte bit4 : 1<name="CH 16 CF",comment="MonasteryScriptID = 17">;
+	ubyte bit5 : 1<name="CH 17 CF",comment="MonasteryScriptID = 18">;
+	ubyte bit6 : 1<name="Does nothing",comment="handled in another data field">;
+	ubyte bit7 : 1<name="Does nothing",comment="handled in anoth1er data field">;
+};
+struct sWhiteCloudsEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="Chapter 0",comment="MonasteryScriptID = 0">;
+	ubyte bit1 : 1<name="Chapter 1",comment="MonasteryScriptID = 1">;
+	ubyte bit2 : 1<name="Chapter 2",comment="MonasteryScriptID = 2">;
+	ubyte bit3 : 1<name="Chapter 3",comment="MonasteryScriptID = 3">;
+	ubyte bit4 : 1<name="Chapter 4",comment="MonasteryScriptID = 4">;
+	ubyte bit5 : 1<name="Chapter 5",comment="MonasteryScriptID = 5">;
+	ubyte bit6 : 1<name="Chapter 6",comment="MonasteryScriptID = 6">;
+	ubyte bit7 : 1<name="Chapter 7",comment="MonasteryScriptID = 7">;
+	ubyte bit8 : 1<name="Chapter 8",comment="MonasteryScriptID = 8">;
+	ubyte bit9 : 1<name="Chapter 9",comment="MonasteryScriptID = 9">;
+	ubyte bit10 : 1<name="Chapter 10",comment="MonasteryScriptID = 10">;
+	ubyte bit11 : 1<name="Chapter 11",comment="MonasteryScriptID = 11">;
+	ubyte bit12 : 1<name="Chapter 12 NonCF",comment="MonasteryScriptID = 12">;
+	ubyte bit13 : 1<name="Does nothing",comment="handled in another data field">;
+	ubyte bit14 : 1<name="Does nothing",comment="handled in another data field">;
+	ubyte bit15 : 1<name="Does nothing",comment="handled in another data field">;
+};
+
+struct sAzureMoonEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="CH 14 AM", comment="MonasteryScriptID = 27">;
+	ubyte bit1 : 1<name="CH 15 AM", comment="MonasteryScriptID = 28">;
+	ubyte bit2 : 1<name="CH 16 AM", comment="MonasteryScriptID = 29">;
+	ubyte bit3 : 1<name="CH 17 AM", comment="MonasteryScriptID = 30">;
+	ubyte bit4 : 1<name="CH 18 AM", comment="MonasteryScriptID = 31">;
+	ubyte bit5 : 1<name="CH 19 AM", comment="MonasteryScriptID = 32">;
+	ubyte bit6 : 1<name="CH 20 AM", comment="MonasteryScriptID = 33">;
+	ubyte bit7 : 1<name="CH 21 AM", comment="MonasteryScriptID = 34">;
+};
+
+struct sRoutesEnabledBitMask{
+	ubyte bit0 : 1<name="Silver Snow", comment="Route=0">;
+	ubyte bit1 : 1<name="Azure Moon", comment="Route=1">;
+	ubyte bit2 : 1<name="Verdant Wind", comment="Route=2">;
+	ubyte bit3 : 1<name="Crimson Flower", comment="Route=3">;
+	ubyte bit4 : 1<name="Prologue", comment="Route=4">;
+	ubyte bit5 : 1<name="Cindered Shadows", comment="Route=5">;
+	ubyte bit6 : 1<name="Does Nothing?", comment="???">;
+	ubyte bit7 : 1<name="Does Nothing?", comment="???">;
+};
+struct sVerdantWindEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="CH 14 VW", comment="MonasteryScriptID = 35">;
+	ubyte bit1 : 1<name="CH 15 VW", comment="MonasteryScriptID = 36">;
+	ubyte bit2 : 1<name="CH 16 VW", comment="MonasteryScriptID = 37">;
+	ubyte bit3 : 1<name="CH 17 VW", comment="MonasteryScriptID = 38">;
+	ubyte bit4 : 1<name="CH 18 VW", comment="MonasteryScriptID = 39">;
+	ubyte bit5 : 1<name="CH 19 VW", comment="MonasteryScriptID = 40">;
+	ubyte bit6 : 1<name="CH 20 VW", comment="MonasteryScriptID = 41">;
+	ubyte bit7 : 1<name="CH 21 VW", comment="MonasteryScriptID = 42">;
+};
+
+enum<ubyte> FishTier{
+    SmallFishShadow,
+	LargeFishShadow,
+	GiantFishShadow,
+	GlimmeringFishShadow,
+    StrangeFishShadow,
+    SparklingFishShadow,
+    InvalidFT6,
+    InvalidFT7,
+    InvalidFT8,
+    InvalidFT9,  
+};
+
+enum<int> Seeds {
+    Mixed_Herb_S,
+    Western_Foldlan_S,
+    Root_Vegetable_S,
+    Magical_Herb_S,
+    Noah_Fruit_S,
+    Albinean_Nut_S,
+    Vegetable_S,
+    Northern_Foldlan_S,
+    Verona_S,
+    Morfis_Plum_S,
+    Southern_Fodlan_S,
+    Morfis_S,
+    Nordsalat_S,
+    Boa_Fruit_S,
+    Albinean_S,
+    Eastern_Fodlan_S,
+    Magdred_Kirsch_S,
+    Angelica_S,
+    Mixed_Fruit_S,
+    Albinean_Berry_S,
+    Red_Flower_S,
+    White_Flowers_S,
+    Blue_Flowers_S,
+    Purple_Flowers_S,
+    Yellow_Flowers_S,
+    Green_Flowers_S,
+    Pale_Blue_Flower_S,
+    Seed27,
+    Seed28,
+    Seed29,
+    Seed30,
+    Dedues_S,
+};
+
+enum<ubyte> SupportMinorRank{
+	NoSupport_SMR,
+	C_SMR,
+	CPlus_SMR,
+	B_SMR,
+	BPlus_SMR,
+	A_SMR,
+	APlus_SMR,
+	S_SMR
+};
+
+struct UnitPreferences{ //0
+	for (j = 0; j < EntryCount; j++){
+		struct Unit {
+			Names character<bgcolor=cRed>;
+			Preferences Choir<name="Choir Preference", bgcolor=cSilver>;
+			Preferences Cooking<name="Cooking Preference", bgcolor=cLtBlue>;
+			short unkShort0x4;
+		}preferences<name="Unit", read=EnumToString(character)>;
+	}
+};
+
+struct sShareAMeal{ //1
+	for (j = 0; j < EntryCount; j++){
+		struct sShareAMealData {
+			local Meal name=j;
+			
+			struct {
+            	MiscItem Ingredient;
+                byte ingredentMSB<hidden=true>;
+            }Ingredients[3]<read=EnumToString(Ingredient)>;
+			ubyte unkByte0x6;
+			ubyte unkByte0x7;
+			
+			ubyte unkByte0x8;
+			ubyte unkByte0x9;
+			FactionMealPreference Faction;
+			ubyte unkByte0xb;
+			
+			ubyte unkByte0xc;
+			ubyte unkByte0xd;
+			ubyte IngredientsCost[3];
+			ubyte Padding;
+		}mealPreferences<name="Meals", bgcolor=cSilver, read = EnumToString(name)>;
+	}
+};
+
+struct Mealstuff{ //2
+	for (j = 0; j < EntryCount; j++){
+		struct MealPreferences {
+			local Meal name=j;
+			for(k =0; k<45;k++){
+				struct sCharacterPreference{
+					local SaveBlockID SaveID=k;
+					Preferences Preference;
+				}CharacterPreference<read=Str("%-9s - %s",EnumToString(Preference), EnumToString(SaveID))>;
+			}
+		}mealPreferences<name="Meal Preferences", bgcolor=cSilver, read = EnumToString(name)>;
+	}
+};
+
+struct Block3{ //3
+	for (j = 0; j < EntryCount; j++){
+		struct Block3_Entry{
+			sWhiteCloudsEnabledChaptersBitMask WhiteCloudsAdviceBoxAvailability<read = Str("%d %d %d %d  %d %d %d %d  %d %d %d %d  %d",bit0,bit1,bit2,bit3, bit4,bit5,bit6,bit7, bit8,bit9,bit10,bit11, bit12)>;
+			CharID character<bgcolor=cRed>;
+            sVerdantWindEnabledChaptersBitMask VerdantWindsAdviceBoxAvailability<read = Str("%d %d %d %d  %d %d %d %d",bit0,bit1,bit2,bit3, bit4,bit5,bit6,bit7)>;
+            sSilverSnowEnabledChaptersBitMask SilverSnowAdviceBoxAvailability<read = Str("%d %d %d %d  %d %d %d",bit0,bit1,bit2,bit3, bit4,bit5,bit6)>;
+            sCrimsonFlowerEnabledChaptersBitMask CrimsonFlowerAdviceBoxAvailability<read = Str("%d %d %d %d  %d %d",bit0,bit1,bit2,bit3, bit4,bit5)>;
+            sAzureMoonEnabledChaptersBitMask AzureMoonAdviceBoxAvailability<read = Str("%d %d %d %d  %d %d %d %d",bit0,bit1,bit2,bit3, bit4,bit5,bit6,bit7)>;
+		}entry<read=EnumToString(character), bgcolor=cLtBlue>;
+	}
+};
+
+struct sLobbyActivity5{ //5
+	for (j = 0; j < EntryCount; j++){
+		struct sLobbyActivity5Entry {
+            local FishTier FT=j;
+            
+			byte Unsure<comment="Seems to have multiple purposes so idk">;
+            struct sLA5RollThresholds{
+                byte Standard_FET<name="No Fish Event">;
+	            byte FishOfMystery_FET<name="Fish of Mystery Event">;
+	            byte GoldenFish_FET<name="Golden Fish Event">;
+	            byte LotsOfLargeFish_FET<name="Lots of Large Fish Event">;
+            }LA5Thresholds<name="Marginal Roll Thresholds">;
+			byte unk[6]<name="Unused?">;
+		}LobbyActivity5Entry<name="Fish Tier Roll Thresholds",read=EnumToString(FT)>;
+	}
+    byte padding2[2];
+};
+
+struct sFishingRollThresholds { //6
+	for (j = 0; j < EntryCount; j++){
+		struct Entries {
+			struct sFishThresholds{
+				byte RollThreshold0;
+				byte RollThreshold1;
+				byte RollThreshold2;
+			};		
+			sFishThresholds LargeFishThresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds StrangeFishThresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds GlimmeringFishThresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds SmallFishThresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds SparklingFishThresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds GiantFishThresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds Invalid6Thresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds Invalid7Thresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds Invalid8Thresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds Invalid9Thresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+		}RollThresholds;
+	}
+    byte padding2[2];
+};
+
+struct Fishing{ //7
+	for (j = 0; j < EntryCount; j++){
+		struct FishEntry {
+			local GeneralMerchantItems Bait = 1400 + j;
+				struct FishRewards{
+					GeneralMerchantItems FishReward0;  
+					GeneralMerchantItems FishReward1;  
+					GeneralMerchantItems FishReward2;  
+				};
+				FishRewards FishReward<read="Large Fish Shadow">;
+                FishRewards FishReward<read="Strange Fish Shadow">;
+                FishRewards FishReward<read="Glimmering Fish Shadow">;
+                FishRewards FishReward<read="Small Fish Shadow">;
+                
+                FishRewards FishReward<read="Sparkling Fish Shadow">;
+                FishRewards FishReward<read="Giant Fish Shadow">;
+                FishRewards FishReward<read="Unused6FishShadow">;
+                FishRewards FishReward<read="Unused7FishShadow">;
+                
+                FishRewards FishReward<read="Unused8FishShadow">;
+                FishRewards FishReward<read="Unused9FishShadow">;
+		}fish<name="Fishing Rewards", read=EnumToString(Bait)>;;
+	}
+};	
+
+struct Gardening{ //8
+	for (j = 0; j < EntryCount; j++){
+		struct GardeningEntry {
+			struct Yield {
+				 GeneralMerchantItems gardeningItem0;
+                 GeneralMerchantItems gardeningItem1;
+                 GeneralMerchantItems gardeningItem2;
+                 GeneralMerchantItems gardeningItem3;
+                 GeneralMerchantItems gardeningItem4;
+			};
+			local Seeds seed = j;
+			GeneralMerchantItems StatBoosterSlot<name="Stat Booster Slot", name="Stat Booster">;
+			Yield yield1_low<read="Yield Level 1 Low", name="Yield">;
+			Yield yield1_high<read="Yield Level 1 High", name="Yield">;
+			Yield yield2_low<read="Yield Level 2 Low", name="Yield">;
+			Yield yield2_high<read="Yield Level 2 High", name="Yield">;
+			Yield yield3_low<read="Yield Level 3 Low", name="Yield">;
+			Yield yield3_high<read="Yield Level 3 High", name="Yield">;
+		}gardeningYield<name="Seed Yield", read=EnumToString(seed)>;;
+	}
+};
+
+struct SeedRank{ //9
+	for (j = 0; j < EntryCount; j++){
+		struct seedRank {
+			local Seeds seed = j;
+			ubyte rank;
+		}rank<name="Rank", read=Str("%2d - %s",rank, EnumToString(seed))>;
+	}
+};
+
+struct sGardeningScoreThresholds{ //10
+	for (j = 0; j < EntryCount; j++){
+		struct sScoreThresholds {
+			ubyte MinThreshold<comment="value >= MinT">;
+			ubyte MaxThreshold<comment="value <= MaxT">;
+			ubyte ScoreModifier;
+			ubyte LowYields_MaxIndex;
+			
+			ubyte HighYields_MaxIndex;
+			ubyte LowYields_MinIndex;
+			ubyte HighYields_MinIndex;
+			ubyte LowYieldsChance<comment="not actually used since L+H=100, always calcs with HighYieldsChance instead. Note: I can't remember how I determined this so idk">;
+			
+			ubyte HighYieldsChance<comment="grants HighYields if roll is less than this value">;
+		}ScoreThresholds<name="Thresholds",read = MinThreshold>;
+	}
+    byte padding2[2];
+};
+
+struct CultivationCost{ //11
+	uint Infuse_With_Magic;
+    uint Pour_Airmid_Water;
+    uint Prune;
+    uint Scatter_Bonemeal;
+    uint Use_Caledonian_Soil;
+    uint Spread_Pegasus_Blessings;
+};
+
+struct ProfessorLevel{ //12
+	for (j = 0; j < EntryCount; j++){
+		struct ProfessorRank {
+			local MinRanks r=j;
+			short expNeed<name="Lecture Question Exp", bgcolor=cDkGreen>;
+			ushort CumExp<name="Total Exp Needed", bgcolor=cLtGreen>;
+			ushort Salary<name="Monthly Church Salary", bgcolor=cYellow>;
+			ubyte TeachingPoints<name="Lecture Points", bgcolor=cGreen>;
+			ubyte BattlePoints<name="Battle Points", bgcolor=cRed>;
+			ubyte unk<name="Cook Book Flag?", bgcolor=cBlack>;
+			ubyte adjutantCount<name="Adjutants", bgcolor=cBlack>;
+			ubyte ActivityPoints<name="Activity Points", bgcolor=cBlue>;
+			ubyte MasterClass<name="Master Classes Unlocked", bgcolor=cPurple>;
+			byte unk;
+			byte unk;
+			byte unk;
+			byte unk;
+			byte unk;
+			byte unk;
+			byte unk;
+			byte padding;
+		}perks<name="Professor Rank Perks", read=EnumToString(r)>;
+	}
+};
+
+struct Block13{ //13
+	for (j = 0; j < EntryCount; j++){
+		struct Entry13 {
+			CharID character<bgcolor=cRed>;
+			byte ZCoordOffsetModifier;
+			byte padding;
+		}entry13<read=Str("%d - %s",ZCoordOffsetModifier,EnumToString(character)),name="Character Entry">;
+	}
+};
+
+struct Block14{ //14
+	for (j = 0; j < EntryCount; j++){
+		struct Entry14 {
+			int unk;
+			CharID character<bgcolor=cRed>;
+			short AnimationID_Warmed;
+			short AnimationID_Overheated<comment="also used for 'getting dizzy' state">;
+			short AnimationID_Neutral;
+			byte Warmed_SkinReddeningLevel;
+			byte unkByte0xd<name="Unused? 0xd">;
+			byte HeatResistance;
+			byte Overheat_SkinReddeningLevel;// values 0-2
+		}entry14<read=EnumToString(character),name="Character Entry">;
+	}
+};
+
+struct Block15{ //15
+	for (j = 0; j < EntryCount; j++){
+		struct Entry15 {
+            local SupportMinorRank SMR=j;
+            
+			short SeatingDistanceModifier<comment="Subtracts this position from Byleth's seat pos and Adds to Sauna Partner's seat pos, modifier of 71 will give them the same position">;
+			byte WarmupBarSize;
+			byte SaveChance;
+		}entry15<name="Sauna Support Bonuses",read=Str("%2d %2d %2d - %s",SeatingDistanceModifier, WarmupBarSize, SaveChance,EnumToString(SMR))>;
+	}
+};
+
+struct Block16{ //16
+	for (j = 0; j < EntryCount; j++){
+		struct Entry16 {
+			float CameraPosY;
+			float CameraPosX;
+			float CameraPosZ;
+			float CameraTargetY;
+			float CameraTargetX;
+			float CameraTargetZ;
+		}entry16<name="Camera position?",read = Str("(%5d, %5d, %5d) - (%5d, %5d, %5d)",CameraPosY,CameraPosX,CameraPosZ,CameraTargetY,CameraTargetX,CameraTargetZ), comment="Entry is selected randomly?">;
+	}
+};
 
 struct File {
     int count<bgcolor=cBlack>;
@@ -868,10 +729,11 @@ struct File {
         int length<format=hex>;
     } pointertable[count]<bgcolor=cRed>;
     
-    local int i = 0;
+    local int i,j,k = 0;
     for(i = 0; i < count; i++){
         FSeek(pointertable[i].start);
         struct Entry {
+        	local string name;
             int magic<bgcolor=cLtGreen>; // should be 00 19 12 16
             if (magic != 0x16121900) Exit(-1);
             int EntryCount<bgcolor=cLtGreen>;
@@ -880,15 +742,81 @@ struct File {
 
             if(Size == 12)//tourney data
             {
-                TourneyData tourneyData[EntryCount];
+                TourneyData tourneyData;
+                name = "Tourney";
+            }
+            else if(i==0){
+            	UnitPreferences ActivityPreferences;
+                name="Activity Preferences";
+            }
+            else if(i==1){
+            	sShareAMeal Meals;
+                name="Meals";
+            }
+            else if(i==2){
+            	Mealstuff MealPreference;
+                name="Meals Preference";
+            }
+            else if(i==3){
+            	Block3 AdviceBox;
+                name="Advice Box Availability";
+            }
+            else if (i==5){
+            	sLobbyActivity5 FishTierRollThresholds;
+                name="Fish Tier Roll Threshold";
+            }
+            else if (i==6){
+            	sFishingRollThresholds FishingRollThresholds;
+                name="Fishing Roll Threshold";
+            }
+            else if (i==7){
+            	Fishing FishingRewards;
+                name = "Fishing Rewards";
+            }
+            else if (i==8){
+            	Gardening GardeningYields;
+                name = "Gardening Yields";
+            }
+            else if (i==9){
+            	SeedRank SeedRanks;
+                name = "Seed Ranks";
+            }
+            else if (i==10){
+            	sGardeningScoreThresholds GardeningScoreThreholds;
+                name = "Gardening Score Thresholds";
+            }
+            else if (i==11){
+            	CultivationCost CultivationCosts;
+                name = "Cultivation Costs";
+            }
+            else if (i==12){
+            	ProfessorLevel ProfessorLevels;
+                name = "Professor Rank Stats";
+            }
+            else if (i==13){
+            	Block13 ZOffsets;
+                name = "ShareAMeal Z-Coord offsets";
+            }
+            else if (i==14){
+            	Block14 SaunaCharacter;
+                name = "Sauna Character Model/Animation stuff";
+            }
+            else if (i==15){
+            	Block15 SaunaSupportBonuses;
+                name = "Sauna Support Bonuses";
+            }
+            else if (i==16){
+            	Block16 SaunaRandomCamera;
+                name = "Sauna Random Camera Positions";
             }
             else //other stuff, use generic struct in that case
             {
                 struct Entires {
                     byte unk[entry.Size]<bgcolor=cBlue>;
                 }entires[EntryCount];
+                name = Str("Table %d",i);
             }
-        } entry;
+        } entry<name=name>;
     }
 } file;
 
