@@ -1,0 +1,302 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: fixed_spotdata.bt
+//   Authors: Triabolical, ReichardTheThird
+//   Version: 1.0
+//   Purpose: Probably the way you get random drops in the monastery
+//  Category: 
+// File Mask: fixed_spotdata.bin
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+/*
+Item Slot appears at these location (need more research)
+
+    Battalion Guild Right: 0    Battalion Guild Left: 27, 26    Officer Academy L (box): 21, 22    Officer Academy R (bags): 24, 28, 30    Outside Dining Hall (sacks): 20    Outside Dining Hall 2: 33    Tea Patio (box): 53, 54, 50    Tea Patio (sacks): 55    Blacksmith: 21, 22    Cooking Cabanets: 23, 28    Fishing Dock: 42 47    Fish Stall: 37, 31    Food Stall 1: 42, 41, 41, 45, 47    Food Stall 2: 44, 46    Itemshop bags: 35, 36    Fishing Lake Barrels: 1, 2
+
+*/
+#include "3H_Enums.bt"
+#include "Stupid_Item_IDs.bt"
+
+LittleEndian();
+local int i = 0;
+
+struct DataSection{
+	uint magic;
+    uint NumEntries;
+    uint size;
+    uint padding[13];
+};
+
+struct sSilverSnowEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="CH 14 SS",comment="MonasteryScriptID = 19">;
+	ubyte bit1 : 1<name="CH 15 SS",comment="MonasteryScriptID = 20">;
+	ubyte bit2 : 1<name="CH 16 SS",comment="MonasteryScriptID = 21">;
+	ubyte bit3 : 1<name="CH 18 SS",comment="MonasteryScriptID = 22">;
+	ubyte bit4 : 1<name="CH 19 SS",comment="MonasteryScriptID = 23">;
+	ubyte bit5 : 1<name="CH 20 SS",comment="MonasteryScriptID = 24">;
+	ubyte bit6 : 1<name="CH 21 SS",comment="MonasteryScriptID = 25">;
+	ubyte bit7 : 1<name="Unused",comment="MonasteryScriptID = 26">;
+};
+struct sCrimsonFlowerEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="CH 12 CF",comment="MonasteryScriptID = 13, alternative monastery at Tower of Black Winds">;
+	ubyte bit1 : 1<name="CH 13 CF",comment="MonasteryScriptID = 14">;
+	ubyte bit2 : 1<name="CH 14 CF",comment="MonasteryScriptID = 15">;
+	ubyte bit3 : 1<name="CH 15 CF",comment="MonasteryScriptID = 16">;
+	ubyte bit4 : 1<name="CH 16 CF",comment="MonasteryScriptID = 17">;
+	ubyte bit5 : 1<name="CH 17 CF",comment="MonasteryScriptID = 18">;
+	ubyte bit6 : 1<name="Does nothing",comment="handled in another data field">;
+	ubyte bit7 : 1<name="Does nothing",comment="handled in anoth1er data field">;
+};
+struct sWhiteCloudsEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="Chapter 0",comment="MonasteryScriptID = 0">;
+	ubyte bit1 : 1<name="Chapter 1",comment="MonasteryScriptID = 1">;
+	ubyte bit2 : 1<name="Chapter 2",comment="MonasteryScriptID = 2">;
+	ubyte bit3 : 1<name="Chapter 3",comment="MonasteryScriptID = 3">;
+	ubyte bit4 : 1<name="Chapter 4",comment="MonasteryScriptID = 4">;
+	ubyte bit5 : 1<name="Chapter 5",comment="MonasteryScriptID = 5">;
+	ubyte bit6 : 1<name="Chapter 6",comment="MonasteryScriptID = 6">;
+	ubyte bit7 : 1<name="Chapter 7",comment="MonasteryScriptID = 7">;
+	ubyte bit8 : 1<name="Chapter 8",comment="MonasteryScriptID = 8">;
+	ubyte bit9 : 1<name="Chapter 9",comment="MonasteryScriptID = 9">;
+	ubyte bit10 : 1<name="Chapter 10",comment="MonasteryScriptID = 10">;
+	ubyte bit11 : 1<name="Chapter 11",comment="MonasteryScriptID = 11">;
+	ubyte bit12 : 1<name="Chapter 12 NonCF",comment="MonasteryScriptID = 12">;
+	ubyte bit13 : 1<name="Does nothing",comment="handled in another data field">;
+	ubyte bit14 : 1<name="Does nothing",comment="handled in another data field">;
+	ubyte bit15 : 1<name="Does nothing",comment="handled in another data field">;
+};
+
+struct sAzureMoonEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="CH 14 AM", comment="MonasteryScriptID = 27">;
+	ubyte bit1 : 1<name="CH 15 AM", comment="MonasteryScriptID = 28">;
+	ubyte bit2 : 1<name="CH 16 AM", comment="MonasteryScriptID = 29">;
+	ubyte bit3 : 1<name="CH 17 AM", comment="MonasteryScriptID = 30">;
+	ubyte bit4 : 1<name="CH 18 AM", comment="MonasteryScriptID = 31">;
+	ubyte bit5 : 1<name="CH 19 AM", comment="MonasteryScriptID = 32">;
+	ubyte bit6 : 1<name="CH 20 AM", comment="MonasteryScriptID = 33">;
+	ubyte bit7 : 1<name="CH 21 AM", comment="MonasteryScriptID = 34">;
+};
+
+struct sRoutesEnabledBitMask{
+	ubyte bit0 : 1<name="Silver Snow", comment="Route=0">;
+	ubyte bit1 : 1<name="Azure Moon", comment="Route=1">;
+	ubyte bit2 : 1<name="Verdant Wind", comment="Route=2">;
+	ubyte bit3 : 1<name="Crimson Flower", comment="Route=3">;
+	ubyte bit4 : 1<name="Prologue", comment="Route=4">;
+	ubyte bit5 : 1<name="Cindered Shadows", comment="Route=5">;
+	ubyte bit6 : 1<name="Does Nothing?", comment="???">;
+	ubyte bit7 : 1<name="Does Nothing?", comment="???">;
+};
+struct sVerdantWindEnabledChaptersBitMask{
+	ubyte bit0 : 1<name="CH 14 VW", comment="MonasteryScriptID = 35">;
+	ubyte bit1 : 1<name="CH 15 VW", comment="MonasteryScriptID = 36">;
+	ubyte bit2 : 1<name="CH 16 VW", comment="MonasteryScriptID = 37">;
+	ubyte bit3 : 1<name="CH 17 VW", comment="MonasteryScriptID = 38">;
+	ubyte bit4 : 1<name="CH 18 VW", comment="MonasteryScriptID = 39">;
+	ubyte bit5 : 1<name="CH 19 VW", comment="MonasteryScriptID = 40">;
+	ubyte bit6 : 1<name="CH 20 VW", comment="MonasteryScriptID = 41">;
+	ubyte bit7 : 1<name="CH 21 VW", comment="MonasteryScriptID = 42">;
+};
+
+enum<byte> RNGItemPool{
+    FishBait_Common,
+    Seeds_Common,
+    ForgingMaterials,
+    TeaLeaves,
+    Fish,
+    FruitsAndVeggies,
+    Meat,
+    FishBait_Rare,
+    Seeds_Rare
+};
+
+enum<byte> AbyssItemPool{
+    BrokenIron_Abyss,
+    RustedIron_Abyss,
+    Training_Abyss,
+    Iron_Abyss,
+    TrainingPlus_Abyss,
+    SteelTier_Abyss,
+    SilverTier_AndDevil_Abyss,
+    SilverPlus_AndKiller_Abyss
+};
+
+struct sFile{
+    struct FileSections{
+    	uint numSections;
+        struct{
+        	uint ptr;
+            uint size;
+        }pointers[numSections];
+    }Sections;
+    
+    FSeek(Sections.pointers[0].ptr);
+    struct sItemSpotTable{
+        DataSection SectionHeader;
+        
+        struct sItemSpotEntries{
+            for(i=0;i<SectionHeader.NumEntries;i++){
+                struct sItemSpot{
+                    int ItemSpotTypeStringOffset<comment="used to index the strings in ItemLocationType">;
+                    local string name = ReadString(Sections.pointers[0].ptr + ItemSpotTypeStringOffset + 0x40 + SectionHeader.NumEntries * SectionHeader.size,-1);
+                    struct Flags0x4{
+                        ubyte bit0 : 1<name="Byleth's NG+ Journal">;
+                        ubyte bit1 : 1<name="Spend Free Day on Battles">;
+                        ubyte bit2 : 1<name="Hanneman's Crest Analyzer">;
+                        ubyte bit3 : 1<name="Quest Bulletin Board">;
+                        ubyte bit4 : 1<name="unkF0B4">;
+                        ubyte bit5 : 1<name="Amiibo Gazebo">;
+                        ubyte bit6 : 1<name="unkF0B6">;
+                        ubyte bit7 : 1<name="unkF0B7">;
+                    }SpecialSpotDataTypes;
+                    struct Flags0x5{
+                        ubyte bit0 : 1<name="Uses Large Text box for Sitri Grave? Probably wrong">;
+                        ubyte bit1 : 1<name="unkF1B1">;
+                        ubyte bit2 : 1<name="unkF1B2">;
+                        ubyte bit3 : 1<name="Makes item spots disappear?">;
+                        ubyte bit4 : 1<name="Makes item spots disappear?">;
+                        ubyte bit5 : 1<name="Makes item spots disappear?">;
+                        ubyte bit6 : 1<name="Makes item spots disappear?">;
+                        ubyte bit7 : 1<name="Makes item spots disappear?">;
+                    }unkFlags0x5;
+                    //ubyte unkByte0x6;
+                    struct unkByte0x6{
+                        ubyte bit0 : 1<name="Makes item spots disappear?">;
+                        ubyte bit1 : 1<name="Makes item spots disappear?">;
+                        ubyte bit2 : 1<name="unkF2B2">;
+                        ubyte bit3 : 1<name="unkF2B3">;
+                        ubyte bit4 : 1<name="unkF2B4">;
+                        ubyte bit5 : 1<name="unkF2B5">;
+                        ubyte bit6 : 1<name="unkF2B6">;
+                        ubyte bit7 : 1<name="unkF2B7">;
+                    }unkFlags0x6;
+                    //ubyte unkByte0x7;
+                    struct unkByte0x7{
+                        ubyte bit0 : 1<name="unkF3B0">;
+                        ubyte bit1 : 1<name="unkF3B1">;
+                        ubyte bit2 : 1<name="unkF3B2">;
+                        ubyte bit3 : 1<name="unkF3B3">;
+                        ubyte bit4 : 1<name="unkF3B4">;
+                        ubyte bit5 : 1<name="unkF3B5">;
+                        ubyte bit6 : 1<name="unkF3B6">;
+                        ubyte bit7 : 1<name="unkF3B7">;
+                    }unkFlags0x7;
+                    short unkShort0x8;
+                    ushort ItemXCoord<comment="Coordinate is this value/65535">;
+                    ushort ItemYCoord<comment="which represents a percentage of">;
+                    ushort CameraTargetXCoord<comment="determines the position the camera should point towards">;
+                    ushort ItemZCoord<comment="the map size for the item coordinate">;
+                    ushort IncreaseProfessorExperience;
+                    sWhiteCloudsEnabledChaptersBitMask WhiteCloudsEnabledChaptersBitMask<comment="May require loading a new month/ leaving and entering monastery to see it update">;
+                    ushort CameraTargetZCoord;
+                    ushort CameraTargetYCoord;
+                    ushort CameraPositionZCoord;
+                    GeneralMerchantItems Weapon<comment="Unsure">;
+                    ushort CameraPositionYCoord;
+                    ushort CameraPositionXCoord;
+                    sSilverSnowEnabledChaptersBitMask SilverSnowEnabledChaptersBitMask;
+                    sCrimsonFlowerEnabledChaptersBitMask CrimsonFlowerEnabledChaptersBitMask;
+                    byte EnableItem<comment="needs to be turned on to spawn the Item probably">;
+                    byte DeleteItemAfterPickup<comment="Does not work with everything?">;
+                    sAzureMoonEnabledChaptersBitMask AzureMoonEnabledChaptersBitMask;
+                    struct sRandomFlags{
+                        ubyte bit0 : 1<name="flag0", comment="Generally Should be False? Makes stuff disappear">;
+                        ubyte bit1 : 1<name="Roll Random Misc Item", comment="Disables granting Weapon written in 0x1c">;
+                        ubyte bit2 : 1<name="Unused", comment="">;
+                        ubyte bit3 : 1<name="Unused", comment="">;
+                        ubyte bit4 : 1<name="Unused", comment="">;
+                        ubyte bit5 : 1<name="Unused", comment="">;
+                        ubyte bit6 : 1<name="Unused", comment="">;
+                        ubyte bit7 : 1<name="Unused", comment="">;
+                    }RandomFlags;
+                    byte unk5;
+                    byte MsgDataIndexMaybe;
+                    byte unkByte0x2a;
+                    byte EnableAlternateCamera<comment="enables the use of the special camera coordinates written above">;
+                    byte CompletesQuest<comment="toggles the Quest index listed here">;
+                    byte Unused[2];
+                    sRoutesEnabledBitMask RoutesEnabledBitMask;
+                    byte unkByte0x30;
+                    sVerdantWindEnabledChaptersBitMask VerdantWindEnabledChaptersBitMask;
+                    byte unkByte0x32;
+                    byte unkByte0x33;
+                    byte unkByte0x34;
+                    byte UnusedOrPadding[3];   
+                }ItemSpot<name="Item Spot",read = Str("(%5d,%5d,%5d) %s",ItemXCoord,ItemYCoord, ItemZCoord, name)>;
+            };
+        }ItemSpotEntries<name="Item Spot Entries",comment="Probably requires reloading monastery to see stuff update">;
+        
+        struct UntrackedSection{
+            for(i=0;i<SectionHeader.NumEntries;i++){
+                struct stringArray{
+                    string str;
+                }stringArr<read=str>;
+            };
+            ubyte padding[3];
+        }UntrackedStuffInSect0<name="Item Location Type",comment="Section isn't tracked by Section header">;
+    }ItemSpotTable<name="ItemSpots">;
+    
+    FSeek(Sections.pointers[1].ptr);
+    struct SpotDataTable1{
+        DataSection SectionHeader;
+        for(i=0;i<SectionHeader.NumEntries;i++){
+            struct unkSect1Entries{
+                ushort ItemXCoord;
+                ushort ItemZCoord;
+                ushort ItemYCoord;
+                RNGItemPool RNGPool<name="RNG Item Pool">;
+                ubyte paddingMaybe<name="padding?">;
+            }RandomItemSpot< read = Str("(%5d,%5d,%5d) - %s",ItemXCoord,ItemYCoord, ItemZCoord,EnumToString(RNGPool))>;
+        };
+    }RandomItemSpots<name="Random ItemSpots", comment="Picks a random item from various pools of items, ">;
+    
+    FSeek(Sections.pointers[2].ptr);
+    struct SpotDataTable2 {
+        DataSection SectionHeader;
+        struct RNG_Item{
+            RNGItemPool RNGPool<name="Random Item Pool",comment="Items with the same number belong to the same Item pool. Locations in SDT1 roll a random item out of this Item pool">;
+            MiscItem MiscellaneousItem;
+        }RandomItems[SectionHeader.NumEntries]<read=Str("%-16s - %s",EnumToString(RNGPool),EnumToString(MiscellaneousItem)), open=false>;
+    }RandomItemPools<name="Random Item Pools">;
+    
+    FSeek(Sections.pointers[3].ptr);
+    struct sItemSpotAltDropMiscItems{
+        DataSection SectionHeader;
+        for(i=0;i<SectionHeader.NumEntries;i++){
+            struct sItemSpotAltDropMiscItem{
+                MiscItem MiscellaneousItem;
+            }ItemSpotAltDropMiscItem<name="ItemSpot Alt Drop MiscItem",read = EnumToString(MiscellaneousItem)>;
+        };
+        struct UntrackedSection3{
+            ubyte unk[0x3];
+        }Padding<comment="likely padding">;
+    }ItemSpotAltDropMiscItems<name="ItemSpot Alt Drop MiscItems">;
+    
+    FSeek(Sections.pointers[4].ptr);
+    struct sAbyssLostAndFoundItems{
+        DataSection SectionHeader;
+        for(i=0;i<SectionHeader.NumEntries;i++){
+            struct sRandomItems{
+                GeneralMerchantItems weapon;
+                byte BaseDurabilityPercent<name="Base Durability%",comment="if -1, then it has no durability (i.e. equips/ broken/ rusted)">;
+                AbyssItemPool AbyssPool<name="Abyss Item Pool",comment="determines the tier of the item when rolling">;
+                ubyte Enabled;
+                ubyte paddingProbably;
+            }RandomItems<read = Str("%-26s - %s",EnumToString(AbyssPool),EnumToString(weapon))>;
+        };
+    }AbyssLostAndFoundItems<name="Abyss Lost and Found - Items">;
+    
+    FSeek(Sections.pointers[5].ptr);
+    struct sAbyssLostAndFoundItemPoolTiers{
+        DataSection SectionHeader;
+        for(i=0;i<SectionHeader.NumEntries;i++){
+            struct sAbyssLostAndFoundItemPoolTier{
+                local AbyssItemPool name = i;
+                ubyte ItemPoolChance[6]<name="Item Pool Chances @ Influencer Rank">;
+                ubyte ProbablyUnused[9];
+            }AbyssLostAndFoundItemPoolTiers<name="Item Pool",read=Str("%2d %2d %2d %2d %2d %2d - %s",ItemPoolChance[0],ItemPoolChance[1],ItemPoolChance[2],ItemPoolChance[3],ItemPoolChance[4],ItemPoolChance[5], EnumToString(name))>;
+        };
+    }AbyssLostAndFoundItemPoolTiers<name="Abyss Lost and Found - Item Pools">;
+}File<open=true>;
