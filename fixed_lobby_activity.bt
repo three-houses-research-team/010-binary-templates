@@ -492,6 +492,30 @@ struct sLobbyActivity5{ //5
     byte padding2[2];
 };
 
+struct sFishingRollThresholds { //6
+	for (j = 0; j < EntryCount; j++){
+		struct Entries {
+			struct sFishThresholds{
+				byte RollThreshold0;
+				byte RollThreshold1;
+				byte RollThreshold2;
+			};		
+			sFishThresholds LargeFishThresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds StrangeFishThresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds GlimmeringFishThresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds SmallFishThresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds SparklingFishThresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds GiantFishThresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds Invalid6Thresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds Invalid7Thresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds Invalid8Thresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+			sFishThresholds Invalid9Thresholds<read=Str("%d %d %d",RollThreshold0,RollThreshold1,RollThreshold2)>;
+		}RollThresholds;
+	}
+    byte padding2[2];
+};
+	
+
 struct File {
     int count<bgcolor=cBlack>;
     struct PointerPair {
@@ -534,6 +558,10 @@ struct File {
             else if (i==5){
             	sLobbyActivity5 FishTierRollThresholds;
                 name="Fish Tier Roll Threshold";
+            }
+            else if (i==6){
+            	sFishingRollThresholds FishingRollThresholds;
+                name="Fishing Roll Threshold";
             }
             else //other stuff, use generic struct in that case
             {
